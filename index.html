@@ -1,0 +1,1567 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Excel-style live workbook for ACCT 65023 Managerial Accounting: cases with labeled formulas, practice mode, Goal Seek, and CVP templates.">
+<title>ACCT 65023 Live Workbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+<style>
+/* Base reset (stands in for the artifact host skeleton) */
+:root{color-scheme:light}
+html,body{margin:0}
+[hidden]{display:none!important}
+img{max-width:100%}
+/* Layout: Excel-like work surface. Sheet list at left, formula bar + grid in the middle, cell inspector at right. TCU tokens. */
+:root{
+  --bg:#faf9fb; --surface:#ffffff; --ink:#1c1b1f; --ink-2:#45434b; --ink-3:#6e6b76;
+  --line:#e3e1e8; --line-strong:#c8c5d0;
+  --brand:#4d1979; --brand-2:#7b52a0; --brand-fill:#4d1979; --brand-fill-hover:#3b1060; --on-brand:#ffffff;
+  --tint:#f5f1f9; --tint-2:#eae2f1; --tint-3:#d7c8e5;
+  --input:#1f4fb0; --good:#1e6b45; --good-bg:#e6f2eb; --bad:#9b3b2e; --bad-bg:#f9eae7; --warn:#8a6d1f; --warn-bg:#faf3de;
+  --font:"Inter",Calibri,"Segoe UI",-apple-system,sans-serif;
+  --shadow:0 1px 3px rgba(28,27,31,.08);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#141218; --surface:#1c1a21; --ink:#ece9f1; --ink-2:#c9c5d1; --ink-3:#a29eab;
+  --line:#34303b; --line-strong:#4b4654;
+  --brand:#cdb6ea; --brand-2:#b394da; --brand-fill:#5d2a8f; --brand-fill-hover:#6c36a1; --on-brand:#ffffff;
+  --tint:#241d2d; --tint-2:#30263c; --tint-3:#44355a;
+  --input:#93b4ff; --good:#86d3a8; --good-bg:#17352a; --bad:#f2a596; --bad-bg:#3d2320; --warn:#e3c46d; --warn-bg:#352d16;
+  --shadow:0 1px 3px rgba(0,0,0,.4); color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#141218; --surface:#1c1a21; --ink:#ece9f1; --ink-2:#c9c5d1; --ink-3:#a29eab;
+  --line:#34303b; --line-strong:#4b4654;
+  --brand:#cdb6ea; --brand-2:#b394da; --brand-fill:#5d2a8f; --brand-fill-hover:#6c36a1; --on-brand:#ffffff;
+  --tint:#241d2d; --tint-2:#30263c; --tint-3:#44355a;
+  --input:#93b4ff; --good:#86d3a8; --good-bg:#17352a; --bad:#f2a596; --bad-bg:#3d2320; --warn:#e3c46d; --warn-bg:#352d16;
+  --shadow:0 1px 3px rgba(0,0,0,.4); color-scheme:dark }
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+.page{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px;max-width:1680px;margin:0 auto}
+.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:8px 24px;padding-bottom:14px;border-bottom:2px solid var(--brand);margin-bottom:20px}
+.top .mark{font-weight:700;color:var(--brand);letter-spacing:.06em;text-transform:uppercase}
+.top h1{margin:2px 0 0;font-size:30px;line-height:1.15;font-weight:700;text-wrap:balance}
+.top .meta{color:var(--ink-2);text-align:right}
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:28px}
+nav.side{position:sticky;top:12px;align-self:start;max-height:calc(100vh - 24px);overflow:auto;padding-right:4px}
+nav.side h2{font-size:16px;margin:18px 0 6px;color:var(--ink-3);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+nav.side h2:first-child{margin-top:0}
+nav.side button{display:block;width:100%;text-align:left;border:0;background:none;padding:7px 10px;border-radius:6px;cursor:pointer;line-height:1.3}
+nav.side button small{display:block;color:var(--ink-3);font-size:16px}
+nav.side button:hover{background:var(--tint)}
+nav.side button[aria-current="true"]{background:var(--brand-fill);color:var(--on-brand)}
+nav.side button[aria-current="true"] small{color:var(--on-brand);opacity:.85}
+.mobile-only{display:none}
+main{min-width:0}
+.eyebrow{color:var(--brand);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.shead h2{font-size:30px;line-height:1.2;margin:2px 0 6px;text-wrap:balance}
+.shead p{margin:0 0 10px;max-width:78ch;color:var(--ink-2)}
+details.qs{border:1px solid var(--line);border-radius:6px;background:var(--surface);margin:10px 0 14px}
+details.qs summary{cursor:pointer;padding:10px 14px;font-weight:600}
+details.qs ol{margin:0;padding:0 14px 12px 36px;display:grid;gap:6px}
+details.qs li{max-width:90ch}
+.chipbtn{border:1px solid var(--line-strong);background:var(--surface);border-radius:999px;padding:1px 10px;cursor:pointer;margin-left:6px;white-space:nowrap}
+.chipbtn:hover{background:var(--tint)}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 10px}
+.btn{border:1px solid var(--line-strong);background:var(--surface);border-radius:6px;padding:6px 12px;cursor:pointer}
+.btn:hover{background:var(--tint)}
+.btn[aria-pressed="true"]{background:var(--brand-fill);border-color:var(--brand-fill);color:var(--on-brand)}
+.btn.warn{border-color:var(--bad);color:var(--bad)}
+.toolbar .spacer{flex:1}
+.score{color:var(--ink-2)}
+:focus-visible{outline:2px solid var(--brand-2);outline-offset:2px}
+.panel{border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:12px 14px;margin-bottom:10px;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:end}
+.panel label{display:grid;gap:2px;color:var(--ink-2)}
+.panel input{border:1px solid var(--line-strong);border-radius:6px;padding:5px 8px;background:var(--surface);width:130px}
+.panel .msg{flex-basis:100%;margin:0;color:var(--ink-2)}
+.fbar{display:flex;align-items:stretch;border:1px solid var(--line-strong);border-radius:6px;background:var(--surface);overflow:hidden;margin-bottom:10px}
+.fbar .name{min-width:88px;padding:6px 10px;border-right:1px solid var(--line);font-weight:600;display:flex;align-items:center;font-variant-numeric:tabular-nums}
+.fbar .fx{padding:6px 10px;border-right:1px solid var(--line);color:var(--brand);font-weight:700;display:flex;align-items:center}
+.fbar input{flex:1;min-width:0;border:0;padding:6px 10px;background:transparent;outline:none;font-variant-numeric:tabular-nums}
+.fbar:focus-within{border-color:var(--brand-2);box-shadow:0 0 0 1px var(--brand-2)}
+.work{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+.gridwrap{overflow:auto;max-height:72vh;border:1px solid var(--line-strong);border-radius:6px;background:var(--surface)}
+.gridwrap:focus-visible{outline:2px solid var(--brand-2)}
+table.grid{border-collapse:separate;border-spacing:0;font-variant-numeric:tabular-nums}
+.grid th,.grid td{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:5px 9px;height:36px;white-space:nowrap}
+.grid thead th{position:sticky;top:0;z-index:3;background:var(--tint);color:var(--ink-2);font-weight:600;text-align:center}
+.grid th.rn{position:sticky;left:0;z-index:2;background:var(--tint);color:var(--ink-3);font-weight:400;text-align:right;min-width:44px}
+.grid thead th.rn{z-index:4}
+.grid td{min-width:128px;text-align:right;cursor:cell;position:relative;background:var(--surface)}
+.grid td.ca{min-width:300px;max-width:380px;text-align:left;white-space:normal}
+.grid td.mean{min-width:280px;max-width:420px;white-space:normal;text-align:left;color:var(--ink-3);cursor:default;background:var(--bg)}
+.grid thead th.meanh{text-align:left}
+.grid td.txt{text-align:left}
+.grid td.in{color:var(--input)}
+.grid td.fx::after{content:"";position:absolute;top:0;right:0;border-style:solid;border-width:0 7px 7px 0;border-color:transparent var(--brand-2) transparent transparent}
+.grid td.edited::before{content:"";position:absolute;top:3px;left:3px;width:6px;height:6px;border-radius:50%;background:var(--warn)}
+.grid td.neg{color:var(--bad)}
+.grid td.err{color:var(--bad);font-weight:600}
+.grid tr.h td{background:var(--tint);color:var(--brand);font-weight:700;text-align:left;white-space:normal}
+.grid tr.t td.span{color:var(--ink-2);text-align:left;white-space:normal;max-width:900px}
+.grid tr.c td{font-weight:600;color:var(--ink-2);border-bottom:2px solid var(--brand);text-align:right}
+.grid tr.c td.ca{text-align:left}
+.grid tr.total td:not(.mean):not(.ca){font-weight:700;border-top:1px solid var(--ink-2)}
+.grid tr.total td.ca{font-weight:700}
+.grid td.sel{outline:2px solid var(--brand);outline-offset:-2px;z-index:1}
+.grid td.prec{background:var(--tint-2)}
+.grid td.prec::before{content:"";position:absolute;inset:2px;border:1px dashed var(--brand-2);pointer-events:none}
+.grid td.mask{background:var(--warn-bg);color:var(--ink-3)}
+.grid td.ok{background:var(--good-bg);color:var(--good);font-weight:600}
+.grid td.no{background:var(--bad-bg);color:var(--bad);font-weight:600}
+.grid td.showf{text-align:left;color:var(--brand)}
+.insp{position:sticky;top:12px;border:1px solid var(--line);border-radius:6px;background:var(--surface);padding:14px;display:grid;gap:10px;box-shadow:var(--shadow);max-height:calc(100vh - 24px);overflow:auto}
+.insp .addr{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.insp .addr b{font-size:20px}
+.tag{display:inline-block;border-radius:999px;padding:0 10px;background:var(--tint);color:var(--brand);font-weight:600}
+.tag.in{background:var(--tint);color:var(--input)}
+.tag.p{background:var(--warn-bg);color:var(--warn)}
+.tag.e{background:var(--warn-bg);color:var(--warn)}
+.insp h3{margin:0;font-size:16px;color:var(--ink-3);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.insp .lab{font-weight:600}
+.insp code,.code{font-family:var(--font);font-variant-numeric:tabular-nums;background:var(--tint);border-radius:3px;padding:4px 8px;display:block;white-space:pre-wrap;word-break:break-word;color:var(--ink)}
+.insp .res{font-size:20px;font-weight:700}
+.insp p{margin:0}
+.insp .why{color:var(--ink-2)}
+.insp .mis{background:var(--bad-bg);color:var(--ink);border-radius:6px;padding:8px 10px}
+.insp .mis b{color:var(--bad)}
+.precs{display:flex;flex-wrap:wrap;gap:6px}
+.precs button{border:1px solid var(--line-strong);background:var(--surface);border-radius:999px;padding:1px 10px;cursor:pointer;text-align:left}
+.precs button:hover{background:var(--tint)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;color:var(--ink-2);margin-top:10px}
+.sw{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:6px;border:1px solid var(--line-strong)}
+.chart{margin-top:16px;border:1px solid var(--line);border-radius:6px;background:var(--surface);padding:12px 14px}
+.chart h3{margin:0 0 4px;font-size:18px}
+.chart svg{width:100%;height:auto;display:block}
+.chart .keys{display:flex;flex-wrap:wrap;gap:6px 18px;color:var(--ink-2)}
+.chart .keys i{display:inline-block;width:18px;height:3px;vertical-align:middle;margin-right:6px}
+.special{min-width:0}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+table.ref{border-collapse:collapse;width:100%;min-width:860px}
+table.ref th{background:var(--brand-fill);color:var(--on-brand);text-align:left;padding:8px 10px;font-weight:600;vertical-align:bottom}
+table.ref td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+table.ref tr.grp td{background:var(--tint);color:var(--brand);font-weight:700}
+table.ref .f{font-weight:600;white-space:nowrap}
+table.ref select{border:1px solid var(--line-strong);border-radius:6px;padding:3px 6px;background:var(--surface)}
+table.ref td.okc{background:var(--good-bg)}
+table.ref td.noc{background:var(--bad-bg)}
+.keynote{color:var(--ink-2)}
+.notebox{border:1px solid var(--line);border-radius:6px;background:var(--surface);padding:12px 14px;margin:12px 0;max-width:90ch}
+.notebox h3{margin:0 0 6px;font-size:18px}
+.notebox ul{margin:0;padding-left:20px;display:grid;gap:4px}
+.kbd{border:1px solid var(--line-strong);border-bottom-width:2px;border-radius:4px;padding:0 6px;background:var(--surface)}
+@media (max-width:1280px){ .work{grid-template-columns:minmax(0,1fr)} .insp{position:static;max-height:none} }
+@media (max-width:900px){
+  .layout{grid-template-columns:minmax(0,1fr)}
+  nav.side{display:none}
+  .mobile-only{display:block}
+  #sheetSel{width:100%;border:1px solid var(--line-strong);border-radius:6px;padding:8px;background:var(--surface);margin-bottom:12px}
+  .top .meta{text-align:left}
+  .top h1,.shead h2{font-size:24px}
+  .gridwrap{max-height:62vh}
+  .grid td.ca{min-width:210px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <header class="top">
+    <div>
+      <div class="mark">TCU Neeley EMBA</div>
+      <h1>ACCT 65023 Live Workbook</h1>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="side" id="side" aria-label="Sheets"></nav>
+    <main>
+      <select id="sheetSel" class="mobile-only" aria-label="Choose a sheet"></select>
+      <section class="shead" id="shead"></section>
+      <div id="gridArea">
+        <div class="toolbar">
+          <button class="btn" id="bPractice" aria-pressed="false" title="Hide worked answers and check your own">Practice mode</button>
+          <button class="btn" id="bFormulas" aria-pressed="false" title="Ctrl + `">Show formulas</button>
+          <button class="btn" id="bGoal">Goal Seek</button>
+          <button class="btn" id="bCopyF">Copy with formulas</button>
+          <button class="btn" id="bCopyV">Copy values</button>
+          <span class="spacer"></span>
+          <span class="score" id="score"></span>
+          <button class="btn" id="bReset">Reset sheet</button>
+        </div>
+        <div class="panel" id="gsPanel" hidden>
+          <label for="gsSet">Set cell<input id="gsSet" placeholder="B30"></label>
+          <label for="gsTo">To value<input id="gsTo" placeholder="0"></label>
+          <label for="gsBy">By changing cell<input id="gsBy" placeholder="B8"></label>
+          <button class="btn" id="gsRun" aria-pressed="true">Solve</button>
+          <button class="btn" id="gsClose">Close</button>
+          <p class="msg" id="gsMsg">Same as Excel: Data → What-If Analysis → Goal Seek. The changing cell must be an input (blue).</p>
+        </div>
+        <div class="fbar">
+          <div class="name" id="nameBox">—</div>
+          <div class="fx" aria-hidden="true">fx</div>
+          <input id="fInput" aria-label="Formula bar" autocomplete="off" spellcheck="false" placeholder="Select a cell. Type a number, text, or a formula starting with =">
+        </div>
+        <div class="work">
+          <div>
+            <div class="gridwrap" id="gridWrap" tabindex="0" aria-label="Spreadsheet grid"><table class="grid" id="grid"></table></div>
+            <div class="legend">
+              <span><span class="sw" style="background:var(--surface);border-color:var(--input);box-shadow:inset 0 0 0 7px var(--surface)"></span><span style="color:var(--input);font-weight:600">Blue</span> = input you can change</span>
+              <span><span class="sw" style="background:linear-gradient(225deg,var(--brand-2) 0 30%,var(--surface) 30%)"></span>Formula</span>
+              <span><span class="sw" style="background:var(--tint-2)"></span>Feeds the selected formula</span>
+              <span><span class="sw" style="background:var(--warn-bg)"></span>Practice: your answer</span>
+              <span><span class="sw" style="background:var(--warn);border-radius:50%"></span>You edited it</span>
+            </div>
+            <div id="chart"></div>
+          </div>
+          <aside class="insp" id="insp" aria-live="polite"></aside>
+        </div>
+      </div>
+      <div class="special" id="special" hidden></div>
+    </main>
+  </div>
+</div>
+
+<script>
+"use strict";
+/* ============================================================
+   Formula engine: A1 refs, ranges, cross-sheet refs, Excel functions
+   ============================================================ */
+class Err{constructor(c){this.code=c}}
+const isErr=x=>x instanceof Err;
+const colName=i=>{let s='';i++;while(i>0){const m=(i-1)%26;s=String.fromCharCode(65+m)+s;i=Math.floor((i-1)/26)}return s};
+const colIdx=s=>{let n=0;for(const ch of s)n=n*26+(ch.charCodeAt(0)-64);return n-1};
+const splitAddr=a=>{const m=/^([A-Z]+)(\d+)$/.exec(a);return m?{c:colIdx(m[1]),r:+m[2],cl:m[1]}:null};
+
+function tokenize(s){
+  const toks=[];let i=0;
+  const refRe=/^(?:('(?:[^']|'')+'|[A-Za-z_][A-Za-z0-9_]*)!)?(\$?[A-Za-z]{1,3}\$?\d+)(?![A-Za-z0-9_(])/;
+  while(i<s.length){
+    const ch=s[i];
+    if(/\s/.test(ch)){i++;continue}
+    const rest=s.slice(i);let m;
+    if(ch==='"'){let j=i+1,str='';while(j<s.length){if(s[j]==='"'){if(s[j+1]==='"'){str+='"';j+=2;continue}break}str+=s[j++]}
+      toks.push({t:'str',v:str,s:i,e:j+1});i=j+1;continue}
+    if((m=/^(\d+\.?\d*(?:[eE][+-]?\d+)?|\.\d+)/.exec(rest))){toks.push({t:'num',v:parseFloat(m[1]),s:i,e:i+m[1].length});i+=m[1].length;continue}
+    if((m=refRe.exec(rest))){let sh=m[1]||null;if(sh&&sh[0]==="'")sh=sh.slice(1,-1).replace(/''/g,"'");
+      toks.push({t:'ref',sheet:sh,a:m[2].replace(/\$/g,'').toUpperCase(),s:i,e:i+m[0].length});i+=m[0].length;continue}
+    if((m=/^[A-Za-z_][A-Za-z0-9_.]*/.exec(rest))){toks.push({t:'id',v:m[0].toUpperCase(),s:i,e:i+m[0].length});i+=m[0].length;continue}
+    if((m=/^(<=|>=|<>|[-+*/^&%=<>(),:])/.exec(rest))){toks.push({t:'op',v:m[1],s:i,e:i+m[1].length});i+=m[1].length;continue}
+    throw new Err('#PARSE!');
+  }
+  return toks;
+}
+const astCache=new Map();
+function parse(s){
+  if(astCache.has(s))return astCache.get(s);
+  const toks=tokenize(s);let p=0;
+  const isOp=v=>toks[p]&&toks[p].t==='op'&&toks[p].v===v;
+  const next=()=>toks[p++];
+  const expect=v=>{if(!isOp(v))throw new Err('#PARSE!');p++};
+  const CMP=['=','<>','<','>','<=','>='];
+  function cmp(){let a=cat();while(toks[p]&&toks[p].t==='op'&&CMP.includes(toks[p].v)){const op=next().v;a={type:'bin',op,a,b:cat()}}return a}
+  function cat(){let a=add();while(isOp('&')){p++;a={type:'bin',op:'&',a,b:add()}}return a}
+  function add(){let a=mul();while(isOp('+')||isOp('-')){const op=next().v;a={type:'bin',op,a,b:mul()}}return a}
+  function mul(){let a=pw();while(isOp('*')||isOp('/')){const op=next().v;a={type:'bin',op,a,b:pw()}}return a}
+  function pw(){let a=un();while(isOp('^')){p++;a={type:'bin',op:'^',a,b:un()}}return a}
+  function un(){if(isOp('-')){p++;return{type:'neg',a:un()}}if(isOp('+')){p++;return un()}return post()}
+  function post(){let a=prim();while(isOp('%')){p++;a={type:'pct',a}}return a}
+  function prim(){
+    const t=next();if(!t)throw new Err('#PARSE!');
+    if(t.t==='num')return{type:'num',v:t.v};
+    if(t.t==='str')return{type:'str',v:t.v};
+    if(t.t==='ref'){if(isOp(':')&&toks[p+1]&&toks[p+1].t==='ref'){p++;const t2=next();return{type:'range',sheet:t.sheet,a:t.a,b:t2.a}}return{type:'ref',sheet:t.sheet,a:t.a}}
+    if(t.t==='id'){
+      if(t.v==='TRUE')return{type:'bool',v:true};
+      if(t.v==='FALSE')return{type:'bool',v:false};
+      if(isOp('(')){p++;const args=[];if(!isOp(')')){args.push(cmp());while(isOp(',')){p++;args.push(cmp())}}expect(')');return{type:'fn',name:t.v,args}}
+      throw new Err('#NAME?');
+    }
+    if(t.t==='op'&&t.v==='('){const e=cmp();expect(')');return e}
+    throw new Err('#PARSE!');
+  }
+  const ast=cmp();if(p<toks.length)throw new Err('#PARSE!');
+  astCache.set(s,ast);return ast;
+}
+function parseLiteral(s){
+  if(typeof s!=='string')return s;
+  const t=s.trim();if(t==='')return'';
+  let x=t,neg=false,pc=false;
+  if(/^\(.*\)$/.test(x)){neg=true;x=x.slice(1,-1)}
+  if(x.endsWith('%')){pc=true;x=x.slice(0,-1)}
+  x=x.replace(/[$,\s]/g,'');
+  if(x.startsWith('-')){neg=!neg;x=x.slice(1)}
+  if(/^(\d+\.?\d*|\.\d+)([eE][+-]?\d+)?$/.test(x)){let n=parseFloat(x);if(pc)n/=100;return neg?-n:n}
+  return t;
+}
+function toNum(v){
+  if(isErr(v))return v;if(v&&v.range)return new Err('#VALUE!');
+  if(v===''||v==null)return 0;if(typeof v==='number')return v;if(typeof v==='boolean')return v?1:0;
+  const x=parseLiteral(v);return typeof x==='number'?x:new Err('#VALUE!');
+}
+const truthy=v=>typeof v==='string'?v.toUpperCase()==='TRUE':!!toNum(v);
+function expandRange(a,b){const A=splitAddr(a),B=splitAddr(b);const out=[];
+  for(let r=Math.min(A.r,B.r);r<=Math.max(A.r,B.r);r++)for(let c=Math.min(A.c,B.c);c<=Math.max(A.c,B.c);c++)out.push(colName(c)+r);return out}
+function sidFromTab(tab,ctx){if(!tab)return ctx;const s=ORDER.find(x=>SH[x].tab.toLowerCase()===tab.toLowerCase());if(!s)throw new Err('#REF!');return s}
+function ev(n,ctx){
+  switch(n.type){
+    case'num':case'str':case'bool':return n.v;
+    case'ref':return getVal(sidFromTab(n.sheet,ctx),n.a);
+    case'range':{const sid=sidFromTab(n.sheet,ctx);return{range:true,vals:expandRange(n.a,n.b).map(a=>getVal(sid,a))}}
+    case'neg':{const x=toNum(ev(n.a,ctx));return isErr(x)?x:-x}
+    case'pct':{const x=toNum(ev(n.a,ctx));return isErr(x)?x:x/100}
+    case'bin':return bin(n.op,ev(n.a,ctx),ev(n.b,ctx));
+    case'fn':return callFn(n.name,n.args,ctx);
+  }
+  return new Err('#ERROR!');
+}
+function bin(op,a,b){
+  if(isErr(a))return a;if(isErr(b))return b;
+  if(a&&a.range||b&&b.range)return new Err('#VALUE!');
+  if(op==='&')return String(a===''?'':typeof a==='number'?+a.toFixed(10):a)+String(b===''?'':typeof b==='number'?+b.toFixed(10):b);
+  if(['=','<>','<','>','<=','>='].includes(op)){
+    let r;
+    if((typeof a==='string'&&a!=='')||(typeof b==='string'&&b!=='')){const x=String(a).toLowerCase(),y=String(b).toLowerCase();r=x<y?-1:x>y?1:0}
+    else{const x=toNum(a),y=toNum(b);r=Math.abs(x-y)<1e-12?0:x<y?-1:1}
+    return{'=':r===0,'<>':r!==0,'<':r<0,'>':r>0,'<=':r<=0,'>=':r>=0}[op];
+  }
+  const x=toNum(a),y=toNum(b);if(isErr(x))return x;if(isErr(y))return y;
+  switch(op){case'+':return x+y;case'-':return x-y;case'*':return x*y;case'/':return y===0?new Err('#DIV/0!'):x/y;case'^':return Math.pow(x,y)}
+  return new Err('#ERROR!');
+}
+const flat=vals=>{const o=[];vals.forEach(v=>{if(v&&v.range)o.push(...v.vals);else o.push(v)});return o};
+function matchCrit(v,c){
+  if(typeof c==='string'){const m=/^(<=|>=|<>|<|>|=)(.*)$/.exec(c);if(m){const r=bin(m[1],v,parseLiteral(m[2]));return r===true}
+    return String(v).toLowerCase()===c.toLowerCase()}
+  return typeof v==='number'&&Math.abs(v-c)<1e-12;
+}
+function callFn(name,args,ctx){
+  if(name==='IF'){const c=ev(args[0],ctx);if(isErr(c))return c;return truthy(c)?(args[1]?ev(args[1],ctx):true):(args[2]?ev(args[2],ctx):false)}
+  if(name==='IFERROR'){const v=ev(args[0],ctx);return isErr(v)?(args[1]?ev(args[1],ctx):''):v}
+  const vals=args.map(a=>ev(a,ctx));
+  const nums=()=>{const f=flat(vals);for(const v of f)if(isErr(v))throw v;return f.filter(v=>typeof v==='number')};
+  const n1=i=>{const x=toNum(vals[i]);if(isErr(x))throw x;return x};
+  const rnd=(x,d,mode)=>{const k=Math.pow(10,d||0);const s=Math.sign(x),a=Math.abs(x)*k;const r=mode==='up'?Math.ceil(a-1e-9):mode==='down'?Math.floor(a+1e-9):Math.round(a+1e-9);return s*r/k};
+  switch(name){
+    case'SUM':return nums().reduce((s,x)=>s+x,0);
+    case'AVERAGE':{const n=nums();return n.length?n.reduce((s,x)=>s+x,0)/n.length:new Err('#DIV/0!')}
+    case'MIN':{const n=nums();return n.length?Math.min(...n):0}
+    case'MAX':{const n=nums();return n.length?Math.max(...n):0}
+    case'COUNT':return nums().length;
+    case'ABS':return Math.abs(n1(0));
+    case'SQRT':{const x=n1(0);return x<0?new Err('#NUM!'):Math.sqrt(x)}
+    case'POWER':return Math.pow(n1(0),n1(1));
+    case'ROUND':return rnd(n1(0),args[1]?n1(1):0);
+    case'ROUNDUP':return rnd(n1(0),args[1]?n1(1):0,'up');
+    case'ROUNDDOWN':return rnd(n1(0),args[1]?n1(1):0,'down');
+    case'AND':return flat(vals).every(truthy);
+    case'OR':return flat(vals).some(truthy);
+    case'NOT':return !truthy(vals[0]);
+    case'SUMIF':{const r=vals[0],c=vals[1],sr=vals[2]||vals[0];if(!r||!r.range||!sr.range)return new Err('#VALUE!');let s=0;r.vals.forEach((v,i)=>{if(matchCrit(v,c)){const x=sr.vals[i];if(typeof x==='number')s+=x}});return s}
+    case'SUMPRODUCT':{const rs=vals.filter(v=>v&&v.range);if(!rs.length)return new Err('#VALUE!');let s=0;for(let i=0;i<rs[0].vals.length;i++){let p=1;for(const r of rs){const x=toNum(r.vals[i]);p*=isErr(x)?0:x}s+=p}return s}
+  }
+  return new Err('#NAME?');
+}
+
+/* ============================================================
+   Formatting
+   ============================================================ */
+const nf=(v,d)=>v.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const money=(v,d)=>{const s='$'+nf(Math.abs(v),d);return v<0?'('+s+')':s};
+const FMT={
+  '$0':v=>money(v,0),'$2':v=>money(v,2),'$4':v=>money(v,4),'m2':v=>(v<0?'(':'')+'$'+nf(Math.abs(v),2)+'m'+(v<0?')':''),
+  'n0':v=>nf(v,0),'n1':v=>nf(v,1),'n2':v=>nf(v,2),'n4':v=>nf(v,4),
+  '%0':v=>nf(v*100,0)+'%','%1':v=>nf(v*100,1)+'%','%2':v=>nf(v*100,2)+'%',
+  'x2':v=>nf(v,2)+'×',
+  'g':v=>Number.isInteger(v)?nf(v,0):v.toLocaleString('en-US',{maximumFractionDigits:4})
+};
+function display(v,fmt){
+  if(isErr(v))return v.code;if(v===''||v==null)return'';
+  if(typeof v==='boolean')return v?'TRUE':'FALSE';
+  if(v&&v.range)return'#VALUE!';
+  if(typeof v==='string')return v;
+  if(!isFinite(v))return'#NUM!';
+  if(Math.abs(v)<1e-9)v=0;
+  return(FMT[fmt]||FMT.g)(v);
+}
+
+/* ============================================================
+   Sheet authoring helpers
+   rows: H(section) T(note) C(column heads) R(label, cells, opts) B(blank)
+   cell spec: number | "=formula" | "text" | {v, n:name, f:format, given, why, mis}
+   formula placeholders: {name} {sheet:name} {rowname@} {rowname@C} {sheet:rowname@C}
+   ============================================================ */
+const rep=(f,n=3)=>Array(n).fill(f);
+const R=(l,c,o)=>['r',l,Array.isArray(c)?c:[c],o||{}];
+const H=t=>['h',t],T=t=>['t',t],C=(...h)=>['c','',...h],B=()=>['b'];
+const DEFS=[];const def=d=>DEFS.push(d);
+
+/* ---------------- Reference (formula sheet) ---------------- */
+def({id:'ref',tab:'Formula_Sheet',group:'Start here',title:'Formula sheet',sub:'Every formula, with links',kind:'ref',
+  intro:'Each formula from Sessions 1–2 in the professor’s terms, when to use it, and the mistake that costs points. Click a cell link to open the live calculation.'});
+
+/* ---------------- SESSION 1 ---------------- */
+def({id:'tcu',tab:'TCU_Pediatrics',group:'Session 1 · Concepts',title:'TCU Pediatrics',sub:'Opportunity cost',
+  intro:'Should the clinic hire a speech-language pathology assistant? Count only what changes: new billings, new pay, and the patient income Dr. Roberts gives up while supervising. Her salary does not change, so it is not a cost of this decision.',
+  src:'Session 1 handout and “Opportunity cost” worksheet.',
+  qs:[{q:'A1. Additional weekly revenue from the assistant',a:['arev']},{q:'A2. Additional weekly cash payments',a:['apay']},{q:'A3. Patient-care income given up because of supervision',a:['oc']},{q:'A4. Change in weekly profit',a:['anet']},{q:'B. Weekly profit change from the qualified clinician; compare with the assistant',a:['qnet','qadv']},{q:'Later. Weekly profit change at half booking under each pay contract',a:['hn1','hn2']},{q:'Later. Minimum booking % to break even under each contract',a:['bep1','bep2']}],
+  rows:[
+    H('Weekly inputs (Exhibit 1)'),
+    R('Assistant billable hours per week',{v:20,n:'hrs'},{f:'n0'}),
+    R('Assistant revenue per billable hour',{v:164.58,n:'rev'},{f:'$2'}),
+    R('Assistant pay per hour',{v:55,n:'pay'},{f:'$2'}),
+    R('Roberts’ therapy hours displaced per week',{v:5,n:'thr'},{f:'g'}),
+    R('Revenue per therapy hour',{v:202.26,n:'trev'},{f:'$2'}),
+    R('Roberts’ evaluations displaced per week',{v:1.5,n:'ev'},{f:'g'}),
+    R('Revenue per evaluation',{v:207.86,n:'evrev'},{f:'$2'}),
+    R('Qualified clinician pay per hour',{v:100,n:'qpay'},{f:'$2'}),
+    H('Part A · What supervision costs'),
+    R('Forgone therapy revenue',{v:'={thr}*{trev}',n:'ft'},{f:'$2',m:'Hours displaced × revenue per therapy hour'}),
+    R('Forgone evaluation revenue',{v:'={ev}*{evrev}',n:'fe'},{f:'$2',m:'Evaluations displaced × revenue per evaluation'}),
+    R('Opportunity cost of supervision',{v:'={ft}+{fe}',n:'oc',why:'Opportunity cost is the benefit given up from the next-best use of a resource. Each supervision hour is an hour Roberts cannot bill patients.',mis:'Adding Roberts’ salary as a cost. She is paid the same either way, so it does not change with the decision.'},{f:'$2',k:'total',m:'Income given up. Not a cash payment, still a real cost of the decision'}),
+    H('Part A · Assistant, fully booked'),
+    C('Assistant'),
+    R('Additional revenue',{v:'={hrs}*{rev}',n:'arev'},{f:'$2',m:'Billable hours × revenue per hour'}),
+    R('Additional pay',{v:'={hrs}*{pay}',n:'apay'},{f:'$2',m:'Billable hours × pay per hour'}),
+    R('Opportunity cost of supervision',{v:'={oc}'},{f:'$2',m:'From Part A above'}),
+    R('Net change in weekly profit',{v:'={arev}-{apay}-{oc}',n:'anet',why:'Incremental analysis: revenue that changes − costs that change − benefits given up.'},{f:'$2',k:'total',m:'Revenue − pay − opportunity cost'}),
+    H('Part B · Higher-paid alternative'),
+    C('Assistant','Qualified clinician'),
+    R('Additional revenue',['={arev}','={hrs}*{rev}'],{f:'$2',n:'brev',m:'Same 20 hours and $164.58 per hour'}),
+    R('Additional pay',['={apay}','={hrs}*{qpay}'],{f:'$2',n:'bpay',m:'Clinician: 20 hours × $100'}),
+    R('Opportunity cost of supervision',['={oc}',{v:0,given:true}],{f:'$2',n:'boc',m:'The clinician needs no supervision, so Roberts keeps her patients'}),
+    R('Net change in weekly profit',['={brev@}-{bpay@}-{boc@}',{v:'={brev@}-{bpay@}-{boc@}',n:'qnet'}],{f:'$2',k:'total',n:'bnet'}),
+    R('Qualified clinician’s advantage',{v:'={bnet@C}-{bnet@B}',n:'qadv',mis:'Choosing the cheaper hourly rate. Lower pay is not lower cost once the opportunity cost is counted.'},{f:'$2',m:'$900 more pay, $1,323.09 more patient income kept'}),
+    H('Later · Half booked: which pay contract?'),
+    T('Displaced patient work stays the same at any positive booking level. Not hiring creates no supervision burden.'),
+    C('Pay per billed hour','Guaranteed 20 hours'),
+    R('Share of capacity booked',[{v:0.5,n:'bk1'},{v:0.5,n:'bk2'}],{f:'%0',n:'bk'}),
+    R('Billable hours',rep('={hrs}*{bk@}',2),{f:'n2',n:'bh'}),
+    R('Additional revenue',rep('={bh@}*{rev}',2),{f:'$2',n:'hr'}),
+    R('Assistant pay',['={bh@B}*{pay}','={hrs}*{pay}'],{f:'$2',n:'hp',m:'Variable (per billed hour) vs. fixed (all 20 hours guaranteed)'}),
+    R('Opportunity cost of supervision',rep('=IF({bk@}>0,{oc},0)',2),{f:'$2',n:'ho',m:'Full $1,323.09 at any positive booking'}),
+    R('Net change in weekly profit',[{v:'={hr@}-{hp@}-{ho@}',n:'hn1'},{v:'={hr@}-{hp@}-{ho@}',n:'hn2'}],{f:'$2',k:'total',n:'hn'}),
+    H('Break-even booking (compared with not hiring)'),
+    C('Pay per billed hour','Guaranteed 20 hours'),
+    R('Amount each billed hour covers',['={rev}-{pay}','={rev}'],{f:'$2',n:'cph',m:'Per-hour contract: revenue − pay. Fixed contract: pay is already committed, so each hour adds full revenue'}),
+    R('Costs that must be covered',['={oc}','={hrs}*{pay}+{oc}'],{f:'$2',n:'ctc',m:'Fixed contract adds the guaranteed $1,100'}),
+    R('Break-even billed hours',rep('={ctc@}/{cph@}',2),{f:'n2',n:'beh',m:'Costs to cover ÷ amount per hour'}),
+    R('Minimum booking %',[{v:'={beh@}/{hrs}',n:'bep1'},{v:'={beh@}/{hrs}',n:'bep2'}],{f:'%1',k:'total'}),
+    T('Guaranteed pay turns a variable cost into a fixed cost. The clinic then needs more bookings before the hire pays off, so it carries more volume risk.')
+  ]});
+
+def({id:'amh',tab:'Amethyst_Visits',group:'Session 1 · Concepts',title:'Amethyst cost per visit',sub:'AI hands-on · cost behavior',
+  intro:'Provider pay moves with completed visits; the $95,000 of clinic costs does not. Watch total cost per visit fall as visits rise, even though nothing about the contracts changed.',
+  src:'Session 1 AI Hands-On handout (Green course data).',
+  qs:[{q:'1. Provider pay per visit and total cost per visit, each month',a:['janpv','jantcv']},{q:'2. Check one number yourself (try March)',a:['martcv']},{q:'3. January vs. March: what changed in pay, fixed costs, and cost per visit?',a:['dpay','dfix','dcpv']}],
+  rows:[
+    H('Inputs (course data, January–April 2026, both clinics)'),
+    R('Fixed clinic costs per month',{v:95000,n:'fix'},{f:'$0'}),
+    C('Completed visits','Provider pay','Fixed clinic costs','Total cost','Pay per visit','Total cost per visit'),
+    ...[['jan','January',2338,72848],['feb','February',2931,93923],['mar','March',3220,101711],['apr','April',3004,95928]].map(([n,l,v,p])=>
+      R(l,[{v,f:'n0'},{v:p,f:'$0'},{v:'={fix}',f:'$0'},{v:`={${n}@C}+{${n}@D}`,f:'$0'},{v:`={${n}@C}/{${n}@B}`,f:'$2',n:n+'pv'},{v:`={${n}@E}/{${n}@B}`,f:'$2',n:n+'tcv'}],{n,m:n==='jan'?'Total cost = pay + fixed. Per visit = total ÷ visits':''})),
+    R('Four-month total / average',[{v:'=SUM({jan@B}:{apr@B})',f:'n0'},{v:'=SUM({jan@C}:{apr@C})',f:'$0'},{v:'=SUM({jan@D}:{apr@D})',f:'$0'},{v:'=SUM({jan@E}:{apr@E})',f:'$0'},{v:'={tot@C}/{tot@B}',f:'$2'},{v:'={tot@E}/{tot@B}',f:'$2'}],{n:'tot',k:'total'}),
+    H('January vs. March'),
+    R('Change in completed visits','={mar@B}-{jan@B}',{f:'n0'}),
+    R('% change in visits','=({mar@B}-{jan@B})/{jan@B}',{f:'%1'}),
+    R('Change in total provider pay',{v:'={mar@C}-{jan@C}',n:'dpay'},{f:'$0',m:'Rises roughly in proportion to visits: variable'}),
+    R('% change in provider pay','=({mar@C}-{jan@C})/{jan@C}',{f:'%1'}),
+    R('Change in fixed clinic costs',{v:'={mar@D}-{jan@D}',n:'dfix'},{f:'$0',m:'Zero: fixed in total'}),
+    R('Change in total cost per visit',{v:'={mar@G}-{jan@G}',n:'dcpv'},{f:'$2',m:'Falls because $95,000 is spread over more visits',mis:'Using cost per visit to predict total cost at a new volume. Per-unit cost is only valid at the volume it was computed for.'}),
+    H('Preview · high-low estimate (Session 4, Ch. 4)'),
+    R('Variable provider pay per visit (high-low)','=({mar@C}-{jan@C})/({mar@B}-{jan@B})',{f:'$2',m:'Change in cost ÷ change in activity, highest vs. lowest activity month'}),
+    T('Pay per visit drifts between $31.16 and $31.94 because pay depends on service, duration, and provider category. Visits are the main driver, not the only one.')
+  ],
+  chart:g=>{const pts=['jan','feb','mar','apr'].map(n=>[g(n+'@B'),g(n+'@E')]);const pay=['jan','feb','mar','apr'].map(n=>[g(n+'@B'),g(n+'@C')]);
+    return{title:'Monthly total cost vs. completed visits',xl:'Completed visits',yl:'Dollars',xmin:2000,xmax:3500,ymin:0,
+      series:[{name:'Total cost',pts,c:'brand',scatter:true},{name:'Provider pay',pts:pay,c:'input',scatter:true},{name:'Fixed clinic costs',pts:[[2000,g('fix')],[3500,g('fix')]],c:'muted',dash:true}]}}
+});
+
+def({id:'amc',tab:'Amethyst_Classify',group:'Session 1 · Concepts',title:'Amethyst: which costs matter?',sub:'Behavior · direct · relevant',kind:'classify',
+  intro:'Amethyst is considering dropping low-volume Saturday hours for the coming month. For each cost make three calls, then compare with the suggested answers and the assumptions that drive them. This was a pens-only exercise in class; the suggested answers are built from Session 1 definitions, not from a posted key.'});
+
+def({id:'thb',tab:'Theater_Behavior',group:'Session 1 · Concepts',title:'GD Contemporary Theater',sub:'Fixed vs. variable · cost equation',
+  intro:'Classify each budget line by how it behaves with tickets sold this month, holding the schedule (450 seats × 20 performances) and the contracts constant. Then build the cost equation and see why cost per ticket falls as attendance rises.',
+  src:'Session 1 workbook tabs “Theater case”, “Monthly budget” and “Your analysis”.',
+  qs:[{q:'Total fixed cost per month',a:['tfc']},{q:'Variable cost per ticket',a:['vct']},{q:'Total cost and cost per ticket at 3,000 / 6,000 / 9,000 tickets',a:['tc1','cpt1','cpt3']}],
+  rows:[
+    H('Monthly budget · behavior with respect to tickets sold'),
+    C('Monthly amount','Per ticket','Behavior'),
+    R('Theater rental',[{v:10000,f:'$0'},null,'Fixed'],{n:'x1',m:'Flat $10,000 lease, owed even if the theater goes dark'}),
+    R('Employees’ salaries and benefits',[{v:8000,f:'$0'},null,'Fixed'],{m:'Annual salaries; headcount set before the season'}),
+    R('Actors’ wages',[{v:15000,f:'$0'},null,'Fixed'],{m:'Contracted for the run, whatever the house size'}),
+    R('Production crew',[{v:5600,f:'$0'},null,'Fixed'],{m:'Hired for the run at a set monthly rate'}),
+    R('Playwrights’ royalties',[{v:5000,f:'$0'},null,'Fixed'],{m:'Flat fee per play. A % of box office would make it variable'}),
+    R('Insurance',[{v:1000,f:'$0'},null,'Fixed'],{m:'Premium set on square footage and seats, not tickets'}),
+    R('Utilities: base charge',[{v:1400,f:'$0'},null,'Fixed'],{m:'Meter base, lobby, offices, marquee'}),
+    R('Advertising',[{v:800,f:'$0'},null,'Fixed'],{m:'Season budget committed in advance'}),
+    R('Administration',[{v:1200,f:'$0'},null,'Fixed'],{n:'x9',m:'Phone, audit fees, supplies, bank charges'}),
+    R('City charge per ticket',[null,{v:8,f:'$2'},'Variable'],{n:'x10',m:'$8 for every ticket sold; none if none sold'}),
+    R('Playbills',[null,{v:0.15,f:'$2'},'Variable'],{m:'One printed per ticket holder, billed by the copy'}),
+    R('Utilities: incremental',[null,{v:1.85,f:'$2'},'Variable'],{n:'x12',m:'Simplified: $1.85 per ticket'}),
+    R('Total fixed cost per month',{v:'=SUM({x1@B}:{x9@B})',n:'tfc'},{f:'$0',k:'total',m:'The $10,000 city rent is fixed; the $8 per ticket is variable. One contract, two behaviors'}),
+    R('Variable cost per ticket',[null,{v:'=SUM({x10@C}:{x12@C})',n:'vct'}],{f:'$2',k:'total'}),
+    H('Cost equation: total cost = fixed + (variable per ticket × tickets)'),
+    C('Tickets sold','Fixed cost','Variable cost','Total cost','Cost per ticket'),
+    ...[['s1','Low attendance',3000],['s2','Mid attendance',6000],['s3','Full house (capacity)',9000]].map(([n,l,q])=>
+      R(l,[{v:q,f:'n0'},{v:'={tfc}',f:'$0'},{v:`={vct}*{${n}@B}`,f:'$0'},{v:`={${n}@C}+{${n}@D}`,f:'$0',n:'tc'+n[1]},{v:`={${n}@E}/{${n}@B}`,f:'$2',n:'cpt'+n[1]}],{n,m:n==='s1'?'Fixed is the same in every row; variable rises with tickets':''})),
+    T('Cost per ticket falls from $26.00 to $15.33 because the same $48,000 is spread over more tickets. Above 9,000 tickets the schedule must change, and fixed costs (actors, crew, rent) step up: the relevant range ends at capacity.')
+  ],
+  chart:g=>({title:'Total monthly cost vs. tickets sold',xl:'Tickets sold',yl:'Dollars',xmin:0,xmax:9000,ymin:0,
+    series:[{name:'Total cost',pts:[[0,g('tfc')],[9000,g('tfc')+g('vct')*9000]],c:'brand'},{name:'Fixed cost',pts:[[0,g('tfc')],[9000,g('tfc')]],c:'muted',dash:true}],
+    marks:[['s1','s2','s3'].map(n=>({x:g(n+'@B'),y:g(n+'@E')}))].flat()})
+});
+
+def({id:'fs',tab:'Field_Service',group:'Session 1 · Concepts',title:'Field service step cost',sub:'Cost behavior · capacity',
+  intro:'A service business at 300, 450, and 550 jobs. Past 450 jobs a new facility contract adds $3,000 for the month. Decide on total profit, not cost per job.',
+  src:'Session 1 workbook tab “Cost behavior” (instructor illustration).',
+  qs:[{q:'Total cost, cost per job, and profit at 300 and 450 jobs',a:['tc@B','cpj@C']},{q:'Expanded (550 jobs) column with the facility step',a:['fc@D','op@D']},{q:'Profit change from 450 to 550 jobs; expand or not?',a:['pchg']}],
+  rows:[
+    H('Inputs per month'),
+    R('Current jobs',{v:300,n:'j1'},{f:'n0'}),
+    R('Higher-volume jobs',{v:450,n:'j2'},{f:'n0'}),
+    R('Expanded-volume jobs',{v:550,n:'j3'},{f:'n0'}),
+    R('Revenue per job',{v:100,n:'rpj'},{f:'$0'}),
+    R('Variable cost per job',{v:30,n:'vcj'},{f:'$0'}),
+    R('Existing fixed cost',{v:12000,n:'fx'},{f:'$0'}),
+    R('Existing capacity in jobs',{v:450,n:'cap'},{f:'n0'}),
+    R('Extra monthly facility cost',{v:3000,n:'xf'},{f:'$0'}),
+    R('Capacity after expansion',{v:600,n:'cap2'},{f:'n0'}),
+    H('Comparison'),
+    C('Current','Higher volume','Expanded'),
+    R('Completed jobs',['={j1}','={j2}','={j3}'],{n:'j',f:'n0'}),
+    R('Revenue',rep('={j@}*{rpj}'),{n:'rv',f:'$0',m:'Jobs × revenue per job'}),
+    R('Variable cost',rep('={j@}*{vcj}'),{n:'vc',f:'$0',m:'Jobs × variable cost per job'}),
+    R('Fixed cost',rep('=IF({j@}>{cap},{fx}+{xf},{fx})'),{n:'fc',f:'$0',m:'Step cost: fixed within a range, jumps once jobs exceed 450'}),
+    R('Total cost',rep('={vc@}+{fc@}'),{n:'tc',f:'$0',k:'total'}),
+    R('Cost per job',rep('={tc@}/{j@}'),{n:'cpj',f:'$2',m:'Falls 300 → 450, then rises slightly at 550 because of the step'}),
+    R('Operating profit',rep('={rv@}-{tc@}'),{n:'op',f:'$0',k:'total'}),
+    H('Expand for the 100 confirmed jobs?'),
+    R('Additional revenue (450 → 550)','={rv@D}-{rv@C}',{f:'$0'}),
+    R('Additional variable cost','={vc@D}-{vc@C}',{f:'$0'}),
+    R('Additional fixed cost (facility step)','={fc@D}-{fc@C}',{f:'$0'}),
+    R('Profit change',{v:'={op@D}-{op@C}',n:'pchg',mis:'Rejecting the expansion because cost per job went up. The decision rests on incremental profit.'},{f:'$0',k:'total',m:'100 jobs × $70 contribution − $3,000 step'})
+  ]});
+
+/* Phelps */
+def({id:'pd',tab:'Phelps_Data',group:'Session 1 · Phelps Industries',title:'Phelps: data and Q1',sub:'Absorption cost · COGS',
+  intro:'Replicate the budgeted income statement. Exhibit 1 groups costs by function (manufacturing vs. selling and admin) and spreads fixed overhead over 15,000 gears, which is why unit cost hides the cost of idle capacity.',
+  src:'Phelps Industries case, Exhibits 1–3B; Session 1 workbook tabs “Exhibits” and “Q1”.',
+  qs:[{q:'Q1. Replicate COGS. How does this income statement group costs?',a:['moh','mohu','ucost','cogs','ni']}],
+  rows:[
+    H('Budget year 2001 · product data'),
+    R('Gears produced and sold',{v:15000,n:'units'},{f:'n0',m:'Produced to order; inventories negligible'}),
+    R('Price per gear',{v:120,n:'price'},{f:'$2'}),
+    R('Direct materials per gear',{v:20,n:'dm'},{f:'$2'}),
+    R('Direct labor per gear',{v:25,n:'dl'},{f:'$2'}),
+    R('Machine hours per gear',{v:2,n:'mh'},{f:'g'}),
+    R('Available machine hours (capacity)',{v:50000,n:'cap'},{f:'n0',m:'Practical capacity: 25,000 gears'}),
+    R('Power: % of direct labor cost',{v:0.15,n:'pwr'},{f:'%0'}),
+    R('Oils & lubricants per machine hour',{v:2,n:'oil'},{f:'$2'}),
+    R('Sales commission: % of revenue',{v:0.02,n:'comm'},{f:'%0'}),
+    R('Distribution cost per gear',{v:2,n:'dist'},{f:'$2'}),
+    H('Exhibit 3A · manufacturing overhead'),
+    R('Machine depreciation',{v:115000,n:'dep'},{f:'$0',m:'Fixed'}),
+    R('Supervisor salary',{v:80000,n:'sup'},{f:'$0',m:'Fixed; traceable to gears'}),
+    R('Factory salaries',{v:60000,n:'fsal'},{f:'$0',m:'Fixed'}),
+    R('Factory maintenance',{v:62500,n:'maint'},{f:'$0',m:'Fixed'}),
+    R('Property taxes and utilities',{v:15000,n:'ptu'},{f:'$0',m:'Fixed: $10,000 unavoidable + $5,000 needed to run gears at all'}),
+    R('Power to operate machines',{v:'={pwr}*{dl}*{units}',n:'power',given:true},{f:'$0',m:'Variable: 15% × direct labor $ × gears'}),
+    R('Oils and lubricants',{v:'={oil}*{mh}*{units}',n:'oils',given:true},{f:'$0',m:'Variable: $2 × machine hours'}),
+    R('Total manufacturing overhead',{v:'={dep}+{sup}+{fsal}+{maint}+{ptu}+{power}+{oils}',n:'moh',given:true},{f:'$0',k:'total'}),
+    H('Exhibit 3B · selling and administrative'),
+    R('Sales staff salaries',{v:80000,n:'sstaff'},{f:'$0',m:'Fixed'}),
+    R('General administration',{v:200000,n:'gadmin'},{f:'$0',m:'Fixed'}),
+    R('Sales commissions',{v:'={comm}*{price}*{units}',n:'comms',given:true},{f:'$0',m:'Variable: 2% of revenue'}),
+    R('Distribution costs',{v:'={dist}*{units}',n:'dists',given:true},{f:'$0',m:'Variable: per gear shipped'}),
+    R('Total selling and administrative',{v:'={sstaff}+{gadmin}+{comms}+{dists}',given:true},{f:'$0',k:'total'}),
+    H('Q1 · replicate COGS (absorption costing)'),
+    R('Overhead rate per budgeted machine hour',{v:'={moh}/({units}*{mh})',n:'mohrate'},{f:'$4',m:'Total MOH ÷ budgeted machine hours (30,000)'}),
+    R('Overhead per gear',{v:'={mohrate}*{mh}',n:'mohu'},{f:'$2',m:'Rate × 2 machine hours. Same as total MOH ÷ 15,000'}),
+    R('Full (absorption) cost per gear',{v:'={dm}+{dl}+{mohu}',n:'ucost',mis:'Treating $74.92 as the cost of one more gear. It includes fixed overhead, so it overstates the cost of added volume.'},{f:'$2',k:'total',m:'DM + DL + allocated overhead (Exhibit 2)'}),
+    R('Gross margin per gear',{v:'={price}-{ucost}',n:'gmu'},{f:'$2'}),
+    R('Cost of goods sold',{v:'={ucost}*{units}',n:'cogs'},{f:'$0',k:'total'}),
+    H('Exhibit 1 · budgeted income statement (functional format)'),
+    R('Sales revenue',{v:'={price}*{units}',n:'rev'},{f:'$0'}),
+    R('Cost of goods sold',{v:'={cogs}'},{f:'$0'}),
+    R('Gross margin',{v:'={rev}-{cogs}',n:'gm'},{f:'$0',k:'total'}),
+    R('Sales and admin salaries',{v:'={sstaff}+{gadmin}',n:'sasal'},{f:'$0'}),
+    R('Sales commissions',{v:'={comms}'},{f:'$0'}),
+    R('Distribution costs',{v:'={dists}'},{f:'$0'}),
+    R('Net income',{v:'={gm}-{sasal}-{comms}-{dists}',n:'ni'},{f:'$0',k:'total'}),
+    T('Grouping: by function (product costs vs. period costs), not by behavior. Fixed and variable costs are mixed inside COGS, so this statement cannot predict profit at another volume.')
+  ]});
+
+def({id:'pq2',tab:'Phelps_Q2',group:'Session 1 · Phelps Industries',title:'Phelps Q2: volume and profit',sub:'Contribution format',
+  intro:'Regroup the same costs by behavior. Variable costs per gear times volume, plus fixed costs that do not move, predicts profit at any volume inside capacity.',
+  src:'Session 1 workbook tab “Q2 Income statement - 1 product”.',
+  qs:[{q:'Q2. Income at 20,000 and 25,000 gears',a:['op@C','op@D']},{q:'Q2. How should costs be grouped to improve the estimate?',a:['vcu','tfc']}],
+  rows:[
+    H('Variable cost per gear'),
+    R('Direct materials','={pd:dm}',{f:'$2',n:'v1'}),
+    R('Direct labor','={pd:dl}',{f:'$2'}),
+    R('Power (15% of direct labor)','={pd:pwr}*{pd:dl}',{f:'$2',m:'$3.75'}),
+    R('Oils & lubricants ($2 × 2 machine hours)','={pd:oil}*{pd:mh}',{f:'$2'}),
+    R('Sales commission (2% of price)','={pd:comm}*{pd:price}',{f:'$2'}),
+    R('Distribution','={pd:dist}',{f:'$2',n:'v6'}),
+    R('Variable cost per gear',{v:'=SUM({v1@B}:{v6@B})',n:'vcu'},{f:'$2',k:'total'}),
+    R('Contribution margin per gear',{v:'={pd:price}-{vcu}',n:'cmu'},{f:'$2',k:'total',m:'Price − variable cost per unit'}),
+    R('Contribution margin ratio','={cmu}/{pd:price}',{f:'%1'}),
+    H('Fixed costs (constant within the relevant range)'),
+    R('Fixed manufacturing overhead',{v:'={pd:dep}+{pd:sup}+{pd:fsal}+{pd:maint}+{pd:ptu}',n:'fmoh'},{f:'$0',m:'Depreciation, supervisor, factory salaries, maintenance, property tax & utilities'}),
+    R('Fixed selling and administrative',{v:'={pd:sstaff}+{pd:gadmin}',n:'fsa'},{f:'$0'}),
+    R('Total fixed costs',{v:'={fmoh}+{fsa}',n:'tfc'},{f:'$0',k:'total'}),
+    H('Profit at different volumes'),
+    C('Scenario 1','Scenario 2','Scenario 3'),
+    R('Gears sold',[15000,20000,25000],{n:'q',f:'n0'}),
+    R('Sales revenue',rep('={q@}*{pd:price}'),{n:'rv',f:'$0'}),
+    R('Variable costs',rep('={q@}*{vcu}'),{n:'vc',f:'$0',m:'Units × $57.15'}),
+    R('Contribution margin',rep('={rv@}-{vc@}'),{n:'cm',f:'$0'}),
+    R('Fixed costs',rep('={tfc}'),{n:'fx',f:'$0',m:'Same at every volume'}),
+    R('Operating profit',rep('={cm@}-{fx@}'),{n:'op',f:'$0',k:'total'}),
+    R('Machine hours needed',rep('={q@}*{pd:mh}'),{n:'mhn',f:'n0'}),
+    R('Within 50,000-hour capacity?',rep('=IF({mhn@}<={pd:cap},"Yes","Over capacity")'),{}),
+    H('The wrong way: scale average profit per unit'),
+    R('Average profit per gear at 15,000',{v:'={pd:ni}/{pd:units}',n:'apu'},{f:'$2'}),
+    R('Profit predicted by the average',rep('={q@}*{apu}'),{n:'wp',f:'$0',mis:'Multiplying average profit per unit by a new volume. It treats fixed costs as if they grow with volume.'}),
+    R('Understatement vs. correct profit',rep('={wp@}-{op@}'),{f:'$0',m:'Fixed costs were counted again for every extra gear'}),
+    R('Break-even gears','={tfc}/{cmu}',{f:'n0'})
+  ]});
+
+def({id:'pq3',tab:'Phelps_Q3',group:'Session 1 · Phelps Industries',title:'Phelps Q3: unused capacity',sub:'Capacity-based overhead rate',
+  intro:'Phelps uses only 60% of its machine hours. Charging fixed overhead at a rate based on budgeted hours buries the idle capacity inside product cost. A rate based on available hours charges products only for capacity they use and shows idle capacity as its own line for managers to act on.',
+  src:'Session 1 workbook tab “Q3 Capacity based allocation”.',
+  qs:[{q:'Q3. How is the cost of capacity accounted for now?',a:['frb@B','frb@C']},{q:'Q3. Separate the cost of unused capacity',a:['frc@B','cuc@B']}],
+  rows:[
+    C('Scenario 1','Scenario 2','Scenario 3'),
+    R('Gears produced and sold',[15000,20000,25000],{n:'q',f:'n0'}),
+    R('Budgeted machine hours',rep('={q@}*{pd:mh}'),{n:'bmh',f:'n0'}),
+    R('Available machine hours',rep('={pd:cap}'),{n:'amh',f:'n0'}),
+    R('Unused machine hours',rep('={amh@}-{bmh@}'),{n:'umh',f:'n0'}),
+    H('Current method · fixed rate on budgeted hours'),
+    R('Fixed overhead rate per budgeted hour',rep('={pq2:fmoh}/{bmh@}'),{n:'frb',f:'$4',m:'Rate changes with volume: low volume → higher product cost'}),
+    R('Fixed overhead per gear',rep('={frb@}*{pd:mh}'),{f:'$2',mis:'Raising prices because unit cost rose at low volume. Lower sales then raise unit cost again (the death spiral).'}),
+    H('Capacity-based method · fixed rate on available hours'),
+    R('Fixed overhead rate per available hour',rep('={pq2:fmoh}/{amh@}'),{n:'frc',f:'$4',m:'$332,500 ÷ 50,000 = $6.65, stable at every volume'}),
+    R('Variable overhead rate per machine hour',rep('=({pd:power}+{pd:oils})/({pd:units}*{pd:mh})'),{n:'vr',f:'$4',m:'($56,250 + $60,000) ÷ 30,000 hours'}),
+    R('Overhead per gear',rep('=({frc@}+{vr@})*{pd:mh}'),{n:'ohu',f:'$2'}),
+    R('Full cost per gear',rep('={pd:dm}+{pd:dl}+{ohu@}'),{n:'fc',f:'$2',k:'total'}),
+    R('Gross margin per gear',rep('={pd:price}-{fc@}'),{f:'$2'}),
+    H('Income statement with unused capacity reported separately'),
+    R('Sales revenue',rep('={q@}*{pd:price}'),{n:'rv',f:'$0'}),
+    R('COGS (capacity-based cost)',rep('={q@}*{fc@}'),{n:'cg',f:'$0'}),
+    R('Gross margin',rep('={rv@}-{cg@}'),{n:'gm',f:'$0'}),
+    R('Cost of unused capacity',rep('={umh@}*{frc@}'),{n:'cuc',f:'$0',k:'total',m:'Idle hours × fixed rate: a period cost for management action'}),
+    R('Sales and admin salaries',rep('={pq2:fsa}'),{n:'sa',f:'$0'}),
+    R('Sales commissions',rep('={rv@}*{pd:comm}'),{n:'cm',f:'$0'}),
+    R('Distribution costs',rep('={q@}*{pd:dist}'),{n:'ds',f:'$0'}),
+    R('Net income',rep('={gm@}-{cuc@}-{sa@}-{cm@}-{ds@}'),{n:'ni',f:'$0',k:'total'}),
+    R('Check: difference from contribution-format profit',rep('={ni@}-{pq2:op@}'),{f:'$0',m:'Zero: allocation moves costs between lines, never changes total profit'})
+  ]});
+
+def({id:'pq4',tab:'Phelps_Q4',group:'Session 1 · Phelps Industries',title:'Phelps Q4: sprockets',sub:'Incremental analysis · segment margin',
+  intro:'Patricia’s full-cost analysis shows sprockets losing money. With 20,000 idle machine hours, the right question is what changes: sprocket contribution minus the fixed costs added only for sprockets.',
+  src:'Phelps Exhibits 4–5; Session 1 workbook tab “Q4 Two product case”.',
+  qs:[{q:'Q4a. Why does Patricia’s analysis show sprockets making a loss?',a:['bmr','pg@C','ppu@C']},{q:'Q4. Better estimate of the profit effect of adding sprockets',a:['scm','sinc']},{q:'Q4. Which grouping of costs supports the better analysis?',a:['seg@C','nit','delta']}],
+  rows:[
+    H('Sprocket data (Exhibit 4)'),
+    R('Sprockets produced and sold',{v:12000,n:'sq'},{f:'n0'}),
+    R('Price per sprocket',{v:73,n:'sp'},{f:'$2'}),
+    R('Direct materials per sprocket',{v:25,n:'sdm'},{f:'$2'}),
+    R('Direct labor per sprocket',{v:30,n:'sdl'},{f:'$2'}),
+    R('Machine hours per sprocket',{v:1.5,n:'smh'},{f:'g'}),
+    R('Sprocket supervisor (added)',{v:40000,n:'ssup'},{f:'$0',m:'Traceable fixed: exists only if sprockets are made'}),
+    R('Jigs and fixtures (added)',{v:22500,n:'sjig'},{f:'$0',m:'Traceable fixed'}),
+    R('Utilities (added)',{v:5000,n:'sutil'},{f:'$0',m:'Traceable fixed; occurs regardless of sprocket volume'}),
+    R('Gears’ share of existing utilities',{v:5000,n:'gutil'},{f:'$0',m:'The $5,000 needed to run gears at all; the other $10,000 is common'}),
+    H('Variable cost per sprocket'),
+    R('Power (15% of direct labor)',{v:'={pd:pwr}*{sdl}',n:'spu'},{f:'$2'}),
+    R('Oils ($2 × 1.5 machine hours)',{v:'={pd:oil}*{smh}',n:'sou'},{f:'$2'}),
+    R('Sales commission (2% of price)',{v:'={pd:comm}*{sp}',n:'scu'},{f:'$2'}),
+    R('Distribution',{v:'={pd:dist}',n:'sdu'},{f:'$2',m:'Patricia’s $3.46 = $1.46 commission + $2 distribution'}),
+    R('Variable cost per sprocket',{v:'={sdm}+{sdl}+{spu}+{sou}+{scu}+{sdu}',n:'svc'},{f:'$2',k:'total'}),
+    H('Patricia’s analysis (Exhibit 5): one blended overhead rate'),
+    R('Total overhead with sprockets',{v:'={pd:moh}+{ssup}+{sjig}+{sutil}+({spu}+{sou})*{sq}',n:'tmoh'},{f:'$0',m:'Exhibit 5 Panel A: $606,250'}),
+    R('Total machine hours used',{v:'={pd:units}*{pd:mh}+{sq}*{smh}',n:'tmh'},{f:'n0'}),
+    R('Blended overhead rate per machine hour',{v:'={tmoh}/{tmh}',n:'bmr'},{f:'$4',m:'Fixed + variable overhead ÷ used hours'}),
+    C('Gears','Sprockets'),
+    R('Price',['={pd:price}','={sp}'],{n:'pp',f:'$2'}),
+    R('Materials',['={pd:dm}','={sdm}'],{n:'pm',f:'$2'}),
+    R('Labor',['={pd:dl}','={sdl}'],{n:'pl',f:'$2'}),
+    R('Allocated overhead',['={bmr}*{pd:mh}','={bmr}*{smh}'],{n:'po',f:'$2',m:'Sprockets absorb existing fixed overhead that does not change'}),
+    R('Gross margin per unit',rep('={pp@}-{pm@}-{pl@}-{po@}',2),{n:'pg',f:'$2',k:'total'}),
+    R('Commission + distribution per unit',['={pd:comm}*{pd:price}+{pd:dist}','={scu}+{sdu}'],{n:'psd',f:'$2'}),
+    R('Reported profit per unit',rep('={pg@}-{psd@}',2),{n:'ppu',f:'$2',mis:'Spreading existing fixed costs (depreciation, factory salaries) over a new product. They do not change, so they are not relevant to the decision.'}),
+    R('Implied sprocket “loss”',[null,'={ppu@C}*{sq}'],{f:'$0'}),
+    H('Correct: incremental (contribution) analysis'),
+    R('Contribution per sprocket',{v:'={sp}-{svc}',n:'scm'},{f:'$2',m:'Price − variable cost per unit'}),
+    R('Total sprocket contribution',{v:'={scm}*{sq}',n:'stcm'},{f:'$0'}),
+    R('Traceable fixed costs added',{v:'={ssup}+{sjig}+{sutil}',n:'stf'},{f:'$0'}),
+    R('Incremental profit from sprockets',{v:'={stcm}-{stf}',n:'sinc'},{f:'$0',k:'total',m:'Right margin for the decision: contribution less traceable fixed costs'}),
+    R('Break-even sprocket volume',{v:'={stf}/{scm}'},{f:'n0'}),
+    R('Machine hours with sprockets',{v:'={tmh}'},{f:'n0'}),
+    R('Fits in 50,000 hours?','=IF({tmh}<={pd:cap},"Yes","Over capacity")',{}),
+    R('Most sprockets the idle hours allow',{v:'=({pd:cap}-{pd:units}*{pd:mh})/{smh}'},{f:'n0'}),
+    H('Segment margin statement'),
+    C('Gears','Sprockets','Total'),
+    R('Sales revenue',['={pd:rev}','={sp}*{sq}','={srv@B}+{srv@C}'],{n:'srv',f:'$0'}),
+    R('Variable costs',['={pq2:vcu}*{pd:units}','={svc}*{sq}','={svc2@B}+{svc2@C}'],{n:'svc2',f:'$0'}),
+    R('Contribution margin',rep('={srv@}-{svc2@}'),{n:'scm2',f:'$0'}),
+    R('Traceable fixed costs',['={pd:sup}+{gutil}','={stf}','={stc@B}+{stc@C}'],{n:'stc',f:'$0',m:'Gears: supervisor $80,000 + $5,000 utilities'}),
+    R('Segment margin',rep('={scm2@}-{stc@}'),{n:'seg',f:'$0',k:'total',m:'What each product contributes to common costs'}),
+    R('Common fixed costs',[null,null,{v:'={pd:dep}+{pd:fsal}+{pd:maint}+({pd:ptu}-{gutil})+{pq2:fsa}',n:'com'}],{f:'$0',m:'Depreciation, factory salaries, maintenance, $10,000 utilities, S&A salaries. Not allocated'}),
+    R('Net income',[null,null,{v:'={seg@D}-{com}',n:'nit'}],{f:'$0',k:'total'}),
+    R('Change vs. gears only',[null,null,{v:'={nit}-{pd:ni}',n:'delta'}],{f:'$0',m:'Equals the incremental profit above'})
+  ]});
+
+/* ---------------- SESSION 2 ---------------- */
+function cvpRows(u,us,P){
+  return [
+    H('Inputs'),
+    R(`Price per ${u}`,{v:P.p,n:'p'},{f:'$2'}),
+    R(`Variable cost per ${u}`,{v:P.v,n:'v'},{f:'$2',m:P.vm||''}),
+    R('Fixed costs per period',{v:P.f,n:'f'},{f:'$0',m:P.fm||''}),
+    R('Target profit (before tax)',{v:P.tp,n:'tp'},{f:'$0'}),
+    R('Tax rate',{v:P.tx,n:'tx'},{f:'%0'}),
+    R(`Expected ${us} sold`,{v:P.q,n:'q'},{f:'n0'}),
+    R(`Scenario: ${us} sold`,{v:P.q6,n:'q6'},{f:'n0'}),
+    R('Change in volume to test',{v:P.dv,n:'dv'},{f:'%0'}),
+    H('Contribution'),
+    R(`Contribution per ${u}`,{v:'={p}-{v}',n:'ucm',why:'Each unit sold contributes this amount toward fixed costs first; after break-even it is profit.'},{f:'$2',m:'Price − variable cost per unit'}),
+    R('Contribution margin ratio',{v:'={ucm}/{p}',n:'cmr'},{f:'%1',m:'Contribution per sales dollar'}),
+    H('Break-even'),
+    R(`Break-even ${us}`,{v:'={f}/{ucm}',n:'beu',mis:'Dividing fixed costs by price instead of by contribution per unit.'},{f:'n2',k:'total',m:'Fixed costs ÷ contribution per unit'}),
+    R('Break-even revenue',{v:'={f}/{cmr}',n:'ber'},{f:'$0',m:'Fixed costs ÷ contribution margin ratio'}),
+    R(`Profit (loss) at scenario ${us}`,{v:'={ucm}*{q6}-{f}',n:'p6'},{f:'$0',m:'Unit contribution × quantity − fixed costs'}),
+    H('Target profit'),
+    R(`${us[0].toUpperCase()+us.slice(1)} for target profit`,{v:'=({f}+{tp})/{ucm}',n:'tu'},{f:'n2',m:'(Fixed costs + target profit) ÷ contribution per unit'}),
+    R('Revenue for target profit',{v:'=({f}+{tp})/{cmr}',n:'tr'},{f:'$0',m:'(Fixed costs + target profit) ÷ CM ratio'}),
+    R('Pretax profit needed if target is after tax',{v:'={tp}/(1-{tx})',n:'ptx',mis:'Multiplying by (1 + tax rate). Gross up by dividing by (1 − tax rate).'},{f:'$0',m:'After-tax target ÷ (1 − tax rate)'}),
+    R(`${us[0].toUpperCase()+us.slice(1)} for after-tax target`,{v:'=({f}+{ptx})/{ucm}',n:'tua'},{f:'n2'}),
+    R('Revenue for after-tax target',{v:'=({f}+{ptx})/{cmr}'},{f:'$0'}),
+    H(`Contribution income statement at expected ${us}`),
+    R('Revenue',{v:'={p}*{q}',n:'isr'},{f:'$0'}),
+    R('Variable costs',{v:'={v}*{q}',n:'isv'},{f:'$0'}),
+    R('Contribution margin',{v:'={isr}-{isv}',n:'iscm'},{f:'$0',k:'total'}),
+    R('Fixed costs',{v:'={f}'},{f:'$0'}),
+    R('Operating income before tax',{v:'={iscm}-{f}',n:'noi'},{f:'$0',k:'total'}),
+    R('Income tax',{v:'=IF({noi}>0,{noi}*{tx},0)',n:'tax'},{f:'$0',m:'No tax on a loss'}),
+    R('Net income after tax',{v:'={noi}-{tax}'},{f:'$0',k:'total'}),
+    H('Risk: margin of safety and operating leverage'),
+    R(`Margin of safety (${us})`,{v:'={q}-{beu}',n:'mos'},{f:'n2',m:'Expected sales − break-even sales'}),
+    R('Margin of safety (revenue)',{v:'={mos}*{p}'},{f:'$0'}),
+    R('Margin of safety %',{v:'={mos}/{q}',n:'mosp'},{f:'%1',m:'Margin of safety ÷ expected sales'}),
+    R('Operating leverage',{v:'={iscm}/{noi}',n:'dol',mis:'Reading leverage near zero profit. It explodes as profit approaches zero; interpret carefully.'},{f:'x2',m:'Contribution margin ÷ profit'}),
+    R('Predicted % change in profit',{v:'={dol}*{dv}'},{f:'%1',m:'Operating leverage × % change in volume'}),
+    R('Check: actual % change in profit',{v:'=(({ucm}*{q}*(1+{dv})-{f})-{noi})/{noi}'},{f:'%1',m:'Holds when price, mix and costs stay unchanged'})
+  ];
+}
+const cvpChart=(xl)=>g=>{const p=g('p'),v=g('v'),f=g('f'),q=g('q'),be=g('beu');const xmax=Math.max(q,isFinite(be)?be:0)*1.4||100;
+  return{title:'CVP graph',xl,yl:'Dollars',xmin:0,xmax,ymin:0,
+    series:[{name:'Revenue',pts:[[0,0],[xmax,p*xmax]],c:'brand'},{name:'Total cost',pts:[[0,f],[xmax,f+v*xmax]],c:'ink'},{name:'Fixed cost',pts:[[0,f],[xmax,f]],c:'muted',dash:true}],
+    marks:[...(isFinite(be)&&be>0?[{x:be,y:p*be,l:'Break-even'}]:[]),{x:q,y:p*q,l:'Expected'}],vlines:[]}};
+
+def({id:'tcvp',tab:'Theater_CVP',group:'Session 2 · CVP',title:'Theater CVP',sub:'Break-even · target · leverage',
+  intro:'The theater from Session 1 becomes a profit model: $16 tickets, $10 variable cost, $48,000 fixed per month. Change any blue input and every result, and the graph, updates.',
+  src:'Session 2 slides 11–13 and 29–33; class workbook tab “Theater Example - CVP”.',
+  qs:[{q:'At 6,000 tickets, predict profit or loss',a:['p6']},{q:'Break-even tickets and ticket revenue',a:['beu','ber']},{q:'Tickets needed for a $3,600 monthly surplus',a:['tu','tr']},{q:'Extension: $3,600 after 20% tax',a:['ptx','tua']},{q:'Income statement at 10,000 tickets; margin of safety; operating leverage',a:['noi','mosp','dol']}],
+  rows:cvpRows('ticket','tickets',{p:16,v:10,vm:'City $8 + playbills, printing and variable utilities $2',f:48000,fm:'Session 1 budget: rent, salaries, actors, crew, royalties, insurance, base utilities, advertising, admin',tp:3600,tx:0.2,q:10000,q6:6000,dv:0.1}).concat([T('Goal Seek check: set Operating income before tax to 0 by changing Expected tickets sold. It lands on break-even.')]),
+  chart:cvpChart('Tickets sold')});
+
+def({id:'tmix',tab:'Theater_Mix',group:'Session 2 · CVP',title:'Theater sales mix',sub:'Standard and box seats',
+  intro:'Add 50 box seats at $20 to the 450 standard seats. With two products, break-even depends on the sales mix. Assume tickets sell 9:1, the same ratio as seats.',
+  src:'Class workbook tab “Theater Example - CVP”, extension (rows 134–201).',
+  qs:[{q:'Contribution per bundle; break-even bundles and tickets',a:['cb','bet@D']},{q:'Check with the weighted-average contribution per ticket',a:['wac','betw']},{q:'Weighted-average CM ratio and break-even revenue',a:['wcmr','ber']},{q:'Split break-even into standard and box tickets and revenue, two ways',a:['st@B','sr@C']}],
+  rows:[
+    C('Standard','Box','Total'),
+    R('Price per ticket',['={tcvp:p}',20],{n:'pr',f:'$2'}),
+    R('Variable cost per ticket',['={tcvp:v}','={tcvp:v}'],{n:'vcr',f:'$2'}),
+    R('Contribution per ticket',rep('={pr@}-{vcr@}',2),{n:'cr',f:'$2'}),
+    R('Seats per performance',[450,50],{n:'seat',f:'n0'}),
+    R('Performances per month',[20,'={perf@B}'],{n:'perf',f:'n0'}),
+    R('Monthly ticket capacity',['={seat@B}*{perf@B}','={seat@C}*{perf@C}','={capr@B}+{capr@C}'],{n:'capr',f:'n0'}),
+    R('Tickets per bundle (sales mix)',[9,1,'={mix@B}+{mix@C}'],{n:'mix',f:'n0',m:'A bundle is the expected ratio; tickets need not be bought together'}),
+    R('Share of tickets (unit mix)',rep('={mix@}/{mix@D}',2),{n:'ush',f:'%1'}),
+    R('Monthly fixed costs',{v:'={tcvp:f}',n:'mf'},{f:'$0',m:'Unchanged from the theater model'}),
+    H('1 · Bundle method'),
+    R('Contribution per bundle',{v:'={mix@B}*{cr@B}+{mix@C}*{cr@C}',n:'cb'},{f:'$2',m:'9 × $6 + 1 × $10'}),
+    R('Break-even bundles',{v:'={mf}/{cb}',n:'beb'},{f:'n2'}),
+    R('Break-even tickets',['={beb}*{mix@B}','={beb}*{mix@C}','={bet@B}+{bet@C}'],{n:'bet',f:'n0',k:'total'}),
+    H('2 · Weighted-average contribution per ticket'),
+    R('Average contribution per ticket',{v:'={ush@B}*{cr@B}+{ush@C}*{cr@C}',n:'wac'},{f:'$2',m:'Also = bundle contribution ÷ tickets per bundle'}),
+    R('Break-even tickets',{v:'={mf}/{wac}',n:'betw'},{f:'n0'}),
+    R('Profit check at break-even','={bet@B}*{cr@B}+{bet@C}*{cr@C}-{mf}',{f:'$0'}),
+    R('Capacity check','=IF(AND({bet@B}<={capr@B},{bet@C}<={capr@C}),"Within both seat capacities","Exceeds a seat capacity")',{}),
+    H('3 · Weighted-average CM ratio'),
+    R('Revenue per bundle',{v:'={mix@B}*{pr@B}+{mix@C}*{pr@C}',n:'rb'},{f:'$2'}),
+    R('Weighted-average CM ratio',{v:'={cb}/{rb}',n:'wcmr'},{f:'%2'}),
+    R('Break-even revenue',{v:'={mf}/{wcmr}',n:'ber'},{f:'$0'}),
+    H('4 · Split total tickets using the unit mix'),
+    R('Tickets',['={betw}*{ush@B}','={betw}*{ush@C}','={st@B}+{st@C}'],{n:'st',f:'n0'}),
+    R('Revenue = tickets × price',['={st@B}*{pr@B}','={st@C}*{pr@C}','={str@B}+{str@C}'],{n:'str',f:'$0'}),
+    H('5 · Split total revenue using the revenue mix'),
+    R('Share of bundle revenue',rep('={mix@}*{pr@}/{rb}',2),{n:'rsh',f:'%1',mis:'Splitting revenue with the 90/10 ticket mix. Use revenue shares for dollars, unit shares for units.'}),
+    R('Revenue',['={ber}*{rsh@B}','={ber}*{rsh@C}','={sr@B}+{sr@C}'],{n:'sr',f:'$0'}),
+    R('Tickets = revenue ÷ price',['={sr@B}/{pr@B}','={sr@C}/{pr@C}','={stk@B}+{stk@C}'],{n:'stk',f:'n0'}),
+    T('Both routes give the same tickets and revenue at the assumed mix. If fewer customers buy box seats, average contribution falls and break-even rises.')
+  ]});
+
+def({id:'gump',tab:'Forrest_Gump',group:'Session 2 · CVP',title:'Forrest Gump',sub:'Contractual break-even · $ millions',
+  intro:'A $661 million worldwide hit that “lost” $56 million under the net-profit contract. The contract’s rules decide which charges grow with revenue. All amounts in $ millions.',
+  src:'Forrest Gump case Exhibit 1; Session 2 slides 14–23; class workbook tab “Forrest Gump”.',
+  qs:[{q:'Q1. Variable and fixed costs from the net-participation contract’s point of view',a:['vr','fx']},{q:'Q2. Box office needed before the film shows a contractual profit',a:['ber','bebo']},{q:'Q3. Additional box office before Groom receives more than his $250,000 advance',a:['bon','addbo']},{q:'Q4. Box office needed for Paramount itself to profit',a:['eber','ebo']}],
+  rows:[
+    H('Inputs (Exhibit 1, through Dec 31, 1994)'),
+    R('Box office revenues',{v:382,n:'bo'},{f:'m2'}),
+    R('Share retained by theaters',{v:0.5,n:'th'},{f:'%0'}),
+    R('Production costs',{v:66.8,n:'prod'},{f:'m2'}),
+    R('Gross participation (% of studio receipts)',{v:0.16,n:'gp'},{f:'%0',m:'Hanks 8% + Zemeckis 8%'}),
+    R('Studio overhead (% of direct costs)',{v:0.15,n:'soh'},{f:'%0'}),
+    R('Promotion and distribution costs',{v:67.2,n:'promo'},{f:'m2'}),
+    R('Advertising overhead (% of promotion)',{v:0.10,n:'aoh'},{f:'%0'}),
+    R('Distribution fee (% of studio receipts)',{v:0.32,n:'df'},{f:'%0'}),
+    R('Groom’s share of net profits',{v:0.03,n:'gs'},{f:'%0'}),
+    R('Advance paid to Groom',{v:0.25,n:'adv'},{f:'m2'}),
+    H('Exhibit 1 replicated'),
+    R('Box office revenues','={bo}',{f:'m2'}),
+    R('Retained by theaters',{v:'={bo}*{th}',n:'ret'},{f:'m2'}),
+    R('Paramount gross revenues (studio receipts)',{v:'={bo}-{ret}',n:'rcp'},{f:'m2',k:'total'}),
+    R('Production costs','={prod}',{f:'m2'}),
+    R('Gross profit participation',{v:'={gp}*{rcp}',n:'gpa'},{f:'m2'}),
+    R('Total direct costs',{v:'={prod}+{gpa}',n:'dc'},{f:'m2'}),
+    R('Studio overhead (15% of direct)',{v:'={soh}*{dc}',n:'so'},{f:'m2'}),
+    R('Total negative costs',{v:'={dc}+{so}',n:'neg'},{f:'m2',k:'total'}),
+    R('Promotion and distribution','={promo}',{f:'m2'}),
+    R('Advertising overhead (10%)',{v:'={aoh}*{promo}',n:'ao'},{f:'m2'}),
+    R('Distribution fee (32%)',{v:'={df}*{rcp}',n:'dfa'},{f:'m2'}),
+    R('Total promotion-related charges',{v:'={promo}+{ao}+{dfa}',n:'pdx'},{f:'m2'}),
+    R('Total costs',{v:'={neg}+{pdx}',n:'tc'},{f:'m2',k:'total'}),
+    R('Contractual profit (loss)',{v:'={rcp}-{tc}',n:'prof'},{f:'m2',k:'total'}),
+    H('Q1 · Contribution view: which charges grow with studio receipts?'),
+    R('Variable: gross participation','={gp}',{f:'%2'}),
+    R('Variable: studio overhead on participation','={soh}*{gp}',{f:'%2',m:'Overhead is 15% of direct costs, and direct costs include participation',mis:'Treating “overhead” as fixed. Calling something overhead does not make it fixed; check the rule.'}),
+    R('Variable: distribution fee','={df}',{f:'%2'}),
+    R('Total variable rate',{v:'={gp}+{soh}*{gp}+{df}',n:'vr'},{f:'%2',k:'total'}),
+    R('Contribution margin ratio',{v:'=1-{vr}',n:'cmr'},{f:'%2'}),
+    R('Fixed: production + its overhead','={prod}*(1+{soh})',{f:'m2'}),
+    R('Fixed: promotion + advertising overhead','={promo}*(1+{aoh})',{f:'m2'}),
+    R('Total fixed charges',{v:'={prod}*(1+{soh})+{promo}*(1+{aoh})',n:'fx'},{f:'m2',k:'total'}),
+    R('Check: CM ratio × receipts − fixed','={cmr}*{rcp}-{fx}',{f:'m2',m:'Matches Exhibit 1'}),
+    H('Q2 · Contractual break-even'),
+    R('Break-even studio receipts',{v:'={fx}/{cmr}',n:'ber'},{f:'m2',m:'Fixed charges ÷ CM ratio'}),
+    R('Break-even box office',{v:'={ber}/(1-{th})',n:'bebo'},{f:'m2',k:'total',m:'Studio receipts are half of box office'}),
+    R('Box office still needed beyond $382m','={bebo}-{bo}',{f:'m2'}),
+    H('Q3 · When does Groom get another check?'),
+    R('Contract profit needed to cover the advance',{v:'={adv}/{gs}',n:'np'},{f:'m2',m:'$0.25m ÷ 3%'}),
+    R('Studio receipts needed',{v:'=({fx}+{np})/{cmr}',n:'rn'},{f:'m2',m:'(Fixed + target profit) ÷ CM ratio'}),
+    R('Box office needed',{v:'={rn}/(1-{th})',n:'bon'},{f:'m2'}),
+    R('Additional box office beyond $382m',{v:'={bon}-{bo}',n:'addbo'},{f:'m2',k:'total'}),
+    H('Q4 · Paramount’s own break-even (your assumption)'),
+    T('The distribution fee and allocated overheads are contract charges. To the extent they are studio profit rather than real cost, Paramount breaks even far sooner. Set the share you believe is real cost.'),
+    R('Share of distribution fee that is real cost',{v:0,n:'rdf'},{f:'%0'}),
+    R('Share of allocated overheads that is real cost',{v:0,n:'roh'},{f:'%0'}),
+    R('Economic variable rate',{v:'={gp}+{df}*{rdf}+{soh}*{gp}*{roh}',n:'evr'},{f:'%2'}),
+    R('Economic fixed costs',{v:'={prod}+{promo}+({soh}*{prod}+{aoh}*{promo})*{roh}',n:'efx'},{f:'m2'}),
+    R('Economic break-even studio receipts',{v:'={efx}/(1-{evr})',n:'eber'},{f:'m2'}),
+    R('Economic break-even box office',{v:'={eber}/(1-{th})',n:'ebo'},{f:'m2',k:'total'}),
+    R('Paramount profit at current receipts','=(1-{evr})*{rcp}-{efx}',{f:'m2'}),
+    T('Advice to young Groom: ask for gross participation (a share of defined receipts), or negotiate the cost definitions, caps on allocations, and audit rights.')
+  ]});
+
+def({id:'lev',tab:'Leverage',group:'Session 2 · CVP',title:'Cost structure and leverage',sub:'Operating leverage · crossover',
+  intro:'Three companies with the same $500,000 sales and $50,000 profit, built three ways. High fixed costs buy low variable costs: profit swings harder when sales change.',
+  src:'Session 2 slides 27–33; class workbook tab “Cost Structure - Leverage”.',
+  qs:[{q:'Operating leverage for each company',a:['dol@B','dol@C','dol@D']},{q:'If sales fall 10%, what happens to profit?',a:['act@B','pred@D']},{q:'Break-even and margin of safety; crossover volume',a:['bes@D','mspct@B','xab']}],
+  rows:[
+    C('Company A','Company B','Company C'),
+    R('Sales',[500000,500000,500000],{n:'s',f:'$0'}),
+    R('Fixed costs',[150000,50000,400000],{n:'fc',f:'$0'}),
+    R('Variable costs',[300000,400000,50000],{n:'vc',f:'$0'}),
+    R('Net income',rep('={s@}-{fc@}-{vc@}'),{n:'ni',f:'$0',k:'total'}),
+    R('Contribution margin',rep('={s@}-{vc@}'),{n:'cm',f:'$0'}),
+    R('Contribution margin ratio',rep('={cm@}/{s@}'),{n:'cr',f:'%1'}),
+    R('Variable cost ratio',rep('={vc@}/{s@}'),{n:'vr',f:'%1'}),
+    R('Operating leverage',rep('={cm@}/{ni@}'),{n:'dol',f:'x2',k:'total',m:'Contribution margin ÷ net income'}),
+    H('Sales change'),
+    R('Expected change in sales',{v:-0.1,n:'chg'},{f:'%0'}),
+    R('New sales',rep('={s@}*(1+{chg})'),{n:'ns',f:'$0'}),
+    R('New variable costs',rep('={vc@}*(1+{chg})'),{n:'nvc',f:'$0'}),
+    R('New net income',rep('={ns@}-{fc@}-{nvc@}'),{n:'nni',f:'$0',k:'total'}),
+    R('Actual % change in net income',rep('=({nni@}-{ni@})/{ni@}'),{n:'act',f:'%1'}),
+    R('Predicted: leverage × % change in sales',rep('={dol@}*{chg}'),{n:'pred',f:'%1',m:'Same answer: % change in profit = DOL × % change in volume'}),
+    H('Break-even and cushion'),
+    R('Break-even sales',rep('={fc@}/{cr@}'),{n:'bes',f:'$0',m:'Fixed costs ÷ CM ratio'}),
+    R('Margin of safety ($)',rep('={s@}-{bes@}'),{n:'ms',f:'$0'}),
+    R('Margin of safety %',rep('={ms@}/{s@}'),{n:'mspct',f:'%1'}),
+    R('1 ÷ operating leverage',rep('=1/{dol@}'),{f:'%1',m:'Equals margin of safety %: high leverage = thin cushion'}),
+    H('Crossover (indifference) sales'),
+    R('A vs. B',{v:'=({fc@B}-{fc@C})/({vr@C}-{vr@B})',n:'xab'},{f:'$0',m:'(Fixed₁ − Fixed₂) ÷ (variable ratio₂ − variable ratio₁)'}),
+    R('B vs. C','=({fc@D}-{fc@C})/({vr@C}-{vr@D})',{f:'$0'}),
+    R('A vs. C','=({fc@D}-{fc@B})/({vr@B}-{vr@D})',{f:'$0'}),
+    T('All three cross at $500,000. Above the crossover the high-fixed structure (C) earns the most; below it, the least. The right choice depends on expected demand and the terms available.')
+  ],
+  chart:g=>{const xmax=1000000;const mk=(cl,name,c)=>({name,c,pts:[[0,-g('fc@'+cl)],[xmax,xmax*g('cr@'+cl)-g('fc@'+cl)]]});
+    return{title:'Net income vs. sales by cost structure',xl:'Sales ($)',yl:'Net income',xmin:0,xmax,series:[mk('B','Company A','brand'),mk('C','Company B','input'),mk('D','Company C','ink'),{name:'Zero profit',pts:[[0,0],[xmax,0]],c:'muted',dash:true}]}}
+});
+
+/* AVS */
+const avsCost=[
+  ['kgrape','Grapes','=85500+38500','V','Product','Chardonnay $85,500 + generic $38,500; more bottles need more grapes'],
+  ['kbot','Bottles, labels, corks','={wt@C}*2.5','V','Product','$2.50 per bottle'],
+  ['kharv','Harvest labor','=9*(100000+60000)/80','V','Product','$9/hr × 2,000 hrs (160,000 lbs ÷ 80 lbs per hr)'],
+  ['kcrush','Crush labor','=10*300','V','Product','$10/hr × 300 hrs (professor: variable)'],
+  ['kind','Indirect materials','={wt@C}/12*1.55','V','Product','$1.55 per case of 12'],
+  ['kdep','Depreciation','=15000/10+6000/10+40000/20+10000/10+15000/5','F','Product','Straight-line: tractors, crushers, tank, bottle line, other'],
+  ['klab','Lab expenses',8000,'F','Product','Testing at production stages'],
+  ['koff','Production office',12000,'F','Product','Part-time administrator'],
+  ['kutil','Utilities',5500,'F','Product','Constant fermenting temperature'],
+  ['kwaste','Waste treatment',2000,'F','Product','Landfill dumping cost'],
+  ['kwm','Wine master','=5000*3','F','Product','$5,000 per wine type formulated'],
+  ['ksup','Supervisor',55000,'F','Product','Albert: salary and benefits'],
+  ['kbar','Barrels','=ROUNDUP(100000*0.9/36/40,0)*(500-200)/4','V','Product','63 barrels × ($500 − $200 resale) ÷ 4 years; variable at this mix'],
+  ['krent','Administrative rent & office',20000,'F','Admin & sales','Annual'],
+  ['kliq','Liquor taxes','={wt@C}*3','V','Admin & sales','$3 per bottle sold'],
+  ['kcom','Sales commissions (distributors)','={wt@C}*2','V','Admin & sales','$2 per bottle sold'],
+  ['ksm','Sales manager',30000,'F','Admin & sales','Maria, contract'],
+  ['kadm','Administrative salary',75000,'F','Admin & sales','Kay, salary and benefits']
+];
+def({id:'avs',tab:'AVS',group:'Session 2 · À Votre Santé',title:'AVS: CM statement and break-even',sub:'Q1 · multi-product break-even',
+  intro:'Exhibit 1 groups costs by function. Rebuild it by behavior: change any V/F label in the Behavior column and the contribution statement and break-even update. Mix held at 24,000 / 9,000 / 16,000 bottles.',
+  src:'À Votre Santé case and Exhibit 1; Session 2 slides 26 and 34–36; class workbook tabs “Operating Margin”, “CM IS”, “Break Even Analysis”.',
+  qs:[{q:'Q1. Company-wide contribution margin income statement',a:['tvc','cm','tfc','om2']},{q:'Q1. Weighted-average revenue and operating margin per bottle',a:['apb','omb']},{q:'Slide 26. Average contribution per bottle and break-even bottles at the current mix',a:['acb','beb']}],
+  rows:[
+    H('Product mix (2010)'),
+    C('Price','Bottles','Revenue'),
+    R('Chardonnay-Estate',[{v:22,f:'$2'},{v:24000,f:'n0'},{v:'={w1@B}*{w1@C}',f:'$0'}],{n:'w1'}),
+    R('Chardonnay (non-Estate)',[{v:16,f:'$2'},{v:9000,f:'n0'},{v:'={w2@B}*{w2@C}',f:'$0'}],{n:'w2'}),
+    R('Blanc de Blanc',[{v:11,f:'$2'},{v:16000,f:'n0'},{v:'={w3@B}*{w3@C}',f:'$0'}],{n:'w3'}),
+    R('Total',[null,{v:'={w1@C}+{w2@C}+{w3@C}',f:'n0'},{v:'={w1@D}+{w2@D}+{w3@D}',f:'$0'}],{n:'wt',k:'total'}),
+    H('Costs and behavior (type V or F to reclassify)'),
+    C('Amount','Behavior','Exhibit 1 group'),
+    ...avsCost.map(([n,l,v,b,g,m])=>R(l,[{v,f:'$2'},b,g],{n,m})),
+    H('Exhibit 1 · functional format'),
+    R('Revenues',{v:'={wt@D}',n:'rev'},{f:'$2'}),
+    R('Total product costs',{v:'=SUMIF({kgrape@D}:{kadm@D},"Product",{kgrape@B}:{kadm@B})',n:'pc'},{f:'$2'}),
+    R('Gross margin',{v:'={rev}-{pc}',n:'gm'},{f:'$2',k:'total'}),
+    R('Total administrative and sales costs',{v:'=SUMIF({kgrape@D}:{kadm@D},"Admin & sales",{kgrape@B}:{kadm@B})',n:'as'},{f:'$2'}),
+    R('Operating margin',{v:'={gm}-{as}',n:'om'},{f:'$2',k:'total'}),
+    R('Operating margin % of sales','={om}/{rev}',{f:'%1',m:'11.1% in 2010 vs. 14% in 2009'}),
+    H('Q1 · contribution format'),
+    R('Revenues','={rev}',{f:'$2'}),
+    R('Variable costs',{v:'=SUMIF({kgrape@C}:{kadm@C},"V",{kgrape@B}:{kadm@B})',n:'tvc',mis:'Copying Exhibit 1’s groups. Liquor taxes and commissions sit under admin & sales but are variable; depreciation and the supervisor sit in product costs but are fixed.'},{f:'$2'}),
+    R('Contribution margin',{v:'={rev}-{tvc}',n:'cm'},{f:'$2',k:'total',m:'Slide 26: $324,445.83'}),
+    R('Fixed costs',{v:'=SUMIF({kgrape@C}:{kadm@C},"F",{kgrape@B}:{kadm@B})',n:'tfc'},{f:'$2',m:'Slide 26: $230,600'}),
+    R('Operating margin',{v:'={cm}-{tfc}',n:'om2'},{f:'$2',k:'total'}),
+    R('Reconciliation: functional − contribution','={om}-{om2}',{f:'$2',m:'Zero: same costs, grouped differently'}),
+    H('Per-bottle averages and break-even (mix held constant)'),
+    R('Average revenue per bottle',{v:'={rev}/{wt@C}',n:'apb'},{f:'$4'}),
+    R('Average variable cost per bottle',{v:'={tvc}/{wt@C}'},{f:'$4'}),
+    R('Average contribution per bottle',{v:'={cm}/{wt@C}',n:'acb'},{f:'$4',m:'Total contribution ÷ total bottles'}),
+    R('Operating margin per bottle',{v:'={om2}/{wt@C}',n:'omb'},{f:'$4'}),
+    R('Weighted-average CM ratio',{v:'={cm}/{rev}',n:'wcr'},{f:'%2'}),
+    R('Break-even bottles',{v:'={tfc}/{acb}',n:'beb'},{f:'n0',k:'total',m:'Fixed costs ÷ average contribution per bottle'}),
+    R('Break-even revenue',{v:'={tfc}/{wcr}'},{f:'$0'}),
+    C('Break-even bottles','Break-even revenue'),
+    ...[['w1','Chardonnay-Estate'],['w2','Chardonnay (non-Estate)'],['w3','Blanc de Blanc']].map(([w,l])=>R(l,[{v:`={beb}*{${w}@C}/{wt@C}`,f:'n0'},{v:`={beb}*{${w}@C}/{wt@C}*{${w}@B}`,f:'$0'}],{m:w==='w1'?'Same 49% / 18% / 33% bottle mix':''})),
+    R('Margin of safety (bottles)',{v:'={wt@C}-{beb}',n:'msb'},{f:'n0'}),
+    R('Margin of safety %','={msb}/{wt@C}',{f:'%1'}),
+    R('Operating leverage','={cm}/{om2}',{f:'x2'}),
+    T('A richer mix (more Estate at $22) raises average contribution per bottle and lowers break-even bottles. Check price stability, the variable classification of barrels and crush labor, and the mix assumption before relying on the result.')
+  ]});
+
+def({id:'avs2',tab:'AVS_Q2',group:'Session 2 · À Votre Santé',title:'AVS Q2: buy the grapes?',sub:'Maximum price per pound',
+  intro:'Another grower offers 20,000 pounds of crushed Chardonnay. Blended 2:1 with AVS’s generic grapes and sold at $14, what is the most AVS should pay per pound to earn a 15% return on sales? The generic grapes are already AVS’s: using them means fewer Blanc de Blanc bottles. Switch the basis to see both answers.',
+  src:'À Votre Santé case Q2. Not worked in class materials yet; check against the professor’s answer.',
+  qs:[{q:'Q2a. Maximum price per pound',a:['mpp']},{q:'Q2b. Factors for and against the purchase',a:[]}],
+  rows:[
+    H('Inputs'),
+    R('Chardonnay offered (lbs, already crushed)',{v:20000,n:'lb'},{f:'n0'}),
+    R('Fermentation loss: Chardonnay',{v:0.10,n:'ls'},{f:'%0'}),
+    R('Blend: Chardonnay parts',{v:2,n:'pc'},{f:'g'}),
+    R('Blend: generic parts',{v:1,n:'pg'},{f:'g'}),
+    R('Pounds per case (post-fermentation)',{v:36,n:'lpc'},{f:'g'}),
+    R('Price per bottle, new Chardonnay',{v:14,n:'np'},{f:'$2'}),
+    R('Required return on sales',{v:0.15,n:'ros'},{f:'%0'}),
+    R('Bottles, corks, labels per bottle',{v:2.5,n:'bm'},{f:'$2'}),
+    R('Liquor tax per bottle',{v:3,n:'lq'},{f:'$2'}),
+    R('Distributor fee per bottle',{v:2,n:'ds'},{f:'$2'}),
+    R('Indirect materials per case',{v:1.55,n:'ic'},{f:'$2'}),
+    R('Cases per barrel',{v:40,n:'cpb'},{f:'g'}),
+    R('Barrel annual cost ($500 − $200) ÷ 4',{v:75,n:'bya'},{f:'$2'}),
+    R('Wine master fee for a new wine',{v:5000,n:'wm'},{f:'$0',m:'Set to 0 if it would not be formulated as a new type'}),
+    R('Generic grapes: purchase cost',{v:38500,n:'gpc0'},{f:'$0'}),
+    R('Generic grapes: pounds bought',{v:60000,n:'glb'},{f:'n0'}),
+    R('Fermentation loss: generic',{v:0.05,n:'gls'},{f:'%0'}),
+    R('Blanc de Blanc price per bottle',{v:11,n:'bp'},{f:'$2'}),
+    R('Generic grape basis (1 = opportunity cost, 0 = purchase cost)',{v:1,n:'basis'},{f:'g',m:'The grapes are already bought; what is given up is Blanc de Blanc contribution'}),
+    H('Volume of the new wine'),
+    R('Chardonnay lbs after fermentation',{v:'={lb}*(1-{ls})',n:'cpost'},{f:'n0'}),
+    R('Generic lbs needed (2:1 blend)',{v:'={cpost}*{pg}/{pc}',n:'gpost'},{f:'n0'}),
+    R('Cases',{v:'=({cpost}+{gpost})/{lpc}',n:'cs'},{f:'n2'}),
+    R('Bottles',{v:'={cs}*12',n:'bt'},{f:'n0'}),
+    R('Revenue',{v:'={bt}*{np}',n:'rv'},{f:'$2'}),
+    R('Required profit (15% of sales)',{v:'={ros}*{rv}',n:'rp'},{f:'$2'}),
+    H('Costs other than the purchased Chardonnay'),
+    R('Bottles, corks, labels',{v:'={bt}*{bm}',n:'k1'},{f:'$2'}),
+    R('Liquor taxes',{v:'={bt}*{lq}',n:'k2'},{f:'$2'}),
+    R('Distributor fees',{v:'={bt}*{ds}',n:'k3'},{f:'$2'}),
+    R('Indirect materials',{v:'={cs}*{ic}',n:'k4'},{f:'$2'}),
+    R('Barrels',{v:'=ROUNDUP({cs}/{cpb},0)*{bya}',n:'k5'},{f:'$2',m:'Whole barrels needed × annual cost'}),
+    R('Wine master',{v:'={wm}',n:'k6'},{f:'$2'}),
+    R('Generic grapes at purchase cost',{v:'={gpost}/(1-{gls})*{gpc0}/{glb}',n:'gcost'},{f:'$2',m:'Pre-fermentation lbs × $0.6417'}),
+    R('Blanc de Blanc bottles given up',{v:'={gpost}/{lpc}*12',n:'blost'},{f:'n0'}),
+    R('Blanc contribution per bottle (grapes sunk)',{v:'={bp}-{bm}-{lq}-{ds}-{ic}/12',n:'bcm'},{f:'$4'}),
+    R('Generic grapes at opportunity cost',{v:'={blost}*{bcm}',n:'gopp'},{f:'$2'}),
+    R('Generic grape cost used',{v:'=IF({basis}=1,{gopp},{gcost})',n:'gu',why:'Opportunity cost from Session 1: an owned input is worth what it would earn in its next-best use.'},{f:'$2'}),
+    R('Total other costs',{v:'={k1}+{k2}+{k3}+{k4}+{k5}+{k6}+{gu}',n:'tk'},{f:'$2',k:'total'}),
+    H('Answer'),
+    R('Most AVS can pay for the 20,000 lbs',{v:'={rv}-{rp}-{tk}',n:'mx'},{f:'$2'}),
+    R('Maximum price per pound',{v:'={mx}/{lb}',n:'mpp'},{f:'$4',k:'total'}),
+    R('For comparison: AVS’s own Chardonnay per pound','=85500/100000',{f:'$4'}),
+    T('Q2b for: unused barrel and tank capacity, an extra product line, revenue growth. Against: $14 Chardonnay may cannibalize the $16 Chardonnay, lost Blanc de Blanc sales and customers, quality and brand risk, bottling-line time, and whether restaurants will take more wine.')
+  ]});
+
+def({id:'avs3',tab:'AVS_Q3',group:'Session 2 · À Votre Santé',title:'AVS Q3: product profitability',sub:'Activity drivers · preview of Session 4',
+  intro:'Kay wants costs assigned to each wine by the activity that drives them: harvest hours, pounds crushed, juice used, lab time, bottles, and revenue. Total profit is unchanged; what moves is which wine looks profitable.',
+  src:'À Votre Santé case Q3 (activity data). Ahead of the course: Session 4 covers allocation and activity-based costing.',
+  qs:[{q:'Q3a. Product profitability analysis',a:['op@B','op@C','op@D']},{q:'Q3b. Recommendation to Kay',a:['ppb@D']}],
+  rows:[
+    C('Chardonnay-Estate','Chardonnay','Blanc de Blanc','Total'),
+    R('Bottles',['={avs:w1@C}','={avs:w2@C}','={avs:w3@C}','=SUM({bt@B}:{bt@D})'],{n:'bt',f:'n0'}),
+    R('Revenue',['={avs:w1@D}','={avs:w2@D}','={avs:w3@D}','=SUM({rv@B}:{rv@D})'],{n:'rv',f:'$0'}),
+    H('Drivers'),
+    R('Chardonnay juice used (lbs, post-fermentation)',['={bt@B}/12*36','=100000*0.9-{cu@B}',0,'=SUM({cu@B}:{cu@D})'],{n:'cu',f:'n0',m:'Estate first; the rest of the Chardonnay goes to the blend'}),
+    R('Generic juice used (lbs, post-fermentation)',[0,'={cu@C}/2','=60000*0.95-{gu@C}','=SUM({gu@B}:{gu@D})'],{n:'gu',f:'n0',m:'2:1 blend; Blanc de Blanc takes the rest'}),
+    R('Share of Chardonnay juice',rep('={cu@}/{cu@E}',3),{n:'cs',f:'%1'}),
+    R('Share of generic juice',rep('={gu@}/{gu@E}',3),{n:'gs',f:'%1'}),
+    R('Harvest hours',['=100000*{cs@B}/71.5+60000*{gs@B}/100','=100000*{cs@C}/71.5+60000*{gs@C}/100','=100000*{cs@D}/71.5+60000*{gs@D}/100','=SUM({hh@B}:{hh@D})'],{n:'hh',f:'n1',m:'Chardonnay 71.5 lbs/hr; generic 100 lbs/hr'}),
+    R('Pounds crushed',['=100000*{cs@B}+60000*{gs@B}','=100000*{cs@C}+60000*{gs@C}','=100000*{cs@D}+60000*{gs@D}','=SUM({pcr@B}:{pcr@D})'],{n:'pcr',f:'n0'}),
+    R('Lab and supervision split',[0.6,0.25,0.15,'=SUM({lsp@B}:{lsp@D})'],{n:'lsp',f:'%0',m:'Albert’s estimate'}),
+    H('Costs assigned'),
+    ...[
+      ['a1','Grapes','=85500*{cs@}+38500*{gs@}','By juice used'],
+      ['a2','Bottles, corks, labels','={bt@}*2.5','$2.50 per bottle'],
+      ['a3','Indirect materials','={bt@}/12*1.55','$1.55 per case'],
+      ['a4','Liquor taxes','={bt@}*3','$3 per bottle'],
+      ['a5','Distributor fees','={bt@}*2','$2 per bottle'],
+      ['a6','Harvesting (tractors + labor)','=({avs:kharv@B}+1500)*{hh@}/{hh@E}','$18,000 labor + $1,500 tractor depreciation, by harvest hours'],
+      ['a7','Crushing (crushers + labor)','=({avs:kcrush@B}+600)*{pcr@}/{pcr@E}','$3,000 labor + $600 crusher depreciation, by pounds'],
+      ['a8','Barrels','={avs:kbar@B}*{cs@}','Chardonnay wines, by share of Chardonnay juice'],
+      ['a9','Holding tank depreciation','=2000*{gs@}','Generic wines, by share of generic juice'],
+      ['a10','Lab and supervision','=({avs:klab@B}+{avs:ksup@B})*{lsp@}','60% / 25% / 15%'],
+      ['a11','Wine master','={avs:kwm@B}/3','$5,000 per wine: direct'],
+      ['a12','Other production (by bottles)','=(1000+3000+{avs:koff@B}+{avs:kutil@B}+{avs:kwaste@B})*{bt@}/{bt@E}','Bottle line and other equipment depreciation, office, utilities, waste'],
+      ['a13','Administrative (by revenue)','=({avs:krent@B}+{avs:kadm@B}+{avs:ksm@B})*{rv@}/{rv@E}','Rent, Kay, Maria']
+    ].map(([n,l,f,m])=>R(l,[f,f,f,`=SUM({${n}@B}:{${n}@D})`],{n,f:'$0',m})),
+    R('Total cost',rep('=SUM({a1@}:{a13@})',4),{n:'tc',f:'$0',k:'total'}),
+    R('Operating profit',rep('={rv@}-{tc@}',4),{n:'op',f:'$0',k:'total'}),
+    R('Operating margin %',rep('={op@}/{rv@}',4),{f:'%1'}),
+    R('Profit per bottle',rep('={op@}/{bt@}',4),{n:'ppb',f:'$2'}),
+    R('Check vs. Exhibit 1 operating margin',[null,null,null,'={op@E}-{avs:om}'],{f:'$2',m:'Zero'}),
+    T('Blanc de Blanc carries little lab and supervision time but a full $5 of tax and distributor fees on an $11 bottle. Before dropping any wine, ask which of its assigned costs would actually go away.')
+  ]});
+
+/* ---------------- TEMPLATES ---------------- */
+def({id:'tpl',tab:'CVP_Template',group:'Work a new case',title:'CVP template',sub:'Single and multi-product',
+  intro:'Type a new problem’s numbers over the blue example inputs (they are illustrative, not from a case). Every CVP result updates. The multi-product block uses the slide 24 example: 2 red for every 1 white, $15,000 fixed.',
+  src:'Built from Session 2 slides 5–9, 24–25 and 29–31.',
+  qs:[{q:'Break-even, target profit and risk for a single product',a:['beu','tu','dol']},{q:'Multi-product: break-even bundles and units of each product',a:['mbb','mbu@B','mbu@C']}],
+  rows:cvpRows('unit','units',{p:40,v:24,f:80000,tp:20000,tx:0.25,q:7000,q6:4000,dv:0.1}).concat([
+    H('Multi-product break-even (sales bundle)'),
+    C('Red','White','Third product','Total'),
+    R('Price per unit',[15,10,0],{n:'mp',f:'$2',m:'Example prices; slide gives only contribution'}),
+    R('Variable cost per unit',[9,7,0],{n:'mv',f:'$2'}),
+    R('Units per bundle (mix)',[2,1,0,'=SUM({mm@B}:{mm@D})'],{n:'mm',f:'g'}),
+    R('Contribution per unit',rep('={mp@}-{mv@}'),{n:'mc',f:'$2'}),
+    R('Fixed costs',{v:15000,n:'mf'},{f:'$0'}),
+    R('Contribution per bundle',{v:'=SUMPRODUCT({mm@B}:{mm@D},{mc@B}:{mc@D})',n:'mcb'},{f:'$2',m:'Σ units in bundle × unit contribution'}),
+    R('Break-even bundles',{v:'={mf}/{mcb}',n:'mbb'},{f:'n2'}),
+    R('Break-even units',['={mbb}*{mm@B}','={mbb}*{mm@C}','={mbb}*{mm@D}','=SUM({mbu@B}:{mbu@D})'],{n:'mbu',f:'n0',k:'total'}),
+    R('Break-even revenue',['={mbu@B}*{mp@B}','={mbu@C}*{mp@C}','={mbu@D}*{mp@D}','=SUM({mbr@B}:{mbr@D})'],{n:'mbr',f:'$0'}),
+    R('Average contribution per unit',{v:'={mcb}/{mm@E}'},{f:'$2',m:'Bundle contribution ÷ units per bundle'})
+  ]),
+  chart:cvpChart('Units sold')});
+
+def({id:'dec',tab:'Decision',group:'Work a new case',title:'Incremental decision template',sub:'Relevant costs · Session 3 ready',
+  intro:'Compare a status quo with an alternative and keep only what differs. Pre-filled with TCU Pediatrics (hire the assistant) as an example; overwrite any cell, including the labels.',
+  src:'Session 1 relevant/opportunity cost; set up for Session 3 (total vs. incremental analysis).',
+  qs:[{q:'Net advantage of the alternative',a:['dprof@D']}],
+  rows:[
+    C('Status quo','Alternative','Difference'),
+    R('Revenue',[0,3291.6,'={dr@C}-{dr@B}'],{n:'dr',f:'$2'}),
+    R('Variable costs',[0,1100,'={dv@C}-{dv@B}'],{n:'dv',f:'$2'}),
+    R('Fixed costs that change',[0,0,'={dfx@C}-{dfx@B}'],{n:'dfx',f:'$2',m:'Avoidable or added fixed costs only'}),
+    R('Opportunity cost (benefit given up)',[0,1323.09,'={doc@C}-{doc@B}'],{n:'doc',f:'$2'}),
+    R('Profit effect',rep('={dr@}-{dv@}-{dfx@}-{doc@}'),{n:'dprof',f:'$2',k:'total'}),
+    H('Shown for reference, not in profit'),
+    R('Sunk cost (already spent)',[5000,5000,'={dsk@C}-{dsk@B}'],{n:'dsk',f:'$2',m:'Same under both options, so the difference is zero',mis:'Including a sunk cost. It cannot change, whatever you decide.'}),
+    R('Unchanged fixed cost (e.g., existing salary)',[2000,2000,'={duf@C}-{duf@B}'],{f:'$2',n:'duf',m:'Not relevant: does not differ between options'})
+  ]});
+
+def({id:'scr',tab:'Scratch',group:'Work a new case',title:'Scratch sheet',sub:'Blank grid',free:true,
+  intro:'A blank sheet for any problem. Type labels in column A and formulas anywhere: =B2*C2, =SUM(B2:B9), =IF(B5>0,B5*0.2,0), or reference another sheet such as =Theater_CVP!B11.',
+  rows:Array.from({length:40},B)});
+
+/* ============================================================
+   Compile sheets: assign addresses, names, resolve placeholders
+   ============================================================ */
+const SH={};const ORDER=[];
+DEFS.forEach(d=>{
+  const sh={id:d.id,tab:d.tab,def:d,cells:{},rows:[],names:{},rowNames:{},maxCol:d.free?8:2};
+  if(d.rows){
+    let r=0;
+    d.rows.forEach(row=>{
+      r++;const type=row[0];const RR={type,r,opts:{}};
+      if(type==='h'||type==='t'){sh.cells['A'+r]={src:row[1],kind:'label'}}
+      else if(type==='c'){sh.cells['A'+r]={src:row[1]||'',kind:'label'};row.slice(2).forEach((h,i)=>{if(h!=null&&h!=='')sh.cells[colName(i+1)+r]={src:h,kind:'colhead'}});sh.maxCol=Math.max(sh.maxCol,row.length-1)}
+      else if(type==='r'){
+        const label=row[1],cells=row[2],o=row[3]||{};RR.opts=o;
+        sh.cells['A'+r]={src:label,kind:'label'};
+        if(o.n)sh.rowNames[o.n]=r;
+        cells.forEach((c,i)=>{if(c==null)return;const addr=colName(i+1)+r;const s=(typeof c==='object')?c:{v:c};
+          sh.cells[addr]={src:s.v,fmt:s.f||o.f||'g',given:s.given||o.given,why:s.why,mis:s.mis||o.mis};if(s.n)sh.names[s.n]=addr});
+        sh.maxCol=Math.max(sh.maxCol,cells.length+1);
+      }
+      sh.rows.push(RR);
+    });
+  }
+  SH[d.id]=sh;ORDER.push(d.id);
+});
+function resolveName(sid,curAddr,token){
+  // token forms: name | sheet:name | row@ | row@C | sheet:row@C
+  let m=/^(?:([a-z0-9_]+):)?([A-Za-z0-9_]+)(@([A-Z]+)?)?$/.exec(token);if(!m)return null;
+  const tsid=m[1]||sid,nm=m[2],sh=SH[tsid];if(!sh)return null;let addr=null;
+  if(m[3]!==undefined){const r=sh.rowNames[nm];if(r==null)return null;const cl=m[4]||splitAddr(curAddr).cl;addr=cl+r}
+  else addr=sh.names[nm]||null;
+  if(!addr)return null;return tsid===sid?addr:sh.tab+'!'+addr;
+}
+const unresolved=[];
+ORDER.forEach(sid=>{const sh=SH[sid];
+  Object.entries(sh.cells).forEach(([addr,c])=>{
+    if(c.kind==='label'||c.kind==='colhead'){c.raw=c.src;return}
+    if(typeof c.src==='number'){c.raw=c.src;c.kind='input';return}
+    if(typeof c.src==='string'&&c.src[0]==='='){
+      c.raw=c.src.replace(/\{([^}]+)\}/g,(all,tok)=>{const a=resolveName(sid,addr,tok);if(!a){unresolved.push(sid+'!'+addr+' '+tok);return'#NAME'}return a});
+      c.kind='formula';return}
+    c.raw=c.src;c.kind='textin';
+  });
+});
+if(unresolved.length)console.warn('Unresolved names',unresolved);
+function nameAddr(sid,n){if(n.includes('@')){const[rn,cl]=n.split('@');const r=SH[sid].rowNames[rn];return r?cl+r:null}return SH[sid].names[n]||null}
+
+/* ============================================================
+   State and evaluation
+   ============================================================ */
+const KEY='acct65023-live-v1';
+const ST={sheet:'ref',sel:null,practice:false,showF:false,edits:{},attempts:{},cls:{},clsShow:false,revealed:new Set()};
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s){ST.edits=s.edits||{};ST.attempts=s.attempts||{};ST.cls=s.cls||{};if(s.sheet&&SH[s.sheet])ST.sheet=s.sheet;ST.practice=!!s.practice}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({edits:ST.edits,attempts:ST.attempts,cls:ST.cls,sheet:ST.sheet,practice:ST.practice}))}catch(e){}}
+let cache=new Map();const visiting=new Set();
+const invalidate=()=>{cache=new Map()};
+function isEdited(sid,addr){return !!(ST.edits[sid]&&Object.prototype.hasOwnProperty.call(ST.edits[sid],addr))}
+function rawOf(sid,addr){if(isEdited(sid,addr))return ST.edits[sid][addr];const c=SH[sid]&&SH[sid].cells[addr];return c?c.raw:''}
+function getVal(sid,addr){
+  const key=sid+'!'+addr;if(cache.has(key))return cache.get(key);
+  if(visiting.has(key))return new Err('#CIRC!');
+  const raw=rawOf(sid,addr);let v;
+  if(raw==null||raw==='')v='';
+  else if(typeof raw==='number')v=raw;
+  else if(typeof raw==='string'&&raw[0]==='='){visiting.add(key);try{v=ev(parse(raw.slice(1)),sid);if(v&&v.range)v=new Err('#VALUE!')}catch(e){v=isErr(e)?e:new Err('#ERROR!')}visiting.delete(key)}
+  else v=parseLiteral(raw);
+  cache.set(key,v);return v;
+}
+function evalIn(sid,f){try{const v=ev(parse(f.replace(/^=/,'')),sid);return v&&v.range?new Err('#VALUE!'):v}catch(e){return isErr(e)?e:new Err('#ERROR!')}}
+function metaOf(sid,addr){return SH[sid].cells[addr]||null}
+function isFormula(sid,addr){const r=rawOf(sid,addr);return typeof r==='string'&&r[0]==='='}
+function isMasked(sid,addr){const m=metaOf(sid,addr);return ST.practice&&m&&m.kind==='formula'&&!isEdited(sid,addr)&&!m.given&&!ST.revealed.has(sid+'!'+addr)}
+function attemptState(sid,addr){
+  const a=ST.attempts[sid]&&ST.attempts[sid][addr];if(a==null||a==='')return null;
+  const truth=getVal(sid,addr);let av=a[0]==='='?evalIn(sid,a):parseLiteral(a);
+  let ok=false;
+  if(typeof truth==='number'&&typeof av==='number'){const tol=Math.max(0.002*Math.abs(truth),0.006);ok=Math.abs(av-truth)<=tol;
+    const fm=(metaOf(sid,addr)||{}).fmt||'';if(!ok&&fm[0]==='%')ok=Math.abs(av/100-truth)<=Math.max(0.002*Math.abs(truth),0.0006)}
+  else if(typeof truth==='string')ok=String(av).trim().toLowerCase()===truth.trim().toLowerCase();
+  return{a,av,ok};
+}
+function fmtOf(sid,addr){const m=metaOf(sid,addr);return m&&m.fmt||'g'}
+
+/* ============================================================
+   UI
+   ============================================================ */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const cur=()=>SH[ST.sheet];
+
+function buildNav(){
+  let html='',last='';const sel=$('sheetSel');sel.innerHTML='';let og=null;
+  ORDER.forEach(id=>{const d=SH[id].def;
+    if(d.group!==last){html+=`<h2>${esc(d.group)}</h2>`;last=d.group;og=document.createElement('optgroup');og.label=d.group;sel.appendChild(og)}
+    html+=`<button data-s="${id}" aria-current="${id===ST.sheet}">${esc(d.title)}<small>${esc(d.sub||'')}</small></button>`;
+    const o=document.createElement('option');o.value=id;o.textContent=d.title;if(id===ST.sheet)o.selected=true;og.appendChild(o);
+  });
+  $('side').innerHTML=html;
+}
+$('side').addEventListener('click',e=>{const b=e.target.closest('button[data-s]');if(b)openSheet(b.dataset.s)});
+$('sheetSel').addEventListener('change',e=>openSheet(e.target.value));
+
+function openSheet(id,selAddr){
+  ST.sheet=id;ST.sel=null;ST.revealed=new Set();save();
+  document.querySelectorAll('#side button').forEach(b=>b.setAttribute('aria-current',b.dataset.s===id));
+  $('sheetSel').value=id;
+  const d=cur().def;
+  $('shead').innerHTML=`<div class="eyebrow">${esc(d.group)}</div><h2>${esc(d.title)}</h2><p>${esc(d.intro||'')}</p>${d.src?`<p class="keynote">Source: ${esc(d.src)}</p>`:''}${qsHtml(d)}`;
+  const grid=!d.kind;
+  $('gridArea').hidden=!grid;$('special').hidden=grid;
+  if(grid){$('gsPanel').hidden=true;renderGrid();const first=selAddr||firstInput();selectCell(first,true)}
+  else if(d.kind==='ref')renderRef();
+  else if(d.kind==='classify')renderClassify();
+  window.scrollTo({top:0});
+}
+function qsHtml(d){
+  if(!d.qs||!d.qs.length)return'';
+  return`<details class="qs" open><summary>Case questions</summary><ol>${d.qs.map(q=>`<li>${esc(q.q)}${q.a.map(n=>{const a=nameAddr(d.id,n);return a?`<button class="chipbtn" data-go="${a}">${a}</button>`:''}).join('')}</li>`).join('')}</ol></details>`;
+}
+$('shead').addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b){selectCell(b.dataset.go);$('gridWrap').focus({preventScroll:true})}});
+function firstInput(){const sh=cur();for(const RR of sh.rows){for(let c=1;c<sh.maxCol;c++){const a=colName(c)+RR.r;const m=sh.cells[a];if(m&&m.kind==='input')return a}}return'B1'}
+
+function cellView(sid,addr){
+  const m=metaOf(sid,addr);const v=getVal(sid,addr);const cls=[];let txt='';
+  const isLab=addr[0]==='A'&&/^A\d+$/.test(addr);
+  if(isMasked(sid,addr)){
+    cls.push('mask','fx');const at=attemptState(sid,addr);
+    if(at){cls.pop();cls.push(at.ok?'ok':'no');txt=(at.ok?'✓ ':'✗ ')+display(at.av,fmtOf(sid,addr))}else txt='?';
+    return{cls,txt};
+  }
+  const raw=rawOf(sid,addr);
+  if(isFormula(sid,addr)){cls.push('fx');if(ST.showF){cls.push('showf');return{cls,txt:raw}}}
+  else if(typeof raw==='number'||(m&&m.kind==='input'&&!isEdited(sid,addr))||(isEdited(sid,addr)&&typeof parseLiteral(raw)==='number'&&!isLab))cls.push('in');
+  if(isEdited(sid,addr))cls.push('edited');
+  txt=display(v,fmtOf(sid,addr));
+  if(isErr(v))cls.push('err');else if(typeof v==='number'&&v<-1e-9&&!isLab)cls.push('neg');
+  if(typeof v==='string'||isLab)cls.push('txt');
+  return{cls,txt};
+}
+function renderGrid(){
+  const sh=cur(),sid=sh.id,nC=sh.maxCol;const free=!!sh.def.free;
+  let h='<thead><tr><th class="rn" scope="col"></th>';
+  for(let c=0;c<nC;c++)h+=`<th scope="col">${colName(c)}</th>`;
+  if(!free)h+='<th scope="col" class="meanh">What it means</th>';
+  h+='</tr></thead><tbody>';
+  sh.rows.forEach(RR=>{
+    const r=RR.r,o=RR.opts||{};const trc=[RR.type,o.k==='total'?'total':''].join(' ');
+    h+=`<tr class="${trc}"><th class="rn" scope="row">${r}</th>`;
+    if(RR.type==='h'||RR.type==='t'){
+      const cv=cellView(sid,'A'+r);h+=`<td class="ca span ${cv.cls.join(' ')}" data-a="A${r}" colspan="${nC}">${esc(cv.txt)}</td>`;
+    }else{
+      for(let c=0;c<nC;c++){const a=colName(c)+r;const cv=cellView(sid,a);h+=`<td class="${c===0?'ca ':''}${cv.cls.join(' ')}" data-a="${a}">${esc(cv.txt)}</td>`}
+    }
+    if(!free)h+=`<td class="mean">${esc(o.m||'')}</td>`;
+    h+='</tr>';
+  });
+  h+='</tbody>';$('grid').innerHTML=h;
+  if(ST.sel)paintSel();
+  renderChart();renderScore();
+  $('bPractice').setAttribute('aria-pressed',ST.practice);$('bFormulas').setAttribute('aria-pressed',ST.showF);
+}
+function renderScore(){
+  if(!ST.practice){$('score').textContent='';return}
+  const sh=cur();let n=0,ok=0;Object.keys(sh.cells).forEach(a=>{if(isMasked(sh.id,a)){n++;const s=attemptState(sh.id,a);if(s&&s.ok)ok++}});
+  $('score').textContent=n?`${ok} of ${n} correct`:'';
+}
+function refsOf(sid,raw){
+  const out=[];if(typeof raw!=='string'||raw[0]!=='=')return out;
+  let toks;try{toks=tokenize(raw.slice(1))}catch(e){return out}
+  for(let i=0;i<toks.length;i++){const t=toks[i];if(t.t!=='ref')continue;
+    const tsid=t.sheet?(ORDER.find(x=>SH[x].tab.toLowerCase()===t.sheet.toLowerCase())||null):sid;if(!tsid)continue;
+    if(toks[i+1]&&toks[i+1].v===':'&&toks[i+2]&&toks[i+2].t==='ref'){expandRange(t.a,toks[i+2].a).forEach(a=>out.push({sid:tsid,a}));i+=2}else out.push({sid:tsid,a:t.a})}
+  return out;
+}
+function paintSel(){
+  const sh=cur();
+  document.querySelectorAll('#grid td.sel,#grid td.prec').forEach(td=>td.classList.remove('sel','prec'));
+  if(!ST.sel)return;
+  const td=document.querySelector(`#grid td[data-a="${ST.sel}"]`);if(td)td.classList.add('sel');
+  if(!isMasked(sh.id,ST.sel))refsOf(sh.id,rawOf(sh.id,ST.sel)).forEach(p=>{if(p.sid===sh.id){const t=document.querySelector(`#grid td[data-a="${p.a}"]`);if(t)t.classList.add('prec')}});
+}
+function selectCell(addr,noScroll){
+  const sh=cur();const A=splitAddr(addr);if(!A)return;
+  const RR=sh.rows[A.r-1];if(RR&&(RR.type==='h'||RR.type==='t'))addr='A'+A.r;
+  ST.sel=addr;paintSel();
+  $('nameBox').textContent=addr;
+  const f=$('fInput');
+  if(isMasked(sh.id,addr)){f.value=(ST.attempts[sh.id]&&ST.attempts[sh.id][addr])||'';f.placeholder='Practice: type your answer (a number or a formula)'}
+  else{const r=rawOf(sh.id,addr);f.value=r==null?'':String(r);f.placeholder='Type a number, text, or a formula starting with ='}
+  renderInsp();
+  if(!noScroll){const td=document.querySelector(`#grid td[data-a="${addr}"]`);if(td)td.scrollIntoView({block:'nearest',inline:'nearest'})}
+}
+function labelFor(sid,addr){
+  const A=splitAddr(addr);if(!A)return addr;const sh=SH[sid];
+  let lab=display(getVal(sid,'A'+A.r),'g');if(!lab)lab=addr;
+  if(A.c>0){for(let r=A.r-1;r>=1;r--){const RR=sh.rows[r-1];if(!RR)continue;if(RR.type==='c'){const h=display(getVal(sid,A.cl+r),'g');if(h)lab+=' · '+h;break}if(RR.type==='h')break}}
+  return lab;
+}
+function wordsAndNumbers(sid,raw){
+  let toks;try{toks=tokenize(raw.slice(1))}catch(e){return null}
+  let words='',nums='',last=0;const s=raw.slice(1);
+  for(let i=0;i<toks.length;i++){const t=toks[i];
+    words+=s.slice(last,t.s);nums+=s.slice(last,t.s);
+    if(t.t==='ref'){
+      const tsid=t.sheet?ORDER.find(x=>SH[x].tab.toLowerCase()===t.sheet.toLowerCase()):sid;
+      if(toks[i+1]&&toks[i+1].v===':'&&toks[i+2]&&toks[i+2].t==='ref'){const t2=toks[i+2];const seg=s.slice(t.s,t2.e);words+=`[${tsid?labelFor(tsid,t.a):t.a} … ${tsid?labelFor(tsid,t2.a):t2.a}]`;nums+=seg;last=t2.e;i+=2;continue}
+      if(tsid){const pre=t.sheet&&tsid!==sid?SH[tsid].def.title+': ':'';words+=`[${pre}${labelFor(tsid,t.a)}]`;nums+=display(getVal(tsid,t.a),fmtOf(tsid,t.a))||'0'}else{words+=s.slice(t.s,t.e);nums+=s.slice(t.s,t.e)}
+    }else{words+=s.slice(t.s,t.e);nums+=s.slice(t.s,t.e)}
+    last=t.e;
+  }
+  return{words:words.replace(/\s+/g,' ').trim(),nums:nums.trim()};
+}
+function renderInsp(){
+  const sh=cur(),sid=sh.id,a=ST.sel;const el=$('insp');if(!a){el.innerHTML='<p>Select a cell.</p>';return}
+  const m=metaOf(sid,a);const A=splitAddr(a);const RR=sh.rows[A.r-1]||{opts:{}};const o=RR.opts||{};
+  const raw=rawOf(sid,a);const v=getVal(sid,a);const ed=isEdited(sid,a);
+  let tag,kind;
+  if(isMasked(sid,a)){tag='<span class="tag p">Practice</span>';kind='mask'}
+  else if(isFormula(sid,a)){tag=m&&m.given?'<span class="tag">Given formula</span>':'<span class="tag">Formula</span>';kind='f'}
+  else if(typeof parseLiteral(String(raw))==='number'&&A.c>0){tag='<span class="tag in">Input</span>';kind='in'}
+  else{tag='<span class="tag">Text</span>';kind='t'}
+  let h=`<div class="addr"><b>${a}</b>${tag}${ed?'<span class="tag e">Edited</span>':''}</div>`;
+  if(A.c>0||RR.type==='r')h+=`<p class="lab">${esc(labelFor(sid,a))}</p>`;
+  if(kind==='mask'){
+    const at=attemptState(sid,a);
+    h+=`<p class="why">Work this one out, then type your answer in the formula bar and press Enter. A formula like =B5*B6 works too.</p>`;
+    if(o.m)h+=`<h3>Hint</h3><p>${esc(o.m)}</p>`;
+    if(at)h+=`<p class="res" style="color:var(${at.ok?'--good':'--bad'})">${at.ok?'✓ Correct':'✗ Not yet'}: ${esc(display(at.av,fmtOf(sid,a)))}</p>`;
+    h+=`<div><button class="btn" id="iReveal">Reveal this answer</button></div>`;
+  }else if(kind==='f'){
+    const wn=wordsAndNumbers(sid,raw);
+    h+=`<div><h3>Formula</h3><code>${esc(raw)}</code></div>`;
+    if(wn)h+=`<div><h3>In words</h3><code>${esc(wn.words)}</code></div><div><h3>With the numbers</h3><code>${esc(wn.nums)}</code></div>`;
+    h+=`<div><h3>Result</h3><p class="res">${esc(display(v,fmtOf(sid,a)))}</p></div>`;
+  }else if(kind==='in'){
+    h+=`<p class="res">${esc(display(v,fmtOf(sid,a)))}</p><p class="why">Input. Type a new value to test a scenario; every formula that uses it updates.</p>`;
+  }else if(raw!==''){h+=`<p>${esc(display(v,'g'))}</p>`}
+  if(o.m&&kind!=='mask')h+=`<div><h3>What it means</h3><p>${esc(o.m)}</p></div>`;
+  if(m&&m.why)h+=`<div><h3>Concept</h3><p class="why">${esc(m.why)}</p></div>`;
+  if(m&&m.mis&&kind!=='mask')h+=`<p class="mis"><b>Common mistake:</b> ${esc(m.mis)}</p>`;
+  if(kind==='f'){const ps=refsOf(sid,raw);if(ps.length){const uniq=[...new Map(ps.map(p=>[p.sid+'!'+p.a,p])).values()].slice(0,24);
+    h+=`<div><h3>Uses</h3><div class="precs">${uniq.map(p=>`<button data-ps="${p.sid}" data-pa="${p.a}">${p.sid!==sid?esc(SH[p.sid].def.title)+' ':''}${p.a} · ${esc(labelFor(p.sid,p.a)).slice(0,48)}</button>`).join('')}</div></div>`}}
+  if(ed&&m)h+=`<div><button class="btn" id="iRestore">Restore original</button></div>`;
+  el.innerHTML=h;
+  const rv=$('iReveal');if(rv)rv.onclick=()=>{ST.revealed.add(sid+'!'+a);renderGrid();selectCell(a,true)};
+  const rs=$('iRestore');if(rs)rs.onclick=()=>{delete ST.edits[sid][a];invalidate();save();renderGrid();selectCell(a,true)};
+}
+$('insp').addEventListener('click',e=>{const b=e.target.closest('[data-ps]');if(!b)return;if(b.dataset.ps!==ST.sheet)openSheet(b.dataset.ps,b.dataset.pa);else selectCell(b.dataset.pa)});
+
+/* editing */
+let editing=false;const fI=$('fInput');
+function commit(){
+  const sh=cur(),sid=sh.id,a=ST.sel;if(!a)return;const val=fI.value;
+  if(isMasked(sid,a)){ST.attempts[sid]=ST.attempts[sid]||{};if(val==='')delete ST.attempts[sid][a];else ST.attempts[sid][a]=val}
+  else{
+    const orig=metaOf(sid,a);const origRaw=orig?orig.raw:'';
+    ST.edits[sid]=ST.edits[sid]||{};
+    const same=(typeof origRaw==='number')?parseLiteral(val)===origRaw:String(origRaw??'')===val;
+    if(same)delete ST.edits[sid][a];else ST.edits[sid][a]=val;
+  }
+  invalidate();save();renderGrid();
+}
+function move(dr,dc){
+  const sh=cur();const A=splitAddr(ST.sel||'A1');let r=A.r+dr,c=A.c+dc;
+  r=Math.max(1,Math.min(sh.rows.length,r));c=Math.max(0,Math.min(sh.maxCol-1,c));
+  const RR=sh.rows[r-1];if(RR&&(RR.type==='h'||RR.type==='t'))c=0;
+  selectCell(colName(c)+r);
+}
+fI.addEventListener('focus',()=>{editing=true});
+fI.addEventListener('blur',()=>{if(editing){editing=false;const sh=cur();if(ST.sel){const cmp=isMasked(sh.id,ST.sel)?((ST.attempts[sh.id]||{})[ST.sel]||''):String(rawOf(sh.id,ST.sel)??'');if(fI.value!==cmp)commit()}}});
+fI.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){e.preventDefault();editing=false;commit();move(1,0);$('gridWrap').focus({preventScroll:true})}
+  else if(e.key==='Tab'){e.preventDefault();editing=false;commit();move(0,e.shiftKey?-1:1);$('gridWrap').focus({preventScroll:true})}
+  else if(e.key==='Escape'){editing=false;selectCell(ST.sel,true);$('gridWrap').focus({preventScroll:true})}
+});
+$('grid').addEventListener('mousedown',e=>{
+  const td=e.target.closest('td[data-a]');if(!td)return;
+  if(document.activeElement===fI&&/^=/.test(fI.value)&&/[=+\-*/^(,:<>&]\s*$/.test(fI.value.slice(0,fI.selectionStart))){
+    e.preventDefault();const p=fI.selectionStart;fI.value=fI.value.slice(0,p)+td.dataset.a+fI.value.slice(fI.selectionEnd);const np=p+td.dataset.a.length;fI.setSelectionRange(np,np);
+    document.querySelectorAll('#grid td.prec').forEach(t=>t.classList.remove('prec'));td.classList.add('prec');return;
+  }
+});
+$('grid').addEventListener('click',e=>{const td=e.target.closest('td[data-a]');if(!td||document.activeElement===fI)return;selectCell(td.dataset.a,true);$('gridWrap').focus({preventScroll:true})});
+$('grid').addEventListener('dblclick',e=>{const td=e.target.closest('td[data-a]');if(!td)return;selectCell(td.dataset.a,true);fI.focus();fI.setSelectionRange(fI.value.length,fI.value.length)});
+$('gridWrap').addEventListener('keydown',e=>{
+  if(e.target!==$('gridWrap'))return;
+  const k=e.key;
+  if(k==='ArrowDown'){e.preventDefault();move(1,0)}else if(k==='ArrowUp'){e.preventDefault();move(-1,0)}
+  else if(k==='ArrowLeft'){e.preventDefault();move(0,-1)}else if(k==='ArrowRight'||k==='Tab'){e.preventDefault();move(0,e.shiftKey&&k==='Tab'?-1:1)}
+  else if(k==='Enter'||k==='F2'){e.preventDefault();fI.focus();fI.setSelectionRange(fI.value.length,fI.value.length)}
+  else if(k==='Delete'||k==='Backspace'){e.preventDefault();fI.value='';commit();selectCell(ST.sel,true)}
+  else if(k.length===1&&!e.ctrlKey&&!e.metaKey&&!e.altKey){e.preventDefault();fI.focus();fI.value=k;fI.setSelectionRange(1,1)}
+});
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='`'){e.preventDefault();ST.showF=!ST.showF;renderGrid();if(ST.sel)selectCell(ST.sel,true)}});
+
+/* toolbar */
+$('bPractice').onclick=()=>{ST.practice=!ST.practice;ST.revealed=new Set();save();renderGrid();if(ST.sel)selectCell(ST.sel,true)};
+$('bFormulas').onclick=()=>{ST.showF=!ST.showF;renderGrid();if(ST.sel)selectCell(ST.sel,true)};
+let resetArmed=null;
+$('bReset').onclick=()=>{const b=$('bReset');
+  if(!resetArmed){b.textContent='Confirm reset';b.classList.add('warn');resetArmed=setTimeout(()=>{b.textContent='Reset sheet';b.classList.remove('warn');resetArmed=null},4000);return}
+  clearTimeout(resetArmed);resetArmed=null;b.textContent='Reset sheet';b.classList.remove('warn');
+  delete ST.edits[ST.sheet];delete ST.attempts[ST.sheet];ST.revealed=new Set();invalidate();save();renderGrid();selectCell(ST.sel||firstInput(),true)};
+function copyText(text,btn,label){
+  const done=ok=>{btn.textContent=ok?'Copied':'Select and copy below';setTimeout(()=>btn.textContent=label,1800)};
+  const fallback=()=>{let ta=$('copyFallback');if(!ta){ta=document.createElement('textarea');ta.id='copyFallback';ta.setAttribute('aria-label','Copied sheet text');ta.style.cssText='width:100%;height:160px;margin-top:10px;font:inherit;border:1px solid var(--line-strong);border-radius:6px;padding:8px;background:var(--surface);color:var(--ink)';$('chart').before(ta)}ta.value=text;ta.focus();ta.select();done(false)};
+  try{navigator.clipboard.writeText(text).then(()=>done(true),fallback)}catch(e){fallback()}
+}
+function sheetTSV(withF){const sh=cur();const lines=[];sh.rows.forEach(RR=>{const cells=[];for(let c=0;c<sh.maxCol;c++){const a=colName(c)+RR.r;const raw=rawOf(sh.id,a);
+  if(withF&&typeof raw==='string'&&raw[0]==='=')cells.push(raw);else{const v=getVal(sh.id,a);cells.push(typeof v==='number'?String(+v.toFixed(10)):display(v,'g'))}}
+  lines.push(cells.join('\t').replace(/\t+$/,''))});return lines.join('\n')}
+$('bCopyF').onclick=e=>copyText(sheetTSV(true),e.currentTarget,'Copy with formulas');
+$('bCopyV').onclick=e=>copyText(sheetTSV(false),e.currentTarget,'Copy values');
+
+/* goal seek */
+$('bGoal').onclick=()=>{const p=$('gsPanel');p.hidden=!p.hidden;if(!p.hidden){const sh=cur();
+  if(ST.sel&&isFormula(sh.id,ST.sel))$('gsSet').value=ST.sel;
+  if(!$('gsTo').value)$('gsTo').value='0';
+  if(ST.sel&&isFormula(sh.id,ST.sel)){const ins=refsOf(sh.id,rawOf(sh.id,ST.sel));const firstIn=findInputUpstream(sh.id,ST.sel,new Set());if(firstIn)$('gsBy').value=firstIn}
+  $('gsMsg').textContent='Same as Excel: Data → What-If Analysis → Goal Seek. The changing cell must be an input (blue).'}};
+$('gsClose').onclick=()=>{$('gsPanel').hidden=true};
+function findInputUpstream(sid,addr,seen){if(seen.has(addr))return null;seen.add(addr);for(const p of refsOf(sid,rawOf(sid,addr))){if(p.sid!==sid)continue;if(!isFormula(sid,p.a)&&typeof getVal(sid,p.a)==='number')return p.a;const d=findInputUpstream(sid,p.a,seen);if(d)return d}return null}
+$('gsRun').onclick=()=>{
+  const sh=cur(),sid=sh.id;const t=$('gsSet').value.trim().toUpperCase(),inp=$('gsBy').value.trim().toUpperCase();const goal=parseLiteral($('gsTo').value);
+  const msg=$('gsMsg');
+  if(!splitAddr(t)||!splitAddr(inp)||typeof goal!=='number'){msg.textContent='Enter two cell addresses like B30 and a number to reach.';return}
+  if(isFormula(sid,inp)||typeof getVal(sid,inp)!=='number'){msg.textContent=`${inp} is not a number input. Pick a blue input cell.`;return}
+  if(!isFormula(sid,t)){msg.textContent=`${t} must contain a formula.`;return}
+  ST.edits[sid]=ST.edits[sid]||{};const had=isEdited(sid,inp),prev=ST.edits[sid][inp];
+  const orig=toNum(getVal(sid,inp));
+  const f=x=>{ST.edits[sid][inp]=String(x);invalidate();const v=toNum(getVal(sid,t));return isErr(v)?NaN:v-goal};
+  let x0=orig,x1=orig===0?1:orig*1.1,f0=f(x0),f1=f(x1),okk=false;
+  for(let i=0;i<80;i++){if(!isFinite(f1)||!isFinite(f0))break;if(Math.abs(f1)<1e-9*Math.max(1,Math.abs(goal))){okk=true;break}const d=f1-f0;if(d===0)break;const x2=x1-f1*(x1-x0)/d;x0=x1;f0=f1;x1=x2;f1=f(x1)}
+  if(!okk&&isFinite(f1)&&Math.abs(f1)<1e-6*Math.max(1,Math.abs(goal)))okk=true;
+  if(okk){const xr=+x1.toFixed(8);ST.edits[sid][inp]=String(xr);if(metaOf(sid,inp)&&metaOf(sid,inp).raw===xr)delete ST.edits[sid][inp];invalidate();save();renderGrid();selectCell(inp,true);
+    msg.textContent=`Solved: ${inp} = ${display(xr,fmtOf(sid,inp))} makes ${t} = ${display(getVal(sid,t),fmtOf(sid,t))}. Restore it from the inspector or Reset sheet.`}
+  else{if(had)ST.edits[sid][inp]=prev;else delete ST.edits[sid][inp];invalidate();renderGrid();msg.textContent=`No solution found: ${t} does not reach ${goal} by changing ${inp}.`}
+};
+
+/* charts */
+function niceTicks(min,max,n){const span=max-min||1;const step0=span/n;const mag=Math.pow(10,Math.floor(Math.log10(step0)));const st=[1,2,2.5,5,10].map(k=>k*mag).find(s=>s>=step0)||mag*10;
+  const t=[];for(let v=Math.ceil(min/st)*st;v<=max+1e-9;v+=st)t.push(+v.toFixed(10));return t}
+const compact=v=>{const a=Math.abs(v);if(a>=1e6)return(v/1e6).toLocaleString('en-US',{maximumFractionDigits:2})+'M';if(a>=1e3)return(v/1e3).toLocaleString('en-US',{maximumFractionDigits:1})+'k';return v.toLocaleString('en-US',{maximumFractionDigits:2})};
+function renderChart(){
+  const el=$('chart');const d=cur().def;if(!d.chart){el.innerHTML='';return}
+  const sid=cur().id;const g=n=>{const a=nameAddr(sid,n);const v=a?toNum(getVal(sid,a)):NaN;return isErr(v)?NaN:v};
+  let spec;try{spec=d.chart(g)}catch(e){el.innerHTML='';return}
+  const W=760,Hh=330,ml=70,mr=24,mt=18,mb=46;const pw=W-ml-mr,ph=Hh-mt-mb;
+  const all=spec.series.flatMap(s=>s.pts).concat(spec.marks||[]).filter(p=>Array.isArray(p)?isFinite(p[0])&&isFinite(p[1]):isFinite(p.x)&&isFinite(p.y));
+  const ys=all.map(p=>Array.isArray(p)?p[1]:p.y);
+  let xmin=spec.xmin??0,xmax=spec.xmax??Math.max(...all.map(p=>Array.isArray(p)?p[0]:p.x));
+  let ymin=spec.ymin??Math.min(0,...ys),ymax=Math.max(...ys);if(!isFinite(ymax)||ymax<=ymin)ymax=ymin+1;
+  const yt=niceTicks(ymin,ymax*1.05,5);ymin=Math.min(ymin,yt[0]);ymax=Math.max(yt[yt.length-1],ymax);
+  const xt=niceTicks(xmin,xmax,6);
+  const X=x=>ml+(x-xmin)/(xmax-xmin||1)*pw,Y=y=>mt+ph-(y-ymin)/(ymax-ymin||1)*ph;
+  const col={brand:'var(--brand)',ink:'var(--ink)',muted:'var(--ink-3)',input:'var(--input)'};
+  let s=`<svg viewBox="0 0 ${W} ${Hh}" role="img" aria-label="${esc(spec.title)}"><rect x="0" y="0" width="${W}" height="${Hh}" fill="none"/>`;
+  yt.forEach(v=>{s+=`<line x1="${ml}" x2="${W-mr}" y1="${Y(v)}" y2="${Y(v)}" style="stroke:var(--line)" stroke-width="1"/><text x="${ml-8}" y="${Y(v)+5}" text-anchor="end" style="fill:var(--ink-3)" font-size="14">${compact(v)}</text>`});
+  xt.forEach(v=>{if(v<xmin-1e-9||v>xmax+1e-9)return;s+=`<text x="${X(v)}" y="${Hh-mb+20}" text-anchor="middle" style="fill:var(--ink-3)" font-size="14">${compact(v)}</text>`});
+  s+=`<line x1="${ml}" x2="${W-mr}" y1="${Y(Math.max(ymin,0))}" y2="${Y(Math.max(ymin,0))}" style="stroke:var(--line-strong)" stroke-width="1"/>`;
+  s+=`<text x="${ml+pw/2}" y="${Hh-6}" text-anchor="middle" style="fill:var(--ink-2)" font-size="14">${esc(spec.xl)}</text>`;
+  spec.series.forEach(se=>{const c=col[se.c]||'var(--ink)';const pts=se.pts.filter(p=>isFinite(p[0])&&isFinite(p[1]));
+    if(se.scatter)pts.forEach(p=>{s+=`<circle cx="${X(p[0])}" cy="${Y(p[1])}" r="5" style="fill:${c}"/>`});
+    else s+=`<polyline points="${pts.map(p=>X(p[0])+','+Y(p[1])).join(' ')}" fill="none" style="stroke:${c}" stroke-width="${se.dash?1.5:2.5}" ${se.dash?'stroke-dasharray="6 5"':''}/>`});
+  (spec.marks||[]).forEach(mk=>{if(!isFinite(mk.x)||!isFinite(mk.y))return;s+=`<circle cx="${X(mk.x)}" cy="${Y(mk.y)}" r="5" style="fill:var(--surface);stroke:var(--brand)" stroke-width="2"/>`;
+    if(mk.l){const right=X(mk.x)<ml+pw*0.75;s+=`<text x="${X(mk.x)+(right?10:-10)}" y="${Y(mk.y)-10}" text-anchor="${right?'start':'end'}" style="fill:var(--ink)" font-size="14" font-weight="600">${esc(mk.l)} ${compact(mk.x)}</text>`}});
+  s+='</svg>';
+  el.innerHTML=`<div class="chart"><h3>${esc(spec.title)}</h3><div class="keys">${spec.series.map(se=>`<span><i style="background:${col[se.c]||'var(--ink)'};${se.dash?'opacity:.6':''}"></i>${esc(se.name)}</span>`).join('')}</div>${s}<p class="keynote">Redraws when you change an input.</p></div>`;
+}
+
+/* reference sheet */
+const REF=[
+  ['Session 1 · cost concepts'],
+  ['Relevant cost or revenue','Differs between the options being compared','Every decision: list only what changes','Including costs that are the same under every option','tcu','anet'],
+  ['Opportunity cost','Benefit given up from the next-best use of a resource','A resource is fully used or owned (Roberts’ hours, AVS generic grapes)','Leaving it out because no cash is paid','tcu','oc'],
+  ['Sunk cost','Already incurred; cannot change','Ignore it (Amethyst build-out)','Letting past spending justify a decision','dec','dsk@B'],
+  ['Total cost = Fixed + (Variable per unit × Activity)','Cost equation over the relevant range','Predict total cost at a new volume','Using per-unit cost to predict totals','thb','tc1'],
+  ['Cost per unit = Total cost ÷ Units','Falls as volume rises, because fixed cost is spread','Describing average cost at one volume only','Treating it as the cost of one more unit','amh','jantcv'],
+  ['Step cost','Fixed within a range, jumps at capacity','Capacity decisions (field service facility)','Assuming fixed costs never change','fs','fc@D'],
+  ['Product vs. period cost','Product: DM, DL, MOH (in COGS). Period: S&A, expensed','Reading a functional income statement','Assuming product costs are all variable','pd','cogs'],
+  ['Absorption cost per unit = DM + DL + MOH ÷ units','Full cost; includes fixed overhead','Inventory and external reports','Using it for short-run decisions','pd','ucost'],
+  ['Capacity-based rate = Fixed MOH ÷ available hours','Charges products only for capacity they use','Separate the cost of idle capacity','Rating on budgeted hours, so unit cost swings with volume','pq3','frc@B'],
+  ['Cost of unused capacity = Idle hours × fixed rate','Capacity paid for but not used','Show it as its own line for managers','Burying it inside product cost','pq3','cuc@B'],
+  ['Segment margin = CM − traceable fixed costs','What a product contributes to common costs','Add, drop or keep a product','Allocating common fixed costs to the product','pq4','seg@C'],
+  ['Session 2 · CVP'],
+  ['Contribution margin = Revenue − Variable costs','Available for fixed costs and profit','Every CVP question','Subtracting fixed costs too early','tcvp','iscm'],
+  ['Unit contribution = Price − Unit variable cost','Contribution per unit sold','Break-even and target in units','Using full cost per unit','tcvp','ucm'],
+  ['CM ratio = Contribution ÷ Revenue','Contribution per sales dollar','Break-even and target in dollars','Using it with units','tcvp','cmr'],
+  ['Profit = Unit contribution × Q − Fixed costs','The CVP profit model','Profit at any volume in the relevant range','Scaling average profit per unit','tcvp','p6'],
+  ['Break-even Q = Fixed costs ÷ Unit contribution','Volume where total contribution = fixed costs','Cover our costs','Dividing by price','tcvp','beu'],
+  ['Break-even revenue = Fixed costs ÷ CM ratio','Sales dollars at break-even','Multi-product or no unit data','Dividing by the variable cost ratio','tcvp','ber'],
+  ['Target Q = (Fixed + Target profit) ÷ Unit contribution','Volume for a profit goal','Meet a profit target','Forgetting to add the target','tcvp','tu'],
+  ['Pretax target = After-tax target ÷ (1 − t)','Grosses up for taxes','Target stated after tax','Multiplying by (1 + t)','tcvp','ptx'],
+  ['Bundle contribution = Σ (units in mix × unit contribution)','Contribution of one sales bundle','Multi-product break-even at a fixed mix','Averaging unit contributions without weights','tmix','cb'],
+  ['Weighted CM per unit = Bundle CM ÷ units per bundle','Average contribution per unit at the mix','Break-even in total units','Ignoring that the mix can change','avs','acb'],
+  ['Split units by unit mix; split dollars by revenue mix','Two shares, two uses','Allocate total break-even to products','Using the unit mix to split revenue','tmix','rsh@C'],
+  ['Operating leverage = Contribution margin ÷ Profit','Sensitivity of profit to volume','Compare cost structures','Reading it near zero profit','lev','dol@D'],
+  ['% Δ profit = Operating leverage × % Δ volume','Predicts the profit swing','Price, mix and costs unchanged','Applying it when price changes','lev','pred@D'],
+  ['Margin of safety = Expected − Break-even sales','Cushion before a loss','Risk check; MOS % = 1 ÷ leverage','Mixing units and dollars','tcvp','mosp'],
+  ['Crossover = (F₁ − F₂) ÷ (v₂ − v₁)','Volume where two cost structures cost the same','Automate, outsource, lease vs. per-use','Comparing at a volume other than expected demand','lev','xab'],
+  ['Contractual break-even','Break-even under the contract’s own cost rules','Profit-sharing contracts (Forrest Gump)','Treating “overhead” as fixed; check if it is a % of revenue','gump','bebo']
+];
+function renderRef(){
+  let h=`<div class="notebox"><h3>How to use this workbook</h3><ul>
+  <li>Each case is a live sheet. <b style="color:var(--input)">Blue</b> cells are inputs; change them and every formula updates, like Excel.</li>
+  <li>Click any result to see its formula three ways: cell references, in words, and with the numbers. Cells it uses are shaded.</li>
+  <li><b>Practice mode</b> hides worked answers. Type your own answer (or a formula) and it is checked instantly. Use it to drill for the paper exam.</li>
+  <li>Type a formula starting with <span class="kbd">=</span>. While typing, click a cell to insert its address. <span class="kbd">Enter</span> commits, arrows move, <span class="kbd">Ctrl</span>+<span class="kbd">\`</span> shows formulas.</li>
+  <li><b>Copy with formulas</b> pastes straight into Excel at cell A1. Your edits stay in this browser only.</li></ul></div>
+  <div class="tablewrap"><table class="ref"><thead><tr><th scope="col">Formula or rule</th><th scope="col">Meaning</th><th scope="col">Use when</th><th scope="col">Common mistake</th><th scope="col">Live cell</th></tr></thead><tbody>`;
+  REF.forEach(r=>{if(r.length===1){h+=`<tr class="grp"><td colspan="5">${esc(r[0])}</td></tr>`;return}
+    const a=nameAddr(r[4],r[5]);h+=`<tr><td class="f">${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td><td>${a?`<button class="chipbtn" data-os="${r[4]}" data-oa="${a}">${esc(SH[r[4]].def.title)} ${a}</button>`:''}</td></tr>`});
+  h+='</tbody></table></div>';
+  $('special').innerHTML=h;
+}
+$('special').addEventListener('click',e=>{const b=e.target.closest('[data-os]');if(b)openSheet(b.dataset.os,b.dataset.oa)});
+
+/* classify (Amethyst) */
+const CLS=[
+  ['Provider pay for completed care',['V'],['Direct'],['Y'],'Earned per completed visit. Saturday visits that are not rebooked stop generating pay.'],
+  ['Front-desk / reception salary',['F'],['Indirect'],['D'],'Depends: relevant only if Saturday desk hours are paid separately or a position is cut. Salaried and kept: not relevant.'],
+  ['Therapy supplies and materials',['V'],['Direct','Indirect'],['Y'],'Used per visit. Indirect if not tracked to individual visits.'],
+  ['Rent on the two clinic locations',['F'],['Indirect'],['N'],'Lease continues whether or not Saturdays run.'],
+  ['Owner / CEO salary',['F'],['Indirect'],['N'],'Paid regardless.'],
+  ['EMR and scheduling software subscription',['F','Step'],['Indirect'],['N','D'],'Fixed subscription. Step and possibly relevant if priced per provider seat and Saturday-only providers are dropped.'],
+  ['Professional-liability (malpractice) insurance',['F','Step'],['Indirect'],['N','D'],'Usually per provider per year. Relevant only if the premium depends on hours or provider count changes.'],
+  ['Utilities (electricity, water)',['M'],['Indirect'],['Y'],'Base charge plus usage; closing Saturdays saves the usage part.'],
+  ['Billing / claims-processing staff salary',['F'],['Indirect'],['N','D'],'Salaried. Relevant only if lower claim volume lets hours be cut.'],
+  ['Continuing-education stipends for therapists',['F','Step'],['Indirect'],['N'],'Per therapist per year, not per visit.'],
+  ['Interest on the clinic’s bank loan',['F'],['Indirect'],['N'],'Owed regardless of hours.'],
+  ['Clinic build-out, already paid',['—'],['Indirect'],['N'],'Sunk: already spent, so it cannot be relevant.']
+];
+function renderClassify(){
+  const opt=(arr,val)=>arr.map(o=>`<option${o===val?' selected':''}>${o}</option>`).join('');
+  let h=`<div class="notebox"><h3>The assumption that decides relevance</h3><p style="margin:0">Do Saturday patients move to weekdays, or are they lost? If lost, the biggest relevant item is the contribution from those visits (revenue minus provider pay and supplies). If they move, most of that revenue is kept and few costs change at all.</p></div>
+  <div class="toolbar"><button class="btn" id="cCheck" aria-pressed="${ST.clsShow}">${ST.clsShow?'Hide suggested answers':'Check against suggested answers'}</button><button class="btn" id="cClear">Clear my answers</button><span class="score" id="cScore"></span></div>
+  <div class="tablewrap"><table class="ref"><thead><tr><th scope="col">Cost</th><th scope="col">Behavior with visits</th><th scope="col">Direct or indirect to a visit</th><th scope="col">Relevant to dropping Saturdays?</th>${ST.clsShow?'<th scope="col">Suggested answer and assumption</th>':''}</tr></thead><tbody>`;
+  let ok=0,tot=0;
+  CLS.forEach((c,i)=>{const a=ST.cls[i]||{};const chk=(k,keyArr)=>{if(!ST.clsShow||!a[k])return'';tot++;const good=keyArr.includes(a[k]);if(good)ok++;return good?'okc':'noc'};
+    h+=`<tr><td class="f">${i+1}. ${esc(c[0])}</td>
+      <td class="${chk('b',c[1])}"><select id="cb${i}" data-i="${i}" data-k="b" aria-label="Behavior">${opt(['','V','F','Step','M','—'],a.b)}</select></td>
+      <td class="${chk('d',c[2])}"><select id="cd${i}" data-i="${i}" data-k="d" aria-label="Direct or indirect">${opt(['','Direct','Indirect'],a.d)}</select></td>
+      <td class="${chk('r',c[3])}"><select id="cr${i}" data-i="${i}" data-k="r" aria-label="Relevant">${opt(['','Y','N','D'],a.r)}</select></td>
+      ${ST.clsShow?`<td><b>${c[1].join(' / ')} · ${c[2].join(' / ')} · ${c[3].join(' / ')}</b><br>${esc(c[4])}</td>`:''}</tr>`});
+  h+='</tbody></table></div><p class="keynote">V variable · F fixed · Step jumps at a capacity level · M mixed · — not a period cost (already paid). Y yes · N no · D depends (say on what).</p>';
+  $('special').innerHTML=h;
+  if(ST.clsShow)$('cScore').textContent=tot?`${ok} of ${tot} calls match`:'Make your calls, then compare.';
+  $('special').querySelectorAll('select').forEach(s=>s.onchange=()=>{const i=s.dataset.i;ST.cls[i]=ST.cls[i]||{};ST.cls[i][s.dataset.k]=s.value;save();if(ST.clsShow)renderClassify()});
+  $('cCheck').onclick=()=>{ST.clsShow=!ST.clsShow;renderClassify()};
+  $('cClear').onclick=()=>{ST.cls={};save();renderClassify()};
+}
+
+/* boot */
+buildNav();
+const hash=(location.hash||'').slice(1);
+openSheet(SH[hash]?hash:ST.sheet);
+</script>
+</body>
+</html>
