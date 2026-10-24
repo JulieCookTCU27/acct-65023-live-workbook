@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
 <style>
-/* Base reset (stands in for the artifact host skeleton) */
+/* Base reset */
 :root{color-scheme:light}
 html,body{margin:0}
 [hidden]{display:none!important}
@@ -153,6 +153,9 @@ table.ref td.noc{background:var(--bad-bg)}
 .notebox{border:1px solid var(--line);border-radius:6px;background:var(--surface);padding:12px 14px;margin:12px 0;max-width:90ch}
 .notebox h3{margin:0 0 6px;font-size:18px}
 .notebox ul{margin:0;padding-left:20px;display:grid;gap:4px}
+.refs ol{margin:0;padding-left:28px;display:grid;gap:8px}
+.refs li{padding-left:4px;padding-inline:4px}
+.refs li.hl{background:var(--tint-2);border-radius:3px}
 .kbd{border:1px solid var(--line-strong);border-bottom-width:2px;border-radius:4px;padding:0 6px;background:var(--surface)}
 @media (max-width:1280px){ .work{grid-template-columns:minmax(0,1fr)} .insp{position:static;max-height:none} }
 @media (max-width:900px){
@@ -184,19 +187,19 @@ table.ref td.noc{background:var(--bad-bg)}
       <section class="shead" id="shead"></section>
       <div id="gridArea">
         <div class="toolbar">
-          <button class="btn" id="bPractice" aria-pressed="false" title="Hide worked answers and check your own">Practice mode</button>
-          <button class="btn" id="bFormulas" aria-pressed="false" title="Ctrl + `">Show formulas</button>
+          <button class="btn" id="bPractice" aria-pressed="false" title="Hide worked answers and check your own">Practice Mode</button>
+          <button class="btn" id="bFormulas" aria-pressed="false" title="Ctrl + `">Show Formulas</button>
           <button class="btn" id="bGoal">Goal Seek</button>
-          <button class="btn" id="bCopyF">Copy with formulas</button>
-          <button class="btn" id="bCopyV">Copy values</button>
+          <button class="btn" id="bCopyF">Copy with Formulas</button>
+          <button class="btn" id="bCopyV">Copy Values</button>
           <span class="spacer"></span>
           <span class="score" id="score"></span>
-          <button class="btn" id="bReset">Reset sheet</button>
+          <button class="btn" id="bReset">Reset Sheet</button>
         </div>
         <div class="panel" id="gsPanel" hidden>
-          <label for="gsSet">Set cell<input id="gsSet" placeholder="B30"></label>
-          <label for="gsTo">To value<input id="gsTo" placeholder="0"></label>
-          <label for="gsBy">By changing cell<input id="gsBy" placeholder="B8"></label>
+          <label for="gsSet">Set Cell<input id="gsSet" placeholder="B30"></label>
+          <label for="gsTo">To Value<input id="gsTo" placeholder="0"></label>
+          <label for="gsBy">By Changing Cell<input id="gsBy" placeholder="B8"></label>
           <button class="btn" id="gsRun" aria-pressed="true">Solve</button>
           <button class="btn" id="gsClose">Close</button>
           <p class="msg" id="gsMsg">Same as Excel: Data → What-If Analysis → Goal Seek. The changing cell must be an input (blue).</p>
@@ -401,13 +404,13 @@ const H=t=>['h',t],T=t=>['t',t],C=(...h)=>['c','',...h],B=()=>['b'];
 const DEFS=[];const def=d=>DEFS.push(d);
 
 /* ---------------- Reference (formula sheet) ---------------- */
-def({id:'ref',tab:'Formula_Sheet',group:'Start here',title:'Formula sheet',sub:'Every formula, with links',kind:'ref',
-  intro:'Each formula from Sessions 1–2 in the professor’s terms, when to use it, and the mistake that costs points. Click a cell link to open the live calculation.'});
+def({id:'ref',tab:'Formula_Sheet',group:'Start here',title:'Formula sheet',sub:'Formulas, rules and references',kind:'ref',
+  intro:'Each formula from Sessions 1–2 in course terminology, when to use it, and the most common mistake. Click a cell link to open the live calculation. Sources are listed under References at the end of this page.'});
 
 /* ---------------- SESSION 1 ---------------- */
 def({id:'tcu',tab:'TCU_Pediatrics',group:'Session 1 · Concepts',title:'TCU Pediatrics',sub:'Opportunity cost',
   intro:'Should the clinic hire a speech-language pathology assistant? Count only what changes: new billings, new pay, and the patient income Dr. Roberts gives up while supervising. Her salary does not change, so it is not a cost of this decision.',
-  src:'Session 1 handout and “Opportunity cost” worksheet.',
+  cite:[3,2],
   qs:[{q:'A1. Additional weekly revenue from the assistant',a:['arev']},{q:'A2. Additional weekly cash payments',a:['apay']},{q:'A3. Patient-care income given up because of supervision',a:['oc']},{q:'A4. Change in weekly profit',a:['anet']},{q:'B. Weekly profit change from the qualified clinician; compare with the assistant',a:['qnet','qadv']},{q:'Later. Weekly profit change at half booking under each pay contract',a:['hn1','hn2']},{q:'Later. Minimum booking % to break even under each contract',a:['bep1','bep2']}],
   rows:[
     H('Weekly inputs (Exhibit 1)'),
@@ -456,7 +459,7 @@ def({id:'tcu',tab:'TCU_Pediatrics',group:'Session 1 · Concepts',title:'TCU Pedi
 
 def({id:'amh',tab:'Amethyst_Visits',group:'Session 1 · Concepts',title:'Amethyst cost per visit',sub:'AI hands-on · cost behavior',
   intro:'Provider pay moves with completed visits; the $95,000 of clinic costs does not. Watch total cost per visit fall as visits rise, even though nothing about the contracts changed.',
-  src:'Session 1 AI Hands-On handout (Green course data).',
+  cite:[4],
   qs:[{q:'1. Provider pay per visit and total cost per visit, each month',a:['janpv','jantcv']},{q:'2. Check one number yourself (try March)',a:['martcv']},{q:'3. January vs. March: what changed in pay, fixed costs, and cost per visit?',a:['dpay','dfix','dcpv']}],
   rows:[
     H('Inputs (course data, January–April 2026, both clinics)'),
@@ -481,12 +484,12 @@ def({id:'amh',tab:'Amethyst_Visits',group:'Session 1 · Concepts',title:'Amethys
       series:[{name:'Total cost',pts,c:'brand',scatter:true},{name:'Provider pay',pts:pay,c:'input',scatter:true},{name:'Fixed clinic costs',pts:[[2000,g('fix')],[3500,g('fix')]],c:'muted',dash:true}]}}
 });
 
-def({id:'amc',tab:'Amethyst_Classify',group:'Session 1 · Concepts',title:'Amethyst: which costs matter?',sub:'Behavior · direct · relevant',kind:'classify',
-  intro:'Amethyst is considering dropping low-volume Saturday hours for the coming month. For each cost make three calls, then compare with the suggested answers and the assumptions that drive them. This was a pens-only exercise in class; the suggested answers are built from Session 1 definitions, not from a posted key.'});
+def({id:'amc',tab:'Amethyst_Classify',group:'Session 1 · Concepts',title:'Amethyst: which costs matter?',sub:'Behavior · direct · relevant',kind:'classify',cite:[5],
+  intro:'Amethyst is considering dropping low-volume Saturday hours for the coming month. For each cost make three calls, then compare with the suggested answers and the assumptions that drive them. Debatable calls depend on the assumption shown with each answer.'});
 
 def({id:'thb',tab:'Theater_Behavior',group:'Session 1 · Concepts',title:'GD Contemporary Theater',sub:'Fixed vs. variable · cost equation',
   intro:'Classify each budget line by how it behaves with tickets sold this month, holding the schedule (450 seats × 20 performances) and the contracts constant. Then build the cost equation and see why cost per ticket falls as attendance rises.',
-  src:'Session 1 workbook tabs “Theater case”, “Monthly budget” and “Your analysis”.',
+  cite:[1,2],
   qs:[{q:'Total fixed cost per month',a:['tfc']},{q:'Variable cost per ticket',a:['vct']},{q:'Total cost and cost per ticket at 3,000 / 6,000 / 9,000 tickets',a:['tc1','cpt1','cpt3']}],
   rows:[
     H('Monthly budget · behavior with respect to tickets sold'),
@@ -518,7 +521,7 @@ def({id:'thb',tab:'Theater_Behavior',group:'Session 1 · Concepts',title:'GD Con
 
 def({id:'fs',tab:'Field_Service',group:'Session 1 · Concepts',title:'Field service step cost',sub:'Cost behavior · capacity',
   intro:'A service business at 300, 450, and 550 jobs. Past 450 jobs a new facility contract adds $3,000 for the month. Decide on total profit, not cost per job.',
-  src:'Session 1 workbook tab “Cost behavior” (instructor illustration).',
+  cite:[2],
   qs:[{q:'Total cost, cost per job, and profit at 300 and 450 jobs',a:['tc@B','cpj@C']},{q:'Expanded (550 jobs) column with the facility step',a:['fc@D','op@D']},{q:'Profit change from 450 to 550 jobs; expand or not?',a:['pchg']}],
   rows:[
     H('Inputs per month'),
@@ -550,7 +553,7 @@ def({id:'fs',tab:'Field_Service',group:'Session 1 · Concepts',title:'Field serv
 /* Phelps */
 def({id:'pd',tab:'Phelps_Data',group:'Session 1 · Phelps Industries',title:'Phelps: data and Q1',sub:'Absorption cost · COGS',
   intro:'Replicate the budgeted income statement. Exhibit 1 groups costs by function (manufacturing vs. selling and admin) and spreads fixed overhead over 15,000 gears, which is why unit cost hides the cost of idle capacity.',
-  src:'Phelps Industries case, Exhibits 1–3B; Session 1 workbook tabs “Exhibits” and “Q1”.',
+  cite:[6,2],
   qs:[{q:'Q1. Replicate COGS. How does this income statement group costs?',a:['moh','mohu','ucost','cogs','ni']}],
   rows:[
     H('Budget year 2001 · product data'),
@@ -598,7 +601,7 @@ def({id:'pd',tab:'Phelps_Data',group:'Session 1 · Phelps Industries',title:'Phe
 
 def({id:'pq2',tab:'Phelps_Q2',group:'Session 1 · Phelps Industries',title:'Phelps Q2: volume and profit',sub:'Contribution format',
   intro:'Regroup the same costs by behavior. Variable costs per gear times volume, plus fixed costs that do not move, predicts profit at any volume inside capacity.',
-  src:'Session 1 workbook tab “Q2 Income statement - 1 product”.',
+  cite:[6,2],
   qs:[{q:'Q2. Income at 20,000 and 25,000 gears',a:['op@C','op@D']},{q:'Q2. How should costs be grouped to improve the estimate?',a:['vcu','tfc']}],
   rows:[
     H('Variable cost per gear'),
@@ -634,7 +637,7 @@ def({id:'pq2',tab:'Phelps_Q2',group:'Session 1 · Phelps Industries',title:'Phel
 
 def({id:'pq3',tab:'Phelps_Q3',group:'Session 1 · Phelps Industries',title:'Phelps Q3: unused capacity',sub:'Capacity-based overhead rate',
   intro:'Phelps uses only 60% of its machine hours. Charging fixed overhead at a rate based on budgeted hours buries the idle capacity inside product cost. A rate based on available hours charges products only for capacity they use and shows idle capacity as its own line for managers to act on.',
-  src:'Session 1 workbook tab “Q3 Capacity based allocation”.',
+  cite:[6,2],
   qs:[{q:'Q3. How is the cost of capacity accounted for now?',a:['frb@B','frb@C']},{q:'Q3. Separate the cost of unused capacity',a:['frc@B','cuc@B']}],
   rows:[
     C('Scenario 1','Scenario 2','Scenario 3'),
@@ -665,7 +668,7 @@ def({id:'pq3',tab:'Phelps_Q3',group:'Session 1 · Phelps Industries',title:'Phel
 
 def({id:'pq4',tab:'Phelps_Q4',group:'Session 1 · Phelps Industries',title:'Phelps Q4: sprockets',sub:'Incremental analysis · segment margin',
   intro:'Patricia’s full-cost analysis shows sprockets losing money. With 20,000 idle machine hours, the right question is what changes: sprocket contribution minus the fixed costs added only for sprockets.',
-  src:'Phelps Exhibits 4–5; Session 1 workbook tab “Q4 Two product case”.',
+  cite:[6,2],
   qs:[{q:'Q4a. Why does Patricia’s analysis show sprockets making a loss?',a:['bmr','pg@C','ppu@C']},{q:'Q4. Better estimate of the profit effect of adding sprockets',a:['scm','sinc']},{q:'Q4. Which grouping of costs supports the better analysis?',a:['seg@C','nit','delta']}],
   rows:[
     H('Sprocket data (Exhibit 4)'),
@@ -767,14 +770,14 @@ const cvpChart=(xl)=>g=>{const p=g('p'),v=g('v'),f=g('f'),q=g('q'),be=g('beu');c
 
 def({id:'tcvp',tab:'Theater_CVP',group:'Session 2 · CVP',title:'Theater CVP',sub:'Break-even · target · leverage',
   intro:'The theater from Session 1 becomes a profit model: $16 tickets, $10 variable cost, $48,000 fixed per month. Change any blue input and every result, and the graph, updates.',
-  src:'Session 2 slides 11–13 and 29–33; class workbook tab “Theater Example - CVP”.',
+  cite:[7,8],
   qs:[{q:'At 6,000 tickets, predict profit or loss',a:['p6']},{q:'Break-even tickets and ticket revenue',a:['beu','ber']},{q:'Tickets needed for a $3,600 monthly surplus',a:['tu','tr']},{q:'Extension: $3,600 after 20% tax',a:['ptx','tua']},{q:'Income statement at 10,000 tickets; margin of safety; operating leverage',a:['noi','mosp','dol']}],
   rows:cvpRows('ticket','tickets',{p:16,v:10,vm:'City $8 + playbills, printing and variable utilities $2',f:48000,fm:'Session 1 budget: rent, salaries, actors, crew, royalties, insurance, base utilities, advertising, admin',tp:3600,tx:0.2,q:10000,q6:6000,dv:0.1}).concat([T('Goal Seek check: set Operating income before tax to 0 by changing Expected tickets sold. It lands on break-even.')]),
   chart:cvpChart('Tickets sold')});
 
 def({id:'tmix',tab:'Theater_Mix',group:'Session 2 · CVP',title:'Theater sales mix',sub:'Standard and box seats',
   intro:'Add 50 box seats at $20 to the 450 standard seats. With two products, break-even depends on the sales mix. Assume tickets sell 9:1, the same ratio as seats.',
-  src:'Class workbook tab “Theater Example - CVP”, extension (rows 134–201).',
+  cite:[8],
   qs:[{q:'Contribution per bundle; break-even bundles and tickets',a:['cb','bet@D']},{q:'Check with the weighted-average contribution per ticket',a:['wac','betw']},{q:'Weighted-average CM ratio and break-even revenue',a:['wcmr','ber']},{q:'Split break-even into standard and box tickets and revenue, two ways',a:['st@B','sr@C']}],
   rows:[
     C('Standard','Box','Total'),
@@ -812,7 +815,7 @@ def({id:'tmix',tab:'Theater_Mix',group:'Session 2 · CVP',title:'Theater sales m
 
 def({id:'gump',tab:'Forrest_Gump',group:'Session 2 · CVP',title:'Forrest Gump',sub:'Contractual break-even · $ millions',
   intro:'A $661 million worldwide hit that “lost” $56 million under the net-profit contract. The contract’s rules decide which charges grow with revenue. All amounts in $ millions.',
-  src:'Forrest Gump case Exhibit 1; Session 2 slides 14–23; class workbook tab “Forrest Gump”.',
+  cite:[9,7,8],
   qs:[{q:'Q1. Variable and fixed costs from the net-participation contract’s point of view',a:['vr','fx']},{q:'Q2. Box office needed before the film shows a contractual profit',a:['ber','bebo']},{q:'Q3. Additional box office before Groom receives more than his $250,000 advance',a:['bon','addbo']},{q:'Q4. Box office needed for Paramount itself to profit',a:['eber','ebo']}],
   rows:[
     H('Inputs (Exhibit 1, through Dec 31, 1994)'),
@@ -874,7 +877,7 @@ def({id:'gump',tab:'Forrest_Gump',group:'Session 2 · CVP',title:'Forrest Gump',
 
 def({id:'lev',tab:'Leverage',group:'Session 2 · CVP',title:'Cost structure and leverage',sub:'Operating leverage · crossover',
   intro:'Three companies with the same $500,000 sales and $50,000 profit, built three ways. High fixed costs buy low variable costs: profit swings harder when sales change.',
-  src:'Session 2 slides 27–33; class workbook tab “Cost Structure - Leverage”.',
+  cite:[7,8],
   qs:[{q:'Operating leverage for each company',a:['dol@B','dol@C','dol@D']},{q:'If sales fall 10%, what happens to profit?',a:['act@B','pred@D']},{q:'Break-even and margin of safety; crossover volume',a:['bes@D','mspct@B','xab']}],
   rows:[
     C('Company A','Company B','Company C'),
@@ -913,7 +916,7 @@ const avsCost=[
   ['kgrape','Grapes','=85500+38500','V','Product','Chardonnay $85,500 + generic $38,500; more bottles need more grapes'],
   ['kbot','Bottles, labels, corks','={wt@C}*2.5','V','Product','$2.50 per bottle'],
   ['kharv','Harvest labor','=9*(100000+60000)/80','V','Product','$9/hr × 2,000 hrs (160,000 lbs ÷ 80 lbs per hr)'],
-  ['kcrush','Crush labor','=10*300','V','Product','$10/hr × 300 hrs (professor: variable)'],
+  ['kcrush','Crush labor','=10*300','V','Product','$10/hr × 300 hrs; treated as variable in the course model'],
   ['kind','Indirect materials','={wt@C}/12*1.55','V','Product','$1.55 per case of 12'],
   ['kdep','Depreciation','=15000/10+6000/10+40000/20+10000/10+15000/5','F','Product','Straight-line: tractors, crushers, tank, bottle line, other'],
   ['klab','Lab expenses',8000,'F','Product','Testing at production stages'],
@@ -923,15 +926,15 @@ const avsCost=[
   ['kwm','Wine master','=5000*3','F','Product','$5,000 per wine type formulated'],
   ['ksup','Supervisor',55000,'F','Product','Albert: salary and benefits'],
   ['kbar','Barrels','=ROUNDUP(100000*0.9/36/40,0)*(500-200)/4','V','Product','63 barrels × ($500 − $200 resale) ÷ 4 years; variable at this mix'],
-  ['krent','Administrative rent & office',20000,'F','Admin & sales','Annual'],
-  ['kliq','Liquor taxes','={wt@C}*3','V','Admin & sales','$3 per bottle sold'],
-  ['kcom','Sales commissions (distributors)','={wt@C}*2','V','Admin & sales','$2 per bottle sold'],
-  ['ksm','Sales manager',30000,'F','Admin & sales','Maria, contract'],
-  ['kadm','Administrative salary',75000,'F','Admin & sales','Kay, salary and benefits']
+  ['krent','Administrative rent & office',20000,'F','Admin & Sales','Annual'],
+  ['kliq','Liquor taxes','={wt@C}*3','V','Admin & Sales','$3 per bottle sold'],
+  ['kcom','Sales commissions (distributors)','={wt@C}*2','V','Admin & Sales','$2 per bottle sold'],
+  ['ksm','Sales manager',30000,'F','Admin & Sales','Maria, contract'],
+  ['kadm','Administrative salary',75000,'F','Admin & Sales','Kay, salary and benefits']
 ];
 def({id:'avs',tab:'AVS',group:'Session 2 · À Votre Santé',title:'AVS: CM statement and break-even',sub:'Q1 · multi-product break-even',
   intro:'Exhibit 1 groups costs by function. Rebuild it by behavior: change any V/F label in the Behavior column and the contribution statement and break-even update. Mix held at 24,000 / 9,000 / 16,000 bottles.',
-  src:'À Votre Santé case and Exhibit 1; Session 2 slides 26 and 34–36; class workbook tabs “Operating Margin”, “CM IS”, “Break Even Analysis”.',
+  cite:[10,7,8],
   qs:[{q:'Q1. Company-wide contribution margin income statement',a:['tvc','cm','tfc','om2']},{q:'Q1. Weighted-average revenue and operating margin per bottle',a:['apb','omb']},{q:'Slide 26. Average contribution per bottle and break-even bottles at the current mix',a:['acb','beb']}],
   rows:[
     H('Product mix (2010)'),
@@ -947,7 +950,7 @@ def({id:'avs',tab:'AVS',group:'Session 2 · À Votre Santé',title:'AVS: CM stat
     R('Revenues',{v:'={wt@D}',n:'rev'},{f:'$2'}),
     R('Total product costs',{v:'=SUMIF({kgrape@D}:{kadm@D},"Product",{kgrape@B}:{kadm@B})',n:'pc'},{f:'$2'}),
     R('Gross margin',{v:'={rev}-{pc}',n:'gm'},{f:'$2',k:'total'}),
-    R('Total administrative and sales costs',{v:'=SUMIF({kgrape@D}:{kadm@D},"Admin & sales",{kgrape@B}:{kadm@B})',n:'as'},{f:'$2'}),
+    R('Total administrative and sales costs',{v:'=SUMIF({kgrape@D}:{kadm@D},"Admin & Sales",{kgrape@B}:{kadm@B})',n:'as'},{f:'$2'}),
     R('Operating margin',{v:'={gm}-{as}',n:'om'},{f:'$2',k:'total'}),
     R('Operating margin % of sales','={om}/{rev}',{f:'%1',m:'11.1% in 2010 vs. 14% in 2009'}),
     H('Q1 · contribution format'),
@@ -975,7 +978,7 @@ def({id:'avs',tab:'AVS',group:'Session 2 · À Votre Santé',title:'AVS: CM stat
 
 def({id:'avs2',tab:'AVS_Q2',group:'Session 2 · À Votre Santé',title:'AVS Q2: buy the grapes?',sub:'Maximum price per pound',
   intro:'Another grower offers 20,000 pounds of crushed Chardonnay. Blended 2:1 with AVS’s generic grapes and sold at $14, what is the most AVS should pay per pound to earn a 15% return on sales? The generic grapes are already AVS’s: using them means fewer Blanc de Blanc bottles. Switch the basis to see both answers.',
-  src:'À Votre Santé case Q2. Not worked in class materials yet; check against the professor’s answer.',
+  cite:[10],
   qs:[{q:'Q2a. Maximum price per pound',a:['mpp']},{q:'Q2b. Factors for and against the purchase',a:[]}],
   rows:[
     H('Inputs'),
@@ -1026,8 +1029,8 @@ def({id:'avs2',tab:'AVS_Q2',group:'Session 2 · À Votre Santé',title:'AVS Q2: 
   ]});
 
 def({id:'avs3',tab:'AVS_Q3',group:'Session 2 · À Votre Santé',title:'AVS Q3: product profitability',sub:'Activity drivers · preview of Session 4',
-  intro:'Kay wants costs assigned to each wine by the activity that drives them: harvest hours, pounds crushed, juice used, lab time, bottles, and revenue. Total profit is unchanged; what moves is which wine looks profitable.',
-  src:'À Votre Santé case Q3 (activity data). Ahead of the course: Session 4 covers allocation and activity-based costing.',
+  intro:'Kay wants costs assigned to each wine by the activity that drives them: harvest hours, pounds crushed, juice used, lab time, bottles, and revenue. Total profit is unchanged; what moves is which wine looks profitable. Activity-based costing is covered in Session 4.',
+  cite:[10],
   qs:[{q:'Q3a. Product profitability analysis',a:['op@B','op@C','op@D']},{q:'Q3b. Recommendation to Kay',a:['ppb@D']}],
   rows:[
     C('Chardonnay-Estate','Chardonnay','Blanc de Blanc','Total'),
@@ -1067,8 +1070,8 @@ def({id:'avs3',tab:'AVS_Q3',group:'Session 2 · À Votre Santé',title:'AVS Q3: 
 
 /* ---------------- TEMPLATES ---------------- */
 def({id:'tpl',tab:'CVP_Template',group:'Work a new case',title:'CVP template',sub:'Single and multi-product',
-  intro:'Type a new problem’s numbers over the blue example inputs (they are illustrative, not from a case). Every CVP result updates. The multi-product block uses the slide 24 example: 2 red for every 1 white, $15,000 fixed.',
-  src:'Built from Session 2 slides 5–9, 24–25 and 29–31.',
+  intro:'Type a new problem’s numbers over the blue example inputs (they are illustrative, not from a case). Every CVP result updates. The multi-product block uses the Session 2 sales-bundle example: 2 red for every 1 white, $15,000 fixed.',
+  cite:[7],
   qs:[{q:'Break-even, target profit and risk for a single product',a:['beu','tu','dol']},{q:'Multi-product: break-even bundles and units of each product',a:['mbb','mbu@B','mbu@C']}],
   rows:cvpRows('unit','units',{p:40,v:24,f:80000,tp:20000,tx:0.25,q:7000,q6:4000,dv:0.1}).concat([
     H('Multi-product break-even (sales bundle)'),
@@ -1088,7 +1091,7 @@ def({id:'tpl',tab:'CVP_Template',group:'Work a new case',title:'CVP template',su
 
 def({id:'dec',tab:'Decision',group:'Work a new case',title:'Incremental decision template',sub:'Relevant costs · Session 3 ready',
   intro:'Compare a status quo with an alternative and keep only what differs. Pre-filled with TCU Pediatrics (hire the assistant) as an example; overwrite any cell, including the labels.',
-  src:'Session 1 relevant/opportunity cost; set up for Session 3 (total vs. incremental analysis).',
+  cite:[3,1],
   qs:[{q:'Net advantage of the alternative',a:['dprof@D']}],
   rows:[
     C('Status quo','Alternative','Difference'),
@@ -1106,6 +1109,26 @@ def({id:'scr',tab:'Scratch',group:'Work a new case',title:'Scratch sheet',sub:'B
   intro:'A blank sheet for any problem. Type labels in column A and formulas anywhere: =B2*C2, =SUM(B2:B9), =IF(B5>0,B5*0.2,0), or reference another sheet such as =Theater_CVP!B11.',
   rows:Array.from({length:40},B)});
 
+/* Title Case for titles, headings, table headers, line items and key terms */
+const MINOR=new Set(['a','an','the','and','but','or','nor','for','so','yet','at','by','in','of','on','per','to','up','via','vs','vs.','as','with','from','into','than','if','e.g.','lbs']);
+function titleCase(str){
+  if(typeof str!=='string'||!str)return str;
+  let first=true;
+  return str.split(/(\s+)/).map(tok=>{
+    if(/^\s+$/.test(tok))return tok;
+    const m=/^([^A-Za-zÀ-ÿ]*)(.*)$/.exec(tok);const pre=m[1],w=m[2];
+    let out=tok;
+    if(w){const bare=w.replace(/[,:;.?!)’']+$/,'').toLowerCase();
+      const keep=/[A-Z0-9]/.test(w.slice(1))||/\d/.test(w);
+      if(!first&&MINOR.has(bare))out=pre+w;
+      else if(!keep)out=pre+w.split('-').map(x=>x?x[0].toUpperCase()+x.slice(1):x).join('-');}
+    first=/[:·—]$/.test(tok);
+    return out;
+  }).join('');
+}
+DEFS.forEach(d=>{d.title=titleCase(d.title);d.sub=titleCase(d.sub);d.group=titleCase(d.group);
+  if(d.rows)d.rows.forEach(row=>{if(row[0]==='h'||row[0]==='r')row[1]=titleCase(row[1]);if(row[0]==='c')for(let i=2;i<row.length;i++)row[i]=titleCase(row[i])});
+  if(d.chart){const f=d.chart;d.chart=g=>{const sp=f(g);sp.title=titleCase(sp.title);return sp}}});
 /* ============================================================
    Compile sheets: assign addresses, names, resolve placeholders
    ============================================================ */
@@ -1213,7 +1236,7 @@ function openSheet(id,selAddr){
   document.querySelectorAll('#side button').forEach(b=>b.setAttribute('aria-current',b.dataset.s===id));
   $('sheetSel').value=id;
   const d=cur().def;
-  $('shead').innerHTML=`<div class="eyebrow">${esc(d.group)}</div><h2>${esc(d.title)}</h2><p>${esc(d.intro||'')}</p>${d.src?`<p class="keynote">Source: ${esc(d.src)}</p>`:''}${qsHtml(d)}`;
+  $('shead').innerHTML=`<div class="eyebrow">${esc(d.group)}</div><h2>${esc(d.title)}</h2><p>${esc(d.intro||'')}</p>${d.cite?`<p class="keynote">Sources: ${d.cite.map(n=>`<button class="chipbtn" data-cite="${n}">[${n}]</button>`).join('')}</p>`:''}${qsHtml(d)}`;
   const grid=!d.kind;
   $('gridArea').hidden=!grid;$('special').hidden=grid;
   if(grid){$('gsPanel').hidden=true;renderGrid();const first=selAddr||firstInput();selectCell(first,true)}
@@ -1223,9 +1246,9 @@ function openSheet(id,selAddr){
 }
 function qsHtml(d){
   if(!d.qs||!d.qs.length)return'';
-  return`<details class="qs" open><summary>Case questions</summary><ol>${d.qs.map(q=>`<li>${esc(q.q)}${q.a.map(n=>{const a=nameAddr(d.id,n);return a?`<button class="chipbtn" data-go="${a}">${a}</button>`:''}).join('')}</li>`).join('')}</ol></details>`;
+  return`<details class="qs" open><summary>Case Questions</summary><ol>${d.qs.map(q=>`<li>${esc(q.q)}${q.a.map(n=>{const a=nameAddr(d.id,n);return a?`<button class="chipbtn" data-go="${a}">${a}</button>`:''}).join('')}</li>`).join('')}</ol></details>`;
 }
-$('shead').addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b){selectCell(b.dataset.go);$('gridWrap').focus({preventScroll:true})}});
+$('shead').addEventListener('click',e=>{const c=e.target.closest('[data-cite]');if(c){openSheet('ref');const t=document.getElementById('ref-'+c.dataset.cite);if(t){t.scrollIntoView({block:'center'});t.classList.add('hl')}return}const b=e.target.closest('[data-go]');if(b){selectCell(b.dataset.go);$('gridWrap').focus({preventScroll:true})}});
 function firstInput(){const sh=cur();for(const RR of sh.rows){for(let c=1;c<sh.maxCol;c++){const a=colName(c)+RR.r;const m=sh.cells[a];if(m&&m.kind==='input')return a}}return'B1'}
 
 function cellView(sid,addr){
@@ -1249,7 +1272,7 @@ function renderGrid(){
   const sh=cur(),sid=sh.id,nC=sh.maxCol;const free=!!sh.def.free;
   let h='<thead><tr><th class="rn" scope="col"></th>';
   for(let c=0;c<nC;c++)h+=`<th scope="col">${colName(c)}</th>`;
-  if(!free)h+='<th scope="col" class="meanh">What it means</th>';
+  if(!free)h+='<th scope="col" class="meanh">What It Means</th>';
   h+='</tr></thead><tbody>';
   sh.rows.forEach(RR=>{
     const r=RR.r,o=RR.opts||{};const trc=[RR.type,o.k==='total'?'total':''].join(' ');
@@ -1334,21 +1357,21 @@ function renderInsp(){
     h+=`<p class="why">Work this one out, then type your answer in the formula bar and press Enter. A formula like =B5*B6 works too.</p>`;
     if(o.m)h+=`<h3>Hint</h3><p>${esc(o.m)}</p>`;
     if(at)h+=`<p class="res" style="color:var(${at.ok?'--good':'--bad'})">${at.ok?'✓ Correct':'✗ Not yet'}: ${esc(display(at.av,fmtOf(sid,a)))}</p>`;
-    h+=`<div><button class="btn" id="iReveal">Reveal this answer</button></div>`;
+    h+=`<div><button class="btn" id="iReveal">Reveal This Answer</button></div>`;
   }else if(kind==='f'){
     const wn=wordsAndNumbers(sid,raw);
     h+=`<div><h3>Formula</h3><code>${esc(raw)}</code></div>`;
-    if(wn)h+=`<div><h3>In words</h3><code>${esc(wn.words)}</code></div><div><h3>With the numbers</h3><code>${esc(wn.nums)}</code></div>`;
+    if(wn)h+=`<div><h3>In Words</h3><code>${esc(wn.words)}</code></div><div><h3>With the Numbers</h3><code>${esc(wn.nums)}</code></div>`;
     h+=`<div><h3>Result</h3><p class="res">${esc(display(v,fmtOf(sid,a)))}</p></div>`;
   }else if(kind==='in'){
     h+=`<p class="res">${esc(display(v,fmtOf(sid,a)))}</p><p class="why">Input. Type a new value to test a scenario; every formula that uses it updates.</p>`;
   }else if(raw!==''){h+=`<p>${esc(display(v,'g'))}</p>`}
-  if(o.m&&kind!=='mask')h+=`<div><h3>What it means</h3><p>${esc(o.m)}</p></div>`;
+  if(o.m&&kind!=='mask')h+=`<div><h3>What It Means</h3><p>${esc(o.m)}</p></div>`;
   if(m&&m.why)h+=`<div><h3>Concept</h3><p class="why">${esc(m.why)}</p></div>`;
-  if(m&&m.mis&&kind!=='mask')h+=`<p class="mis"><b>Common mistake:</b> ${esc(m.mis)}</p>`;
+  if(m&&m.mis&&kind!=='mask')h+=`<p class="mis"><b>Common Mistake:</b> ${esc(m.mis)}</p>`;
   if(kind==='f'){const ps=refsOf(sid,raw);if(ps.length){const uniq=[...new Map(ps.map(p=>[p.sid+'!'+p.a,p])).values()].slice(0,24);
     h+=`<div><h3>Uses</h3><div class="precs">${uniq.map(p=>`<button data-ps="${p.sid}" data-pa="${p.a}">${p.sid!==sid?esc(SH[p.sid].def.title)+' ':''}${p.a} · ${esc(labelFor(p.sid,p.a)).slice(0,48)}</button>`).join('')}</div></div>`}}
-  if(ed&&m)h+=`<div><button class="btn" id="iRestore">Restore original</button></div>`;
+  if(ed&&m)h+=`<div><button class="btn" id="iRestore">Restore Original</button></div>`;
   el.innerHTML=h;
   const rv=$('iReveal');if(rv)rv.onclick=()=>{ST.revealed.add(sid+'!'+a);renderGrid();selectCell(a,true)};
   const rs=$('iRestore');if(rs)rs.onclick=()=>{delete ST.edits[sid][a];invalidate();save();renderGrid();selectCell(a,true)};
@@ -1406,8 +1429,8 @@ $('bPractice').onclick=()=>{ST.practice=!ST.practice;ST.revealed=new Set();save(
 $('bFormulas').onclick=()=>{ST.showF=!ST.showF;renderGrid();if(ST.sel)selectCell(ST.sel,true)};
 let resetArmed=null;
 $('bReset').onclick=()=>{const b=$('bReset');
-  if(!resetArmed){b.textContent='Confirm reset';b.classList.add('warn');resetArmed=setTimeout(()=>{b.textContent='Reset sheet';b.classList.remove('warn');resetArmed=null},4000);return}
-  clearTimeout(resetArmed);resetArmed=null;b.textContent='Reset sheet';b.classList.remove('warn');
+  if(!resetArmed){b.textContent='Confirm reset';b.classList.add('warn');resetArmed=setTimeout(()=>{b.textContent='Reset Sheet';b.classList.remove('warn');resetArmed=null},4000);return}
+  clearTimeout(resetArmed);resetArmed=null;b.textContent='Reset Sheet';b.classList.remove('warn');
   delete ST.edits[ST.sheet];delete ST.attempts[ST.sheet];ST.revealed=new Set();invalidate();save();renderGrid();selectCell(ST.sel||firstInput(),true)};
 function copyText(text,btn,label){
   const done=ok=>{btn.textContent=ok?'Copied':'Select and copy below';setTimeout(()=>btn.textContent=label,1800)};
@@ -1417,8 +1440,8 @@ function copyText(text,btn,label){
 function sheetTSV(withF){const sh=cur();const lines=[];sh.rows.forEach(RR=>{const cells=[];for(let c=0;c<sh.maxCol;c++){const a=colName(c)+RR.r;const raw=rawOf(sh.id,a);
   if(withF&&typeof raw==='string'&&raw[0]==='=')cells.push(raw);else{const v=getVal(sh.id,a);cells.push(typeof v==='number'?String(+v.toFixed(10)):display(v,'g'))}}
   lines.push(cells.join('\t').replace(/\t+$/,''))});return lines.join('\n')}
-$('bCopyF').onclick=e=>copyText(sheetTSV(true),e.currentTarget,'Copy with formulas');
-$('bCopyV').onclick=e=>copyText(sheetTSV(false),e.currentTarget,'Copy values');
+$('bCopyF').onclick=e=>copyText(sheetTSV(true),e.currentTarget,'Copy with Formulas');
+$('bCopyV').onclick=e=>copyText(sheetTSV(false),e.currentTarget,'Copy Values');
 
 /* goal seek */
 $('bGoal').onclick=()=>{const p=$('gsPanel');p.hidden=!p.hidden;if(!p.hidden){const sh=cur();
@@ -1509,18 +1532,31 @@ const REF=[
   ['Contractual break-even','Break-even under the contract’s own cost rules','Profit-sharing contracts (Forrest Gump)','Treating “overhead” as fixed; check if it is a % of revenue','gump','bebo']
 ];
 function renderRef(){
-  let h=`<div class="notebox"><h3>How to use this workbook</h3><ul>
+  let h=`<div class="notebox"><h3>How to Use This Workbook</h3><ul>
   <li>Each case is a live sheet. <b style="color:var(--input)">Blue</b> cells are inputs; change them and every formula updates, like Excel.</li>
   <li>Click any result to see its formula three ways: cell references, in words, and with the numbers. Cells it uses are shaded.</li>
-  <li><b>Practice mode</b> hides worked answers. Type your own answer (or a formula) and it is checked instantly. Use it to drill for the paper exam.</li>
+  <li><b>Practice Mode</b> hides worked answers. Type your own answer (or a formula) and it is checked instantly. Use it to drill for the paper exam.</li>
   <li>Type a formula starting with <span class="kbd">=</span>. While typing, click a cell to insert its address. <span class="kbd">Enter</span> commits, arrows move, <span class="kbd">Ctrl</span>+<span class="kbd">\`</span> shows formulas.</li>
-  <li><b>Copy with formulas</b> pastes straight into Excel at cell A1. Your edits stay in this browser only.</li></ul></div>
-  <div class="tablewrap"><table class="ref"><thead><tr><th scope="col">Formula or rule</th><th scope="col">Meaning</th><th scope="col">Use when</th><th scope="col">Common mistake</th><th scope="col">Live cell</th></tr></thead><tbody>`;
-  REF.forEach(r=>{if(r.length===1){h+=`<tr class="grp"><td colspan="5">${esc(r[0])}</td></tr>`;return}
-    const a=nameAddr(r[4],r[5]);h+=`<tr><td class="f">${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td><td>${a?`<button class="chipbtn" data-os="${r[4]}" data-oa="${a}">${esc(SH[r[4]].def.title)} ${a}</button>`:''}</td></tr>`});
+  <li><b>Copy with Formulas</b> pastes straight into Excel at cell A1. Your edits stay in this browser only.</li></ul></div>
+  <div class="tablewrap"><table class="ref"><thead><tr><th scope="col">Formula or Rule</th><th scope="col">Meaning</th><th scope="col">Use When</th><th scope="col">Common Mistake</th><th scope="col">Live Cell</th></tr></thead><tbody>`;
+  REF.forEach(r=>{if(r.length===1){h+=`<tr class="grp"><td colspan="5">${esc(titleCase(r[0]))}</td></tr>`;return}
+    const a=nameAddr(r[4],r[5]);h+=`<tr><td class="f">${esc(titleCase(r[0]))}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td><td>${a?`<button class="chipbtn" data-os="${r[4]}" data-oa="${a}">${esc(SH[r[4]].def.title)} ${a}</button>`:''}</td></tr>`});
   h+='</tbody></table></div>';
+  h+=`<div class="notebox refs"><h3>References</h3><ol>${CITES.map((c,i)=>`<li id="ref-${i+1}">${c}</li>`).join('')}</ol></div>`;
   $('special').innerHTML=h;
 }
+const CITES=[
+  'Drymiotes, G. (2026a). <i>Concepts and foundations: Framing cost concepts for strategic and operational decision-making</i> [Lecture slides, ACCT 65023, Session 1]. Neeley School of Business, Texas Christian University.',
+  'Drymiotes, G. (2026b). <i>Session 1 class workbook</i> [Unpublished Excel workbook, ACCT 65023]. Neeley School of Business, Texas Christian University.',
+  'Drymiotes, G. (2026c). <i>TCU Pediatrics: What does growth really cost?</i> [Class case, ACCT 65023, Session 1]. Neeley School of Business, Texas Christian University.',
+  'Drymiotes, G. (2026d). <i>AI hands-on: Which costs move with visits?</i> [Class exercise, ACCT 65023, Session 1]. Neeley School of Business, Texas Christian University.',
+  'Drymiotes, G. (2026e). <i>Amethyst: Which costs matter?</i> [Class exercise, ACCT 65023, Session 1]. Neeley School of Business, Texas Christian University.',
+  '<i>Phelps Industries</i> [Case study]. (n.d.). Assigned in ACCT 65023, Neeley School of Business, Texas Christian University.',
+  'Drymiotes, G. (2026f). <i>Cost-volume-profit (CVP) analysis</i> [Lecture slides, ACCT 65023, Session 2]. Neeley School of Business, Texas Christian University.',
+  'Drymiotes, G. (2026g). <i>Session 2 class workbook</i> [Unpublished Excel workbook, ACCT 65023]. Neeley School of Business, Texas Christian University.',
+  '<i>Forrest Gump: Management accounting at the movies</i> [Case study]. (n.d.). Assigned in ACCT 65023, Neeley School of Business, Texas Christian University.',
+  'Wisner, P. S. (2011). À Votre Santé: Product costing and decision analysis in the wine industry. <i>IMA Educational Case Journal, 4</i>(2), Article 1.'
+];
 $('special').addEventListener('click',e=>{const b=e.target.closest('[data-os]');if(b)openSheet(b.dataset.os,b.dataset.oa)});
 
 /* classify (Amethyst) */
@@ -1540,12 +1576,12 @@ const CLS=[
 ];
 function renderClassify(){
   const opt=(arr,val)=>arr.map(o=>`<option${o===val?' selected':''}>${o}</option>`).join('');
-  let h=`<div class="notebox"><h3>The assumption that decides relevance</h3><p style="margin:0">Do Saturday patients move to weekdays, or are they lost? If lost, the biggest relevant item is the contribution from those visits (revenue minus provider pay and supplies). If they move, most of that revenue is kept and few costs change at all.</p></div>
-  <div class="toolbar"><button class="btn" id="cCheck" aria-pressed="${ST.clsShow}">${ST.clsShow?'Hide suggested answers':'Check against suggested answers'}</button><button class="btn" id="cClear">Clear my answers</button><span class="score" id="cScore"></span></div>
-  <div class="tablewrap"><table class="ref"><thead><tr><th scope="col">Cost</th><th scope="col">Behavior with visits</th><th scope="col">Direct or indirect to a visit</th><th scope="col">Relevant to dropping Saturdays?</th>${ST.clsShow?'<th scope="col">Suggested answer and assumption</th>':''}</tr></thead><tbody>`;
+  let h=`<div class="notebox"><h3>The Assumption That Decides Relevance</h3><p style="margin:0">Do Saturday patients move to weekdays, or are they lost? If lost, the biggest relevant item is the contribution from those visits (revenue minus provider pay and supplies). If they move, most of that revenue is kept and few costs change at all.</p></div>
+  <div class="toolbar"><button class="btn" id="cCheck" aria-pressed="${ST.clsShow}">${ST.clsShow?'Hide Suggested Answers':'Check Against Suggested Answers'}</button><button class="btn" id="cClear">Clear My Answers</button><span class="score" id="cScore"></span></div>
+  <div class="tablewrap"><table class="ref"><thead><tr><th scope="col">Cost</th><th scope="col">Behavior with Visits</th><th scope="col">Direct or Indirect to a Visit</th><th scope="col">Relevant to Dropping Saturdays?</th>${ST.clsShow?'<th scope="col">Suggested Answer and Assumption</th>':''}</tr></thead><tbody>`;
   let ok=0,tot=0;
   CLS.forEach((c,i)=>{const a=ST.cls[i]||{};const chk=(k,keyArr)=>{if(!ST.clsShow||!a[k])return'';tot++;const good=keyArr.includes(a[k]);if(good)ok++;return good?'okc':'noc'};
-    h+=`<tr><td class="f">${i+1}. ${esc(c[0])}</td>
+    h+=`<tr><td class="f">${i+1}. ${esc(titleCase(c[0]))}</td>
       <td class="${chk('b',c[1])}"><select id="cb${i}" data-i="${i}" data-k="b" aria-label="Behavior">${opt(['','V','F','Step','M','—'],a.b)}</select></td>
       <td class="${chk('d',c[2])}"><select id="cd${i}" data-i="${i}" data-k="d" aria-label="Direct or indirect">${opt(['','Direct','Indirect'],a.d)}</select></td>
       <td class="${chk('r',c[3])}"><select id="cr${i}" data-i="${i}" data-k="r" aria-label="Relevant">${opt(['','Y','N','D'],a.r)}</select></td>
