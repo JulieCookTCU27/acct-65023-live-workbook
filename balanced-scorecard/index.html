@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Amethyst Pediatric Therapy Balanced Scorecard</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#faf9fb;--surface:#fff;--ink:#1c1b1f;--ink2:#45434b;--ink3:#6e6b76;--line:#e3e1e8;--line2:#c8c5d0;--brand:#4d1979;--brandfill:#4d1979;--brand2:#7b52a0;--tint:#f5f1f9;--tint2:#eae2f1;--good:#1e6b45;--goodbg:#e6f2eb;--bad:#9b3b2e;--badbg:#f9eae7;--warn:#8a6d1f;--warnbg:#faf3de;--none:#6e6b76;--nonebg:#efeef2;--font:"Inter",Calibri,"Segoe UI",sans-serif}
+@media (prefers-color-scheme:dark){:root{--bg:#141218;--surface:#1c1a21;--ink:#ece9f1;--ink2:#c9c5d1;--ink3:#a29eab;--line:#34303b;--line2:#4b4654;--brand:#cdb6ea;--brandfill:#5d2a8f;--brand2:#b394da;--tint:#241d2d;--tint2:#30263c;--good:#86d3a8;--goodbg:#17352a;--bad:#f2a596;--badbg:#3d2320;--warn:#e3c46d;--warnbg:#352d16;--none:#a29eab;--nonebg:#26232c}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5}
+.page{max-width:1180px;margin:0 auto;padding:20px 16px 56px}
+header{border-bottom:2px solid var(--brand);padding-bottom:12px;margin-bottom:14px}
+.mark{color:var(--brand);font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:14px}
+h1{margin:2px 0 4px;font-size:28px;line-height:1.15}
+h2{font-size:22px;margin:34px 0 4px;padding-top:6px}
+h2 .n{color:var(--brand);margin-right:6px}
+h3{font-size:18px;margin:18px 0 6px}
+.sub{color:var(--ink2);margin:0 0 10px;max-width:84ch}
+nav.steps{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0}
+nav.steps a{border:1px solid var(--line2);border-radius:999px;padding:3px 12px;color:var(--ink);text-decoration:none;background:var(--surface)}
+nav.steps a:hover{background:var(--tint)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px;margin:10px 0}
+.strat{border-left:4px solid var(--brand);background:var(--tint)}
+.tw{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:6px}
+table{border-collapse:collapse;width:100%}
+th{background:var(--brandfill);color:#fff;text-align:left;padding:8px 10px;font-weight:600;white-space:nowrap}
+td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr.grp td{background:var(--tint);color:var(--brand);font-weight:700}
+td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill{display:inline-block;border-radius:999px;padding:0 9px;font-size:13px;font-weight:700;white-space:nowrap}
+.lead{background:var(--tint2);color:var(--brand)}.lag{background:var(--nonebg);color:var(--ink2)}
+.yours{background:var(--warnbg);color:var(--warn)}.new{background:var(--goodbg);color:var(--good)}.added{background:var(--badbg);color:var(--bad)}
+.st{display:inline-flex;align-items:center;gap:6px;font-weight:700;white-space:nowrap}
+.st i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.on{color:var(--good)}.on i{background:var(--good)}
+.close{color:var(--warn)}.close i{background:var(--warn)}
+.off{color:var(--bad)}.off i{background:var(--bad)}
+.nv{color:var(--none)}.nv i{background:var(--line2)}
+input.ed{width:96px;border:1px solid var(--line2);border-radius:6px;padding:4px 6px;font:inherit;text-align:right;background:var(--surface);color:#1f4fb0}
+@media (prefers-color-scheme:dark){input.ed{color:#93b4ff}}
+.ctl{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin:8px 0}
+.btn{border:1px solid var(--line2);background:var(--surface);color:var(--ink);border-radius:6px;padding:5px 12px;cursor:pointer;font:inherit}
+.btn:hover{background:var(--tint)}
+.btn[aria-pressed=true]{background:var(--brandfill);border-color:var(--brandfill);color:#fff}
+.map{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px}
+.map svg{width:100%;height:auto;display:block}
+.arw{cursor:pointer}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;color:var(--ink2);font-size:14px;margin-top:6px}
+ol.why{margin:0;padding-left:0;list-style:none;display:grid;gap:6px}
+ol.why li{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 12px}
+ol.why li.hl{border-color:var(--brand2);background:var(--tint)}
+ol.why b{color:var(--brand)}
+.unsure{background:var(--warnbg);border-radius:4px;padding:2px 6px;margin-top:4px;display:block;color:var(--ink)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.kpi .l{color:var(--ink3);font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.kpi .v{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums}
+.flag{border-left:4px solid var(--warn)}
+ul{margin:4px 0;padding-left:22px}
+li{margin:3px 0}
+pre.prompt{white-space:pre-wrap;background:var(--tint);border:1px solid var(--line);border-radius:6px;padding:12px 14px;font-family:var(--font);font-size:15px;margin:6px 0;max-height:420px;overflow:auto}
+.note{color:var(--ink3);font-size:14px}
+footer{margin-top:36px;color:var(--ink3);font-size:14px;border-top:1px solid var(--line);padding-top:10px}
+</style>
+</head>
+<body>
+<div class="page">
+<header>
+  <div class="mark">ACCT 65023 · Session 6 · AI Activities</div>
+  <h1>Amethyst Pediatric Therapy: Balanced Scorecard</h1>
+  <div class="card strat"><b>Strategy.</b> To be the practice Medicaid families trust: top-quality care, appointments we keep, and the same therapist every time.<br><span class="note">Two clinics; speech-language, occupational and feeding therapy; most patients covered by Medicaid. One map covers both clinics.</span></div>
+  <nav class="steps" aria-label="Stages">
+    <a href="#map">1 · Strategy Map</a><a href="#measures">2 · Measures</a><a href="#numbers">3 · Numbers</a><a href="#test">4 · Test It and Get Started</a><a href="#checks">Data Checks</a><a href="#prompts">Improved Prompts</a>
+  </nav>
+</header>
+
+<h2 id="map"><span class="n">1</span>Strategy Map</h2>
+<p class="sub">Read from the bottom up: achieving the lower objective is expected to help achieve the upper one. Each box is colored by the worst status of its measures in stage 3. Pick a promise to trace its path, or click an arrow to read why it is there.</p>
+<div class="ctl" id="promises">
+  <button class="btn" data-p="all" aria-pressed="true">All Arrows</button>
+  <button class="btn" data-p="q">Top-Quality Care</button>
+  <button class="btn" data-p="a">Appointments We Keep</button>
+  <button class="btn" data-p="s">The Same Therapist Every Time</button>
+</div>
+<div class="map" id="mapbox"></div>
+<div class="legend"><span><span class="st on"><i></i></span>On Target</span><span><span class="st close"><i></i></span>Close</span><span><span class="st off"><i></i></span>Off Target</span><span><span class="st nv"><i></i></span>No Value Yet</span><span>Dashed arrows (6 and 9): the two least certain links</span></div>
+<h3>Why Each Arrow</h3>
+<ol class="why" id="why"></ol>
+
+<h2 id="measures"><span class="n">2</span>Measures</h2>
+<p class="sub"><b>Lagging</b>: a result that tells you after the fact whether the objective was met. <b>Leading</b>: a driver that moves first and predicts the result. The label is relative to the measure’s own objective. Every measure has one owner who can influence it, and a note on how it could be gamed.</p>
+<div class="tw"><table id="tMeas"></table></div>
+<div class="legend"><span><span class="pill yours">Yours</span> supplied by the practice</span><span><span class="pill new">New</span> suggested in the course demo</span><span><span class="pill added">Added</span> added here: Keep the Appointments had no leading measure</span></div>
+
+<h2 id="numbers"><span class="n">3</span>Numbers: Baselines, Targets and Status</h2>
+<p class="sub">Baselines are the January–April figures. Every target is an assumption to reach within about a year; both targets and current values are editable, and status, the map and the summary update as you type. Edits stay on this page only.</p>
+<div class="ctl"><label>Close Means Within <input class="ed" id="band" type="number" value="5" min="0" step="1" style="width:70px">% of Target</label><span class="note">Operating result: close means a loss under $500 a month.</span><button class="btn" id="reset">Reset to Baselines</button></div>
+<div class="grid2" id="summary"></div>
+<div class="tw" style="margin-top:10px"><table id="tNum"></table></div>
+
+<h3>How the Financial Numbers Tie Together</h3>
+<div class="card" id="tie"></div>
+
+<h2 id="test"><span class="n">4</span>Test It and Get Started</h2>
+<div class="card flag">
+<h3 style="margin-top:0">The Weakest Link: Arrow 9, Families’ Trust → Filled Hours</h3>
+<p style="margin:0 0 6px">The map assumes trust turns into attendance. But Medicaid families often miss visits for reasons trust cannot fix: transport, shift work, illness. Trust can rise while visits stay flat.</p>
+<p style="margin:0 0 6px"><b>Evidence over six months that it isn’t working:</b> recommend scores and fourth-visit rates rise, but family cancellations and no-shows stay near 20.8% of bookings and therapist hours delivered stay near 67%. Check the reasons coded on each family cancellation: if most are transport or work, the fix is logistics (telehealth, evening slots, ride help), not trust.</p>
+<p style="margin:0"><b>The measure most likely to improve while the strategy fails:</b> scheduled visits completed. It rises if schedulers book fewer visits for families who often cancel, or quietly rebook cancellations, while children get less therapy. Watch it beside total completed visits and the share of children who reach a fourth visit.</p>
+</div>
+<h3>Your First 90 Days</h3>
+<div class="tw"><table>
+<tr><th>Start With</th><th>Why</th><th>Data You Probably Have</th><th>Owner</th></tr>
+<tr><td><b>Completed visits vs. break-even</b> (F2, leading)</td><td>The practice loses about $4,594 a month. Each visit short of about 3,020 costs roughly $31 of contribution.</td><td>Scheduling and billing system; the Jan–Apr counts already exist.</td><td>Practice director</td></tr>
+<tr><td><b>Scheduled visits completed, split by who cancelled</b> (P1, lagging)</td><td>26.9% of bookings are lost today. The split tells you whether to fix staffing (6.1%) or family access (20.8%).</td><td>EMR cancellation codes.</td><td>Scheduling lead</td></tr>
+<tr><td><b>Children with 4+ visits who saw one therapist</b> (P2, lagging)</td><td>36.5% against a promise of “the same therapist every time” is the biggest gap between strategy and practice.</td><td>Appointment records by child and therapist.</td><td>Scheduling lead</td></tr>
+</table></div>
+<div class="card"><b>First monthly meeting.</b>
+<ul>
+<li>Agree each measure’s exact definition (numerator, denominator, period) and confirm the Jan–Apr baselines.</li>
+<li>Replace the assumed targets with ones the owners accept as stretching but reachable (the Tri-Cities lesson: Branch E’s targets were met in two months, and nothing changed).</li>
+<li>Pick one action per measure: for example, confirmation calls two days ahead (P1) and standing weekly slots with a named therapist (P2).</li>
+<li>Decide by day 60 how to start the family survey (C1) and the staff pulse survey (L1), so leading measures exist before the next review.</li>
+<li>Keep incentives off the scorecard until definitions and baselines have held for a quarter.</li>
+</ul></div>
+
+<h2 id="checks">Data Checks</h2>
+<div class="card">
+<ul>
+<li><b>Break-even ties out.</b> Average visits Jan–Apr are (2,338 + 2,931 + 3,220 + 3,004) ÷ 4 = 2,873.25, matching the Session 1 data. A loss of $4,594 on 146.75 visits short of break-even implies about $31.30 of contribution per visit, and $95,000 of fixed clinic costs ÷ 3,020 visits = $31.46. The two figures agree within rounding.</li>
+<li><b>Scheduled visits completed (73.1%)</b> is worked out as 100% − 20.8% − 6.1%. It assumes cancellations and no-shows are the only reasons a booking is not completed. Confirm it against the EMR.</li>
+<li><b>Turnover is a four-month figure.</b> 2 of 25 in four months is 8%, about 24% a year if the pace holds. Compare annual rates, not four-month ones, with industry figures.</li>
+<li><b>“Providers” read as therapists</b> in L1. If the 25 includes non-therapist providers, the measure needs rewording.</li>
+<li><b>Course demo:</b> the professor’s “all measures” and “numbers” pages show a second, empty row under Keep the Appointments We Schedule. Here it is filled with a leading measure, so every perspective now has a leading measure.</li>
+<li><b>Course content conflict:</b> slide 11 says non-financial measures lead; the Balanced Scorecard explainer says non-financial does not automatically mean leading. This page follows the explainer: leading or lagging is relative to each measure’s own objective.</li>
+</ul></div>
+
+<h2 id="prompts">Improved Prompts</h2>
+<p class="sub">The course prompts ask the AI to write its own prompt, then check it against a list. These versions put the checklist, the formulas and the tests into the prompt itself, so the first build already meets them. Fill in the brackets, paste, and the AI stops after each stage for you to check.</p>
+<h3>Balanced Scorecard, All Four Stages</h3>
+<div class="ctl"><button class="btn" data-copy="p1">Copy Prompt</button><span class="note" id="m-p1"></span></div>
+<pre class="prompt" id="p1"></pre>
+<h3>Variance Dashboard, One Pass</h3>
+<div class="ctl"><button class="btn" data-copy="p2">Copy Prompt</button><span class="note" id="m-p2"></span></div>
+<pre class="prompt" id="p2"></pre>
+<div class="card"><b>What changed from the course prompts</b>
+<ul>
+<li><b>Rules up front:</b> the scorecard checklist (two objectives per row, bottom-up arrows, at least one leading measure, owners who can influence the measure) is written into the prompt instead of being checked afterward.</li>
+<li><b>Exact definitions:</b> each measure must state its numerator, denominator and period, so the AI can’t invent a vague measure.</li>
+<li><b>Built-in tests:</b> every measure gets a gaming test (how it could improve while its objective gets worse), and every number is checked against the figures it should tie to.</li>
+<li><b>Fixed formulas:</b> the variance prompt states the course formulas and sign convention, so the AI can’t use a different market-share or price-variance convention. It also requires the reconciliation to tie out to $0.</li>
+<li><b>Stop after each stage:</b> the AI waits for you to check before going on. This keeps the course’s Ask, Check, Build rhythm in one prompt.</li>
+</ul></div>
+
+<footer>Sources: Drymiotes, G. (2026). <i>Session 6 AI activities</i> and <i>Amethyst scorecard (demo)</i>, stages 1–4 [Class materials, ACCT 65023]. Neeley School of Business, Texas Christian University. Amethyst January–April 2026 visit data from the Session 1 AI hands-on exercise. Kaplan, R. S., &amp; Norton, D. P. (2007). Using the balanced scorecard as a strategic management system. <i>Harvard Business Review, 85</i>(7/8).</footer>
+</div>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const OBJ={
+ F1:{t:['Fill the Therapist Hours','We Already Pay For'],row:'Financial'},
+ F2:{t:['Cover Our Costs at','Medicaid Rates'],row:'Financial'},
+ C1:{t:['Earn Families’ Trust, So They','Keep Coming and Recommend Us'],row:'Customer (Families)'},
+ C2:{t:['Help Each Child Make','Progress the Family Can See'],row:'Customer (Families)'},
+ P1:{t:['Keep the Appointments','We Schedule'],row:'Internal Processes'},
+ P2:{t:['Keep Each Child With','the Same Therapist'],row:'Internal Processes'},
+ L1:{t:['Keep the Therapists','We Have'],row:'Learning and Growth'},
+ L2:{t:['Build Therapists’ Clinical Skills','in Speech, OT and Feeding'],row:'Learning and Growth'}};
+const ARROWS=[
+ {n:1,f:'L1',to:'P1',d:'M310 380 L310 332',p:'a',why:'A fully staffed team cancels fewer visits, because there are fewer vacancies and handovers to cover.'},
+ {n:2,f:'L1',to:'P2',d:'M430 380 L655 332',p:'s',why:'A child can only keep the same therapist if that therapist stays with the practice.'},
+ {n:3,f:'L2',to:'C2',d:'M900 415 C960 415 960 175 902 175',p:'q',why:'Stronger clinical skills in each discipline are what turn a therapy visit into progress on the child’s goals.'},
+ {n:4,f:'P1',to:'C1',d:'M310 260 L310 212',p:'a',why:'Families who arrange work, school and transport around a visit come to trust a practice that does not cancel on them.'},
+ {n:5,f:'P2',to:'C1',d:'M660 260 L435 212',p:'s',why:'Seeing one familiar therapist lets the child and the parent build a relationship with a person, not only with a clinic.'},
+ {n:6,f:'P2',to:'C2',d:'M790 260 L790 212',p:'s',dash:1,why:'A therapist who knows the child can build on the last visit instead of starting over.',unsure:'Progress may depend more on the therapist’s skill and on practice at home than on seeing the same person, and holding a child for one therapist can mean fewer visits.'},
+ {n:7,f:'C2',to:'C1',d:'M600 175 L482 175',p:'q',why:'Progress a parent can see is the strongest reason to believe the care is good.'},
+ {n:8,f:'P1',to:'F1',d:'M180 295 C120 295 120 55 178 55',p:'a',why:'Every kept visit is a paid therapist hour that can be billed; a missed visit cannot be billed.'},
+ {n:9,f:'C1',to:'F1',d:'M330 140 L330 92',p:'all',dash:1,why:'Families who trust us keep attending and refer other families, which fills open hours.',unsure:'Medicaid families often miss visits because of transport, work shifts or illness, not because of how much they trust us, so trust can rise without attendance following.'},
+ {n:10,f:'F1',to:'F2',d:'M480 55 L598 55',p:'all',why:'With rates set by Medicaid, billing more of the hours we already pay for is the main way to cover our fixed costs.'}];
+// measures: dir up/down; fmt: pct, usd, n
+const M0=[
+ {id:'f2a',o:'F2',m:'Operating result per month (revenue less all operating costs)',ll:'Lagging',own:'Practice director',src:'',base:-4594,bt:'Loss of $4,594 a month (average)',tgt:0,dir:'up',fmt:'usd',game:'Improves by deferring maintenance or training while capability erodes.'},
+ {id:'f2b',o:'F2',m:'Completed visits per month, against the break-even number of visits',ll:'Leading',own:'Practice director',src:'new',base:2873,bt:'2,873 a month (break-even about 3,020)',tgt:3020,dir:'up',fmt:'n',game:'Rises with short, low-value visits; watch goals met (C2) alongside.'},
+ {id:'f1',o:'F1',m:'Therapist hours delivered, as a share of target hours',ll:'Lagging',own:'Clinic managers',src:'',base:67,bt:'67% of target hours',tgt:75,dir:'up',fmt:'pct',game:'Rises if target hours are cut rather than visits added.'},
+ {id:'c1a',o:'C1',m:'Families who say they would recommend us (short family survey)',ll:'Lagging',own:'Clinic managers',src:'',base:null,tgt:85,dir:'up',fmt:'pct',game:'Rises if only satisfied families are surveyed; survey every family at a set visit.'},
+ {id:'c1b',o:'C1',m:'New children who reach a fourth visit, as a share of children who start',ll:'Leading',own:'Clinic managers',src:'yours',base:null,tgt:80,dir:'up',fmt:'pct',game:'Rises if intake screens out families likely to drop out.'},
+ {id:'c2',o:'C2',m:'Plan-of-care goals met at each child’s re-evaluation (share of goals)',ll:'Lagging',own:'Clinical director',src:'',base:null,tgt:70,dir:'up',fmt:'pct',game:'Rises if therapists set easier goals; review goal-setting in case reviews.'},
+ {id:'p1a',o:'P1',m:'Scheduled visits completed (share of bookings), whoever cancelled',ll:'Lagging',own:'Scheduling lead',src:'',base:73.1,bt:'73.1% (100% − 20.8% − 6.1%)',tgt:80,dir:'up',fmt:'pct',game:'Rises if fewer visits are booked for families who often cancel.'},
+ {id:'p1b',o:'P1',m:'Visits confirmed with the family two days ahead (share of bookings)',ll:'Leading',own:'Scheduling lead',src:'added',base:null,tgt:90,dir:'up',fmt:'pct',game:'A logged call is not a confirmation; count only a family’s reply.'},
+ {id:'p2a',o:'P2',m:'Children with a standing weekly slot and a named therapist (share of children in care)',ll:'Leading',own:'Scheduling lead',src:'new',base:null,tgt:90,dir:'up',fmt:'pct',game:'A slot on paper does not mean the child sees that therapist; pair with P2 lagging.'},
+ {id:'p2b',o:'P2',m:'Children with four or more visits who saw a single therapist',ll:'Lagging',own:'Scheduling lead',src:'',base:36.5,bt:'36.5%',tgt:60,dir:'up',fmt:'pct',game:'Rises if a child waits for one therapist and misses visits (arrow 6).'},
+ {id:'l1a',o:'L1',m:'Providers who left in the last four months (of 25)',ll:'Lagging',own:'Practice director',src:'',base:2,bt:'2 of 25 in four months (≈24% a year)',tgt:1,dir:'down',fmt:'n',game:'Falls if leavers are relabeled as transfers or leave of absence.'},
+ {id:'l1b',o:'L1',m:'Therapists who say they expect to stay (short staff pulse survey)',ll:'Leading',own:'Practice director',src:'new',base:null,tgt:85,dir:'up',fmt:'pct',game:'Inflated if the survey is not anonymous.'},
+ {id:'l2',o:'L2',m:'Therapists who had a mentoring or case-review session this month (share of therapists)',ll:'Leading',own:'Clinical director',src:'',base:null,tgt:90,dir:'up',fmt:'pct',game:'Counts sessions, not skill; check against C2 goals met.'}];
+const W0={id:'w1',o:'—',m:'Days from referral to a child’s first visit',ll:'Leading',own:'Scheduling lead',src:'yours',base:null,tgt:30,dir:'down',fmt:'n',unit:'days',game:'Shortened fastest by booking whichever therapist is free, which works against the same-therapist promise.'};
+let M=JSON.parse(JSON.stringify(M0)),W=JSON.parse(JSON.stringify(W0));
+M.forEach(x=>x.cur=x.base);W.cur=W.base;
+let promise='all',selArrow=null;
+const fmtv=(v,f)=>v==null||v===''||isNaN(v)?'':f==='usd'?(v<0?'−$':'$')+Math.abs(v).toLocaleString('en-US'):f==='pct'?v+'%':v.toLocaleString('en-US');
+function status(x){
+  if(x.cur==null||x.cur===''||isNaN(x.cur))return'nv';
+  const band=(+$('band').value||0)/100,c=+x.cur,t=+x.tgt;
+  const met=x.dir==='up'?c>=t:c<=t;if(met)return'on';
+  const gap=Math.abs(c-t);const lim=x.fmt==='usd'&&t===0?500:Math.abs(t)*band;
+  return gap<=lim?'close':'off';
+}
+const SL={on:'On Target',close:'Close',off:'Off Target',nv:'No Value Yet'};
+const stHtml=s=>`<span class="st ${s}"><i></i>${SL[s]}</span>`;
+const rank={off:3,close:2,on:1,nv:0};
+function objStatus(o){const ss=M.filter(x=>x.o===o).map(status);const k=ss.filter(s=>s!=='nv');if(!k.length)return'nv';return k.sort((a,b)=>rank[b]-rank[a])[0]}
+
+function drawMap(){
+  const col={F1:[180,20],F2:[600,20],C1:[180,140],C2:[600,140],P1:[180,260],P2:[600,260],L1:[180,380],L2:[600,380]};
+  const fill={on:'var(--goodbg)',close:'var(--warnbg)',off:'var(--badbg)',nv:'var(--nonebg)'},stroke={on:'var(--good)',close:'var(--warn)',off:'var(--bad)',nv:'var(--line2)'};
+  let s=`<svg viewBox="0 0 1000 470" role="img" aria-label="Strategy map with four rows of objectives and ten cause-and-effect arrows"><defs>`;
+  ['ink3','brand','line2'].forEach(c=>s+=`<marker id="h-${c}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--${c})"/></marker>`);
+  s+=`</defs>`;
+  [['Financial',20],['Customer',140,'(Families)'],['Internal',260,'Processes'],['Learning',380,'and Growth']].forEach(([a,y,b])=>{s+=`<text x="10" y="${y+32}" font-size="15" font-weight="700" fill="var(--brand)">${a}</text>${b?`<text x="10" y="${y+52}" font-size="15" font-weight="700" fill="var(--brand)">${b}</text>`:''}`});
+  Object.entries(col).forEach(([k,[x,y]])=>{const st=objStatus(k);s+=`<rect x="${x}" y="${y}" width="300" height="70" rx="6" fill="${fill[st]}" stroke="${stroke[st]}" stroke-width="2"/><text x="${x+12}" y="${y+22}" font-size="13" font-weight="700" fill="var(--brand)">${k} · ${SL[st]}</text>${OBJ[k].t.map((t,i)=>`<text x="${x+12}" y="${y+42+i*18}" font-size="15" font-weight="600" fill="var(--ink)">${esc(t)}</text>`).join('')}`});
+  ARROWS.forEach(a=>{const on=promise==='all'||a.p===promise||a.p==='all';const hot=selArrow===a.n;const c=hot?'brand':on?'ink3':'line2';
+    s+=`<g class="arw" data-a="${a.n}" opacity="${on?1:.35}"><path d="${a.d}" fill="none" stroke="transparent" stroke-width="14"/><path d="${a.d}" fill="none" stroke="var(--${c})" stroke-width="${hot?3.5:2.2}" ${a.dash?'stroke-dasharray="4 3"':''} marker-end="url(#h-${c})"/></g>`;
+    const m=a.d.match(/-?\d+(\.\d+)?/g).map(Number);let lx,ly;if(a.d.includes('C')){lx=a.n===3?968:112;ly=a.n===3?300:180}else{lx=(m[0]+m[2])/2;ly=(m[1]+m[3])/2}
+    s+=`<g class="arw" data-a="${a.n}" opacity="${on?1:.35}"><circle cx="${lx}" cy="${ly}" r="11" fill="var(--surface)" stroke="var(--${c})" stroke-width="1.5"/><text x="${lx}" y="${ly+4.5}" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">${a.n}</text></g>`});
+  s+='</svg>';$('mapbox').innerHTML=s;
+  $('why').innerHTML=ARROWS.map(a=>`<li class="${selArrow===a.n?'hl':''}" id="w${a.n}"><b>${a.n} · ${a.f} → ${a.to}</b> ${esc(a.why)}${a.unsure?`<span class="unsure"><b>Least sure.</b> ${esc(a.unsure)}</span>`:''}</li>`).join('');
+}
+$('mapbox').addEventListener('click',e=>{const g=e.target.closest('[data-a]');if(!g)return;selArrow=+g.dataset.a===selArrow?null:+g.dataset.a;drawMap();if(selArrow)$('w'+selArrow).scrollIntoView({block:'nearest',behavior:'smooth'})});
+$('promises').addEventListener('click',e=>{const b=e.target.closest('[data-p]');if(!b)return;promise=b.dataset.p;$('promises').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));drawMap()});
+
+const persp=[['Financial',['F2','F1']],['Customer (Families)',['C1','C2']],['Internal Processes',['P1','P2']],['Learning and Growth',['L1','L2']]];
+const objName=o=>OBJ[o]?OBJ[o].t.join(' '):'None of the eight';
+const srcPill=s=>s?`<span class="pill ${s}">${s[0].toUpperCase()+s.slice(1)}</span>`:'';
+function drawMeasures(){
+  let h='<tr><th>Objective</th><th>Measure</th><th>Leading or Lagging</th><th>Owner</th><th>Could Improve While the Objective Worsens If…</th></tr>';
+  persp.forEach(([p,os])=>{h+=`<tr class="grp"><td colspan="5">${p}</td></tr>`;M.filter(x=>os.includes(x.o)).forEach(x=>{h+=`<tr><td><b>${x.o}</b> ${esc(objName(x.o))}</td><td>${esc(x.m)} ${srcPill(x.src)}</td><td><span class="pill ${x.ll==='Leading'?'lead':'lag'}">${x.ll}</span></td><td>${esc(x.own)}</td><td class="note">${esc(x.game)}</td></tr>`})});
+  h+=`<tr class="grp"><td colspan="5">Watched, Outside the Strategy</td></tr><tr><td>None of the eight</td><td>${esc(W.m)} ${srcPill(W.src)}</td><td><span class="pill lead">Leading</span></td><td>${esc(W.own)}</td><td class="note">Speed of access is not one of the three promises. ${esc(W.game)} Its target is a ceiling to stay under.</td></tr>`;
+  $('tMeas').innerHTML=h;
+}
+function drawNumbers(){
+  let h='<tr><th>Objective</th><th>Measure</th><th>Baseline (Jan–Apr)</th><th>Target (Edit)</th><th>Current (Edit)</th><th>Status</th></tr>';
+  const row=(x,i,arr)=>`<tr><td><b>${x.o}</b></td><td>${esc(x.m)}<br><span class="note">${x.ll} · ${esc(x.own)} · ${x.dir==='up'?'higher is better':'lower is better'}</span></td><td>${x.base==null?'<span class="note">Not measured yet</span>':esc(x.bt||fmtv(x.base,x.fmt))}</td><td><input class="ed" type="number" step="any" data-k="tgt" data-arr="${arr}" data-i="${i}" value="${x.tgt}" aria-label="Target for ${esc(x.m)}"> <span class="note">${x.fmt==='pct'?'%':x.fmt==='usd'?'$/mo':x.unit||''}</span><br><span class="pill yours" style="font-weight:600">Assumption</span></td><td><input class="ed" type="number" step="any" data-k="cur" data-arr="${arr}" data-i="${i}" value="${x.cur??''}" aria-label="Current for ${esc(x.m)}"></td><td id="st-${arr}-${i}">${stHtml(status(x))}</td></tr>`;
+  persp.forEach(([p,os])=>{h+=`<tr class="grp"><td colspan="6">${p}</td></tr>`;M.forEach((x,i)=>{if(os.includes(x.o))h+=row(x,i,'M')})});
+  h+=`<tr class="grp"><td colspan="6">Watched, Outside the Strategy</td></tr>`+row(W,0,'W');
+  $('tNum').innerHTML=h;
+}
+function refresh(){
+  M.forEach((x,i)=>{const c=$('st-M-'+i);if(c)c.innerHTML=stHtml(status(x))});$('st-W-0').innerHTML=stHtml(status(W));
+  const cnt={on:0,close:0,off:0,nv:0};M.forEach(x=>cnt[status(x)]++);
+  $('summary').innerHTML=persp.map(([p,os])=>{const ss=M.filter(x=>os.includes(x.o)).map(status);const c={on:0,close:0,off:0,nv:0};ss.forEach(s=>c[s]++);
+    return `<div class="card kpi"><div class="l">${p}</div><div style="display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:4px">${['on','close','off','nv'].filter(k=>c[k]).map(k=>`<span class="st ${k}"><i></i>${c[k]} ${SL[k]}</span>`).join('')}</div></div>`}).join('')+
+   `<div class="card kpi"><div class="l">All 13 Measures</div><div class="v">${cnt.on} <span class="on" style="font-size:16px">on</span> · ${cnt.close} <span class="close" style="font-size:16px">close</span> · ${cnt.off} <span class="off" style="font-size:16px">off</span></div><div class="note">${cnt.nv} not measured yet</div></div>`;
+  const v=M.find(x=>x.id==='f2b'),r=M.find(x=>x.id==='f2a');const cm=4594/(3020-2873.25);
+  const short=(+v.tgt)-(+v.cur||0);
+  $('tie').innerHTML=`<p style="margin:0 0 6px">Arrows 8 → 10 in numbers. At baseline the practice is <b>146.75 visits a month short of break-even</b> (3,020 − 2,873.25) and loses <b>$4,594</b>. That implies about <b>$${cm.toFixed(2)} of contribution per visit</b>, close to $95,000 of fixed clinic costs ÷ 3,020 = $31.46.</p>
+  <p style="margin:0">At the current value you entered (${(+v.cur||0).toLocaleString()} visits), the predicted operating result is <b>${fmtv(Math.round(-short*cm),'usd')}</b> a month${r.cur!=null&&r.cur!==''?`; you entered <b>${fmtv(+r.cur,'usd')}</b>. A large difference means price, mix or costs changed, not just volume.`:'.'} Winning back 1 point of the 26.9% of bookings lost today adds roughly ${Math.round(2873.25/0.731*0.01)} visits, or about $${Math.round(2873.25/0.731*0.01*cm).toLocaleString()} a month.</p>`;
+  drawMap();
+}
+$('tNum').addEventListener('input',e=>{const t=e.target;if(!t.dataset.k)return;const x=t.dataset.arr==='W'?W:M[+t.dataset.i];x[t.dataset.k]=t.value===''?null:+t.value;refresh()});
+$('band').addEventListener('input',refresh);
+$('reset').onclick=()=>{M=JSON.parse(JSON.stringify(M0));W=JSON.parse(JSON.stringify(W0));M.forEach(x=>x.cur=x.base);W.cur=W.base;drawNumbers();refresh()};
+
+$('p1').textContent=`You are a management accountant helping me build a balanced scorecard (Kaplan and Norton) for my unit. Work in four stages. After each stage, show the page and stop so I can check it before you go on.
+
+My unit: [type of organization and the unit you work in]
+Our strategy in one sentence: [who we serve and how we win]
+Figures I have: [any current numbers, one per line, or "none yet"]
+Measures I already think matter: [one per line, or "none"]
+
+Rules for every stage:
+• Use only what I tell you. Label every assumption, and list them at the bottom of the page.
+• Leave out confidential details. Keep one page and add to it at each stage. Show it as a working page, not code.
+
+Stage 1, strategy map:
+• Restate the strategy as a choice: who we serve, what we promise them, and one thing we will not do.
+• Four rows, top to bottom: Financial, Customer, Internal process, Learning and growth. No more than two objectives per row, and each must trace to a phrase in the strategy sentence, not fit any organization.
+• Arrows from the bottom up, numbered. Under the map, one sentence per arrow saying why. Draw the two least certain links dashed and explain the doubt.
+• Show which arrows carry each promise in the strategy.
+• No measures or numbers yet.
+
+Stage 2, measures:
+• One measure per objective first, then up to three per perspective, with at least one leading measure in every perspective.
+• For each measure: an exact definition (numerator, denominator, period); leading or lagging relative to its own objective; one owning role that can actually influence it; the data source we probably already have; and how it could improve while its objective gets worse.
+• Place my measures where they fit. Put any that fit no objective under "Watched, outside the strategy" and say why.
+• Tell me which measure you would drop, and why.
+
+Stage 3, numbers:
+• For each measure: a baseline from my figures (otherwise "Not measured yet"), a target labeled as an assumption with one line of reasoning, and an editable target and current value.
+• Show whether higher or lower is better. Status: On target / Close (within 5%, editable) / Off target / No value yet, shown as a color and a word.
+• Color each map box by the worst status of its measures.
+• Show any arithmetic that links measures, and check that the figures tie out.
+
+Stage 4, test it and get started:
+• Name the weakest link, the evidence over six months that would show it failing, and the measure most likely to improve while the strategy fails (under 200 words).
+• Then a one-page 90-day plan: the two or three measures to start with and why, the data we already have, owners, and the agenda for the first monthly meeting.
+
+Start with stage 1 only.`;
+$('p2').textContent=`Build a one-page variance dashboard from the two files I'm attaching: our budget and our actual results. Use only the numbers in the files; if something needed is missing, say what and stop. Show it as a working page, not code.
+
+Conventions:
+• Every variance is signed by its effect on profit: favorable (F) raises profit, unfavorable (U) lowers it.
+• Flexible budget = budgeted prices and costs × actual volume; fixed costs do not flex.
+
+Sections, in order:
+1. The gap to explain: budget, actual and difference for each line, including volume, with F/U.
+2. Three columns (original budget, flexible budget, actual) with the sales-volume variance between the first two and the flexible-budget variance between the last two.
+3. If the files give market size, split the sales-volume variance:
+   • Market-size variance = (actual market − budgeted market) × budgeted share × budgeted unit contribution
+   • Market-share variance = (actual share − budgeted share) × actual market × budgeted unit contribution
+   Show both markets and both shares in a small table.
+4. Flexible-budget variance detail:
+   • Sales-price variance = (actual − budgeted price) × actual units
+   • For each variable cost: quantity variance = (allowed input for actual units − actual input) × budgeted input price; price variance = (budgeted − actual input price) × actual input
+   • Fixed-cost spending variance = budgeted − actual fixed costs
+   Show an as-if budget (actual input × budgeted price) between the flexible budget and actual.
+5. A variance list: each variance with its amount, % of its budgeted line, and one plain sentence on what it tells a manager and whom to ask. Highlight any variance over $10,000 or over 10% of budget, with both limits editable on the page and a "show only flagged" option.
+6. Click any variance to show its formula with the numbers filled in.
+7. Profit reconciliation from budgeted to actual profit, one variance per line, flexible-budget profit as a subtotal, plus a waterfall chart of the same steps. Show a check that the steps sum to actual profit with $0 difference.
+8. Upload buttons for a new budget file and a new actual file in the same layout, rebuilding everything from them.`;
+document.querySelectorAll('[data-copy]').forEach(b=>b.onclick=async()=>{const id=b.dataset.copy,txt=$(id).textContent,m=$('m-'+id);
+  try{await navigator.clipboard.writeText(txt);m.textContent='Copied.'}catch(e){const r=document.createRange();r.selectNodeContents($(id));const s=getSelection();s.removeAllRanges();s.addRange(r);m.textContent='Selected. Press Ctrl+C (Cmd+C on Mac) to copy.'}
+  setTimeout(()=>m.textContent='',3000)});
+
+drawMeasures();drawNumbers();refresh();
+</script>
+</body>
+</html>
