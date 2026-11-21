@@ -405,7 +405,7 @@ const DEFS=[];const def=d=>DEFS.push(d);
 
 /* ---------------- Reference (formula sheet) ---------------- */
 def({id:'ref',tab:'Formula_Sheet',group:'Start here',title:'Formula sheet',sub:'Formulas, rules and references',kind:'ref',
-  intro:'Each formula from Sessions 1–2 in course terminology, when to use it, and the most common mistake. Click a cell link to open the live calculation. Sources are listed under References at the end of this page.'});
+  intro:'Each formula from Sessions 1, 2 and 6 in course terminology, when to use it, and the most common mistake. Click a cell link to open the live calculation. Sources are listed under References at the end of this page.'});
 
 /* ---------------- SESSION 1 ---------------- */
 def({id:'tcu',tab:'TCU_Pediatrics',group:'Session 1 · Concepts',title:'TCU Pediatrics',sub:'Opportunity cost',
@@ -1068,6 +1068,149 @@ def({id:'avs3',tab:'AVS_Q3',group:'Session 2 · À Votre Santé',title:'AVS Q3: 
     T('Blanc de Blanc carries little lab and supervision time but a full $5 of tax and distributor fees on an $11 bottle. Before dropping any wine, ask which of its assigned costs would actually go away.')
   ]});
 
+/* ---------------- SESSION 6 ---------------- */
+def({id:'hosp',tab:'Hospitality_Inns',group:'Session 6 · Responsibility Accounting',title:'Hospitality Inns',sub:'ROI · RI · the upgrade',
+  intro:'Three motels run as investment centers. ROI divides income by assets; RI subtracts a 12% charge for the assets. Then test the San Francisco upgrade: it earns more than the 12% the company requires, yet it lowers the manager’s ROI.',
+  cite:[11,12],
+  qs:[{q:'ROI for each motel, and the check ROI = return on sales × asset turnover',a:['roi@B','roi@C','roi@D','chk@B']},{q:'RI for each motel at a 12% required return',a:['ri@B','ri@C','ri@D']},{q:'San Francisco: ROI and RI before and after the upgrade',a:['uroi@C','uri@C','uri@D']},{q:'Predict the manager’s response under each measure',a:['droi','dri']},{q:'Sensitivity: set added income to $40,000. What changes?',a:['addi']}],
+  rows:[
+    H('Exhibit 1 · annual data'),
+    C('San Francisco','Chicago','New Orleans','Total'),
+    R('Motel revenues',[1200000,1400000,3185000,'=SUM({rev@B}:{rev@D})'],{n:'rev',f:'$0'}),
+    R('Variable costs',[310000,375000,995000,'=SUM({vc@B}:{vc@D})'],{n:'vc',f:'$0'}),
+    R('Fixed costs',[650000,725000,1680000,'=SUM({fc@B}:{fc@D})'],{n:'fc',f:'$0'}),
+    R('Operating income',rep('={rev@}-{vc@}-{fc@}',4),{n:'oi',f:'$0',k:'total',m:'Revenue − variable − fixed. Interest and taxes are not charged to the motels'}),
+    R('Current assets',[400000,500000,600000,'=SUM({ca@B}:{ca@D})'],{n:'ca',f:'$0'}),
+    R('Long-term assets',[600000,1500000,2400000,'=SUM({la@B}:{la@D})'],{n:'la',f:'$0'}),
+    R('Total assets (average book value)',rep('={ca@}+{la@}',4),{n:'ta',f:'$0',k:'total'}),
+    R('Required return',{v:0.12,n:'rr'},{f:'%0'}),
+    H('Company level (not used for motel evaluation)'),
+    R('Interest on long-term debt (10% × $4.5m)',{v:450000,n:'int'},{f:'$0'}),
+    R('Income before taxes',{v:'={oi@E}-{int}',n:'ebt'},{f:'$0'}),
+    R('Income taxes at 30%',{v:'=0.3*{ebt}',n:'tax'},{f:'$0'}),
+    R('Net income',{v:'={ebt}-{tax}'},{f:'$0',k:'total'}),
+    H('ROI = operating income ÷ total assets'),
+    C('San Francisco','Chicago','New Orleans'),
+    R('Return on sales (ROS)',rep('={oi@}/{rev@}'),{n:'ros',f:'%1',m:'Operating income ÷ revenue: how much of each sales dollar is kept'}),
+    R('Asset turnover',rep('={rev@}/{ta@}'),{n:'tov',f:'x2',m:'Revenue ÷ total assets: how hard the assets work'}),
+    R('ROI',rep('={oi@}/{ta@}'),{n:'roi',f:'%1',k:'total',why:'ROI scales income by the investment that produced it, so units of different size can be compared.',mis:'Ranking by operating income alone. New Orleans earns the most, but it also uses three times San Francisco’s assets.'}),
+    R('Check: ROS × turnover',rep('={ros@}*{tov@}'),{n:'chk',f:'%1',m:'DuPont split: same answer as ROI'}),
+    H('RI = operating income − required return × total assets'),
+    R('Capital charge',rep('={rr}*{ta@}'),{n:'cc',f:'$0',m:'12% × total assets'}),
+    R('Residual income (RI)',rep('={oi@}-{cc@}'),{n:'ri',f:'$0',k:'total',why:'RI is the dollar income left after covering the cost of the capital tied up in the unit.',mis:'Using different income or asset figures for ROI and RI. Use the same operating income and total assets for both.'}),
+    T('Rankings differ: by ROI, San Francisco (24%) leads; by RI, New Orleans ($150,000) leads. ROI favors small, high-return units; RI favors units that add the most dollars above the charge.'),
+    H('San Francisco: approve the upgrade?'),
+    R('Additional assets',{v:400000,n:'adda'},{f:'$0'}),
+    R('Additional annual operating income',{v:70000,n:'addi'},{f:'$0',m:'Sensitivity: type 40000, then restore 70000'}),
+    C('Before','With upgrade','Change'),
+    R('Operating income',['={oi@B}','={ub@B}+{addi}','={ub@C}-{ub@B}'],{n:'ub',f:'$0'}),
+    R('Total assets',['={ta@B}','={uta@B}+{adda}','={uta@C}-{uta@B}'],{n:'uta',f:'$0'}),
+    R('ROI',['={ub@B}/{uta@B}','={ub@C}/{uta@C}',{v:'={uroi@C}-{uroi@B}',n:'droi',f:'%1'}],{n:'uroi',f:'%1',m:'Change shown in percentage points'}),
+    R('Capital charge',['={rr}*{uta@B}','={rr}*{uta@C}','={ucc@C}-{ucc@B}'],{n:'ucc',f:'$0'}),
+    R('Residual income',['={ub@B}-{ucc@B}','={ub@C}-{ucc@C}',{v:'={uri@C}-{uri@B}',n:'dri'}],{n:'uri',f:'$0',k:'total'}),
+    R('Upgrade’s own return',{v:'={addi}/{adda}',n:'uret'},{f:'%1',m:'Added income ÷ added assets'}),
+    R('Good for the company? (return vs. 12%)','=IF({uret}>{rr},"Yes: earns more than 12%","No: earns less than 12%")',{}),
+    R('Manager judged on ROI','=IF({droi}>0,"Approves","Rejects: ROI falls")',{m:'Any project below the current 24% lowers ROI'}),
+    R('Manager judged on RI','=IF({dri}>0,"Approves: RI rises","Rejects: RI falls")',{m:'Approves exactly the projects that beat 12%'}),
+    T('At $70,000 the upgrade returns 17.5%: above the 12% hurdle but below SF’s 24%. ROI falls 1.9 points, so an ROI-judged manager rejects a project that adds $22,000 of RI. At $40,000 (10%), ROI falls to 20.0% and RI to $112,000: both measures say reject, and they agree.')
+  ]});
+
+def({id:'tcb',tab:'TriCities_Bank',group:'Session 6 · Balanced Scorecard',title:'Tri-Cities Community Bank',sub:'Did the scorecard work?',
+  intro:'Branches A–E (southern division) piloted a balanced scorecard from July 1, 2007; F–J (northern division) did not. Compare one-year growth, then ask what else could explain the gap and why Branch E lagged.',
+  cite:[13,12],
+  qs:[{q:'B. Growth by branch and the two group averages',a:['ga@B','avp@B','avn@B','gap@B']},{q:'C. Approve the rollout? Two other explanations, the evidence that would settle it, one profit measure',a:[]},{q:'D. Why did Branch E lag?',a:['ge@B','avx@B']}],
+  rows:[
+    H('A · Pilot data (Exhibit B1, balances at June 30)'),
+    C('Loans 2007 ($m)','Loans 2008 ($m)','Deposits 2007 ($m)','Deposits 2008 ($m)','Fee income 2007 ($000)','Fee income 2008 ($000)'),
+    ...[['a','A (pilot)',35.9,39.3,77,85.1,411,476],['b','B (pilot)',49.7,58.1,101.4,104.5,399,428],['c','C (pilot)',56.1,63.7,124,136.3,474,529],['d','D (pilot)',45.1,46.7,86.7,93.1,276,291],['e','E (pilot)',53.9,54.4,108.2,109.3,344,343],
+        ['f','F (no scorecard)',41.9,42.9,88.5,87.5,335,345],['g','G (no scorecard)',64.5,64.5,114.8,115.2,477,498],['h','H (no scorecard)',32.7,33.2,77.8,78.2,233,230],['i','I (no scorecard)',50.8,51.1,91.6,93.7,280,293],['j','J (no scorecard)',68,71.2,145,150.8,571,589]]
+      .map(([n,l,...v])=>R(l,v,{n:'b'+n,f:'n1'})),
+    H('B · Growth, June 2007 to June 2008'),
+    C('Loans','Deposits','Fee income'),
+    ...'abcdefghij'.split('').map(n=>R(n.toUpperCase()+(n<'f'?' (pilot)':' (no scorecard)'),[`={b${n}@C}/{b${n}@B}-1`,`={b${n}@E}/{b${n}@D}-1`,`={b${n}@G}/{b${n}@F}-1`],{n:'g'+n,f:'%1',m:n==='a'?'2008 ÷ 2007 − 1':n==='e'?'Flat: no better than the no-scorecard branches':''})),
+    R('Pilot average (A–E)',rep('=AVERAGE({ga@}:{ge@})'),{n:'avp',f:'%1',k:'total',m:'Simple average of five branches'}),
+    R('No-scorecard average (F–J)',rep('=AVERAGE({gf@}:{gj@})'),{n:'avn',f:'%1',k:'total'}),
+    R('Gap (percentage points)',rep('=({avp@}-{avn@})*100'),{n:'gap',f:'n1',m:'Loans +7.0, deposits +5.2, fee income +5.2',mis:'Crediting the whole gap to the scorecard. The pilot and comparison groups differ in more than the scorecard.'}),
+    R('Pilot average without E (A–D)',rep('=AVERAGE({ga@}:{gd@})'),{n:'avx',f:'%1',m:'Where it was implemented well, growth was higher still'}),
+    H('C · Approve the rollout? (suggested answers)'),
+    T('Other explanation 1: the pilot is the whole southern division and the comparison is the whole northern division, so managers and local markets differ, not only the scorecard.'),
+    T('Other explanation 2: the president chose the pilot, ran it, and judged it through her own interviews; one year only, with no earlier trend to compare.'),
+    T('Evidence that would settle it: each branch’s growth in earlier years, local market growth by region, and a staggered rollout in the northern division as a test.'),
+    T('Profit measure to add: loan margin or net interest income, credit losses, or RI by branch. Volume can be bought with lower rates (Branch A accepted lower margins).'),
+    H('D · Why did Branch E lag? (Case B interviews)'),
+    C('Staff helped design it?','Understood the strategy?','Targets stretched but reachable?','Rewards tied to it?','Results'),
+    R('A',['?','Y','Y: hard but realistic','Y: cash bonus, quarterly award','Strong on all three'],{}),
+    R('B',['?','Y','Y: challenging, attainable','Y: bonuses, promotions, raises','Strongest loans; weak deposits'],{}),
+    R('C',['Y: feedback sought','Y','Mixed: some “next to impossible”','Y: parties, time off','Strong on all three'],{}),
+    R('D',['Partial','Partial: “charting growth”','Y: fair','Small: $50 a month','Middling'],{}),
+    R('E',['N','N','N: goals met in two months','N: only risk of being fired','Flat'],{}),
+    T('Branch E missed all four conditions. A scorecard works through people: staff must help design it, understand the strategy, face targets that stretch but can be met, and see rewards tied to it.')
+  ]});
+
+function marlowRows(P){return [
+  H('Inputs: budget'),
+  R('Budgeted regional market (tests)',{v:P.bm,n:'bm'},{f:'n0'}),
+  R('Budgeted tests',{v:P.bq,n:'bq'},{f:'n0'}),
+  R('Budgeted price per test',{v:25,n:'bp'},{f:'$2'}),
+  R('Budgeted reagent per test (mL)',{v:2,n:'bml'},{f:'g'}),
+  R('Budgeted reagent price per mL',{v:2.5,n:'bpr'},{f:'$2'}),
+  R('Budgeted fixed costs',{v:150000,n:'bf'},{f:'$0'}),
+  H('Inputs: actual'),
+  R('Actual regional market (tests)',{v:P.am,n:'am'},{f:'n0'}),
+  R('Actual tests',{v:P.aq,n:'aq'},{f:'n0'}),
+  R('Actual revenue',{v:P.ar,n:'ar'},{f:'$0'}),
+  R('Actual reagent used (mL)',{v:P.aml,n:'aml'},{f:'n0'}),
+  R('Actual reagent cost',{v:P.arc,n:'arc'},{f:'$0'}),
+  R('Actual fixed costs',{v:P.af,n:'af'},{f:'$0'}),
+  H('Derived'),
+  R('Budgeted reagent cost per test',{v:'={bml}*{bpr}',n:'vct'},{f:'$2',m:'2 mL × $2.50'}),
+  R('Budgeted unit contribution',{v:'={bp}-{vct}',n:'ucm'},{f:'$2',m:'Price − variable cost per test'}),
+  R('Budgeted market share',{v:'={bq}/{bm}',n:'bs'},{f:'%1'}),
+  R('Actual market share',{v:'={aq}/{am}',n:'as'},{f:'%1'}),
+  R('Actual price per test',{v:'={ar}/{aq}',n:'ap'},{f:'$2'}),
+  R('Actual reagent price per mL',{v:'={arc}/{aml}',n:'apr'},{f:'$2'}),
+  R('Reagent allowed for actual tests (mL)',{v:'={aq}*{bml}',n:'sml'},{f:'n0',m:'Actual tests × budgeted mL per test'}),
+  H('Original budget → flexible budget → actual'),
+  T('Variance columns: positive = favorable (raises income); in parentheses = unfavorable.'),
+  C('Original budget','Sales-volume variance','Flexible budget','Flexible-budget variance','Actual'),
+  R('Tests',['={bq}','={tq@D}-{tq@B}','={aq}','={tq@F}-{tq@D}','={aq}'],{n:'tq',f:'n0',m:'The flexible budget uses actual volume with budgeted prices and costs'}),
+  R('Revenue',['={bq}*{bp}','={rv@D}-{rv@B}','={aq}*{bp}','={rv@F}-{rv@D}','={ar}'],{n:'rv',f:'$0'}),
+  R('Reagent (variable)',['={bq}*{vct}','={rg@B}-{rg@D}','={aq}*{vct}','={rg@D}-{rg@F}','={arc}'],{n:'rg',f:'$0'}),
+  R('Contribution margin',['={rv@B}-{rg@B}','={cmx@D}-{cmx@B}','={rv@D}-{rg@D}','={cmx@F}-{cmx@D}','={rv@F}-{rg@F}'],{n:'cmx',f:'$0'}),
+  R('Fixed costs',['={bf}','={fx@B}-{fx@D}','={bf}','={fx@D}-{fx@F}','={af}'],{n:'fx',f:'$0',m:'Fixed costs do not flex with volume'}),
+  R('Operating income',['={cmx@B}-{fx@B}','={oi@D}-{oi@B}','={cmx@D}-{fx@D}','={oi@F}-{oi@D}','={cmx@F}-{fx@F}'],{n:'oi',f:'$0',k:'total'}),
+  R('Total variance (actual − original budget)',{v:'={oi@F}-{oi@B}',n:'tv'},{f:'$0',k:'total',mis:'Comparing actual costs with the original (static) budget. Costs must be judged at the volume actually achieved.'}),
+  H('Sales-volume variance = market size + market share'),
+  R('Market-size variance',[{v:'=({am}-{bm})*{bs}*{ucm}',n:'msz'},'=IF({msz}>=0,"F","U")'],{f:'$0',m:'(Actual market − budgeted market) × budgeted share × budgeted unit contribution'}),
+  R('Market-share variance',[{v:'=({as}-{bs})*{am}*{ucm}',n:'msh'},'=IF({msh}>=0,"F","U")'],{f:'$0',m:'(Actual share − budgeted share) × actual market × budgeted unit contribution'}),
+  R('Sales-volume variance',[{v:'={msz}+{msh}',n:'svv'},'=IF({svv}>=0,"F","U")'],{f:'$0',k:'total',m:'Also = (actual − budgeted tests) × unit contribution'}),
+  R('Check vs. statement above',{v:'={svv}-{oi@C}'},{f:'$0',m:'Zero'}),
+  H('Flexible-budget variance detail'),
+  R('Sales-price variance',[{v:'=({ap}-{bp})*{aq}',n:'spv'},'=IF({spv}>=0,"F","U")'],{f:'$0',m:'(Actual − budgeted price) × actual tests'}),
+  R('Reagent price variance',[{v:'=({bpr}-{apr})*{aml}',n:'rpv'},'=IF({rpv}>=0,"F","U")'],{f:'$0',m:'(Budgeted − actual price per mL) × actual mL. Usually purchasing’s responsibility'}),
+  R('Reagent quantity variance',[{v:'=({sml}-{aml})*{bpr}',n:'rqv'},'=IF({rqv}>=0,"F","U")'],{f:'$0',m:'(Allowed − actual mL) × budgeted price. Usually the lab’s responsibility',mis:'Pricing the quantity difference at the actual price. Use the budgeted price so the price effect is not counted twice.'}),
+  R('Fixed-cost spending variance',[{v:'={bf}-{af}',n:'fsv'},'=IF({fsv}>=0,"F","U")'],{f:'$0'}),
+  R('Flexible-budget variance',[{v:'={spv}+{rpv}+{rqv}+{fsv}',n:'fbv'},'=IF({fbv}>=0,"F","U")'],{f:'$0',k:'total'}),
+  R('Check vs. statement above',{v:'={fbv}-{oi@E}'},{f:'$0',m:'Zero'}),
+  H('As-if budget for reagent'),
+  R('Actual mL × actual price',{v:'={arc}'},{f:'$0'}),
+  R('Actual mL × budgeted price (as-if)',{v:'={aml}*{bpr}'},{f:'$0',m:'Separates how much was used from what was paid'}),
+  R('Allowed mL × budgeted price (flexible budget)',{v:'={sml}*{bpr}'},{f:'$0'}),
+  T(P.note)
+];}
+def({id:'mjul',tab:'Marlow_July',group:'Session 6 · Flexible Budgets',title:'Marlow Diagnostics: July',sub:'Flexible budget · market size and share',
+  intro:'July budget: 15,000 tests at $25, reagent 2 mL at $2.50 per test, $150,000 fixed. Actual: 12,000 tests and $105,000 of operating income. Split the $45,000 shortfall into volume, price, usage and spending.',
+  cite:[14,15],
+  qs:[{q:'Flexible budget operating income at 12,000 tests',a:['oi@D']},{q:'Sales-volume variance, split into market size and market share',a:['msz','msh','svv']},{q:'Flexible-budget variance, split into price, reagent price, reagent quantity and fixed spending',a:['spv','rpv','rqv','fsv']}],
+  rows:marlowRows({bm:150000,bq:15000,am:100000,aq:12000,ar:300000,aml:27000,arc:54000,af:141000,
+    note:'July: the whole $60,000 U volume shortfall came from a smaller market ($100,000 U); Marlow actually gained share, 10% → 12% ($40,000 F). Operations were $15,000 F at actual volume: cheaper reagent ($13,500 F) partly offset by 3,000 extra mL (12.5% over allowance, $7,500 U), plus $9,000 F fixed.'})});
+def({id:'maug',tab:'Marlow_August',group:'Session 6 · Flexible Budgets',title:'Marlow Diagnostics: August',sub:'Flexible budget · market size and share',
+  intro:'August budget: 14,000 tests, $130,000 operating income. Actual: 14,400 tests but only $114,600. Volume beat plan, so why did income fall $15,400 short?',
+  cite:[14,15],
+  qs:[{q:'Flexible budget operating income at 14,400 tests',a:['oi@D']},{q:'Sales-volume variance, split into market size and market share',a:['msz','msh','svv']},{q:'Flexible-budget variance detail',a:['spv','rpv','rqv','fsv']}],
+  rows:marlowRows({bm:140000,bq:14000,am:160000,aq:14400,ar:345600,aml:30000,arc:78000,af:153000,
+    note:'August: volume was $8,000 F only because the market grew 14% ($40,000 F); Marlow lost share, 10% → 9% ($32,000 U). The $23,400 U flexible-budget variance is mostly a $1 price cut to $24 ($14,400 U), plus reagent price $3,000 U, reagent usage $3,000 U (1,200 mL over) and fixed costs $3,000 U. Lower price and lost share together point to competitive pressure.'})});
+
 /* ---------------- TEMPLATES ---------------- */
 def({id:'tpl',tab:'CVP_Template',group:'Work a new case',title:'CVP template',sub:'Single and multi-product',
   intro:'Type a new problem’s numbers over the blue example inputs (they are illustrative, not from a case). Every CVP result updates. The multi-product block uses the Session 2 sales-bundle example: 2 red for every 1 white, $15,000 fixed.',
@@ -1529,7 +1672,18 @@ const REF=[
   ['% Δ profit = Operating leverage × % Δ volume','Predicts the profit swing','Price, mix and costs unchanged','Applying it when price changes','lev','pred@D'],
   ['Margin of safety = Expected − Break-even sales','Cushion before a loss','Risk check; MOS % = 1 ÷ leverage','Mixing units and dollars','tcvp','mosp'],
   ['Crossover = (F₁ − F₂) ÷ (v₂ − v₁)','Volume where two cost structures cost the same','Automate, outsource, lease vs. per-use','Comparing at a volume other than expected demand','lev','xab'],
-  ['Contractual break-even','Break-even under the contract’s own cost rules','Profit-sharing contracts (Forrest Gump)','Treating “overhead” as fixed; check if it is a % of revenue','gump','bebo']
+  ['Contractual break-even','Break-even under the contract’s own cost rules','Profit-sharing contracts (Forrest Gump)','Treating “overhead” as fixed; check if it is a % of revenue','gump','bebo'],
+  ['Session 6 · responsibility accounting and control'],
+  ['Cost, profit and investment centers','Classify by the authority delegated, not the department name','Choosing how to judge a manager','Holding a manager accountable for decisions made centrally','hosp','roi@B'],
+  ['ROI = Operating income ÷ Total assets','Return per dollar invested; = ROS × asset turnover','Comparing investment centers of different size','Rejecting projects above the hurdle but below current ROI','hosp','roi@B'],
+  ['RI = Operating income − Required return × Total assets','Income left after the charge for capital','Approving projects in an investment center','Using different income or assets than for ROI','hosp','ri@B'],
+  ['Flexible budget = Budgeted prices and costs × actual volume','What the plan would have been at actual volume','Every budget-vs-actual comparison','Judging costs against the static budget','mjul','oi@D'],
+  ['Sales-volume variance = (Actual − Budget units) × Budgeted unit contribution','Effect of volume alone','First split of the total variance','Including price changes in it','mjul','svv'],
+  ['Market-size variance = (Actual − Budget market) × Budget share × Budget UC','Volume change from the market as a whole','Was it the market or us?','Using the actual share','mjul','msz'],
+  ['Market-share variance = (Actual − Budget share) × Actual market × Budget UC','Volume change from winning or losing share','Judging the sales effort','Using the budgeted market','mjul','msh'],
+  ['Price variance = (Actual − Budget price) × Actual quantity','Effect of paying (or charging) a different price','Purchasing and pricing performance','Using budgeted quantity','mjul','rpv'],
+  ['Quantity variance = (Allowed − Actual quantity) × Budget price','Effect of using more or less input','Operations performance','Pricing it at the actual price','mjul','rqv'],
+  ['Balanced scorecard','Financial, customer, internal process, learning and growth measures tied to one strategy','Testing whether strategy is working','Treating non-financial as automatically leading','tcb','gap@B']
 ];
 function renderRef(){
   let h=`<div class="notebox"><h3>How to Use This Workbook</h3><ul>
@@ -1555,7 +1709,12 @@ const CITES=[
   'Drymiotes, G. (2026f). <i>Cost-volume-profit (CVP) analysis</i> [Lecture slides, ACCT 65023, Session 2]. Neeley School of Business, Texas Christian University.',
   'Drymiotes, G. (2026g). <i>Session 2 class workbook</i> [Unpublished Excel workbook, ACCT 65023]. Neeley School of Business, Texas Christian University.',
   '<i>Forrest Gump: Management accounting at the movies</i> [Case study]. (n.d.). Assigned in ACCT 65023, Neeley School of Business, Texas Christian University.',
-  'Wisner, P. S. (2011). À Votre Santé: Product costing and decision analysis in the wine industry. <i>IMA Educational Case Journal, 4</i>(2), Article 1.'
+  'Wisner, P. S. (2011). À Votre Santé: Product costing and decision analysis in the wine industry. <i>IMA Educational Case Journal, 4</i>(2), Article 1.',
+  'Drymiotes, G. (2026h). <i>Session 6 class workbook</i> [Unpublished Excel workbook, ACCT 65023]. Neeley School of Business, Texas Christian University.',
+  'Drymiotes, G. (2026i). <i>Could a good decision make a manager look worse?</i> [Lecture slides, ACCT 65023, Session 6]. Neeley School of Business, Texas Christian University.',
+  'Albright, T., Davis, S., &amp; Hibbets, A. (2009). Tri-Cities Community Bank: A balanced scorecard case. <i>IMA Educational Case Journal, 2</i>(1).',
+  'Drymiotes, G. (2026j). <i>Marlow Diagnostics: July and August budgets and actual results</i> [Class data files, ACCT 65023, Session 6]. Neeley School of Business, Texas Christian University.',
+  'Drymiotes, G. (2026k). <i>Variance dashboard (demo)</i> [Web tool, ACCT 65023, Session 6]. Neeley School of Business, Texas Christian University.'
 ];
 $('special').addEventListener('click',e=>{const b=e.target.closest('[data-os]');if(b)openSheet(b.dataset.os,b.dataset.oa)});
 
